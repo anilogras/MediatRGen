@@ -1,4 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using CommandLine;
+
 Console.WriteLine("Hello, World!");
 
 int selectedIndex = 0;
@@ -7,40 +9,59 @@ string[] options = { "Proje Oluştur", "Servis Oluştur", "Repository Oluştur",
 
 while (true)
 {
+    Console.Write("\nKomut girin: ");
+    string? input = Console.ReadLine()?.Trim();
 
-    Console.Clear();
-    Console.WriteLine("Lütfen bir seçenek seçin (⬆️ / ⬇️ ile, Enter ile onaylayın):\n");
+    if (string.IsNullOrWhiteSpace(input)) continue;
+    if (input.ToLower() == "exit") break;
 
-    for (int i = 0; i < options.Length; i++)
+    string[] commandArgs = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+    if (commandArgs.Length == 0 || !commandArgs[0].StartsWith("-"))
     {
-        if (i == selectedIndex)
-        {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"> {options[i]}"); // Seçili öğe
-            Console.ResetColor();
-        }
-        else
-        {
-            Console.WriteLine($"  {options[i]}");
-        }
+        Console.WriteLine("Parametreler başında `-` veya `--` olmalıdır.");
+        continue;
     }
 
-    ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+    ParserResult< ProjectOptions> _parsedOptions =  Parser.Default.ParseArguments<ProjectOptions>(commandArgs);
 
-    switch (keyInfo.Key)
-    {
-        case ConsoleKey.UpArrow:
-            selectedIndex = (selectedIndex == 0) ? options.Length - 1 : selectedIndex - 1;
-            break;
+    ProjectOptions opt = _parsedOptions.Value;
 
-        case ConsoleKey.DownArrow:
-            selectedIndex = (selectedIndex == options.Length - 1) ? 0 : selectedIndex + 1;
-            break;
+    //Console.Clear();
+    //Console.WriteLine("Lütfen bir seçenek seçin (⬆️ / ⬇️ ile, Enter ile onaylayın):\n");
 
-        case ConsoleKey.Enter:
-            HandleSelection(options[selectedIndex]);
-            break;
-    }
+
+
+    //for (int i = 0; i < options.Length; i++)
+    //{
+    //    if (i == selectedIndex)
+    //    {
+    //        Console.ForegroundColor = ConsoleColor.Green;
+    //        Console.WriteLine($"> {options[i]}"); // Seçili öğe
+    //        Console.ResetColor();
+    //    }
+    //    else
+    //    {
+    //        Console.WriteLine($"  {options[i]}");
+    //    }
+    //}
+
+    //ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+
+    //switch (keyInfo.Key)
+    //{
+    //    case ConsoleKey.UpArrow:
+    //        selectedIndex = (selectedIndex == 0) ? options.Length - 1 : selectedIndex - 1;
+    //        break;
+
+    //    case ConsoleKey.DownArrow:
+    //        selectedIndex = (selectedIndex == options.Length - 1) ? 0 : selectedIndex + 1;
+    //        break;
+
+    //    case ConsoleKey.Enter:
+    //        HandleSelection(options[selectedIndex]);
+    //        break;
+    //}
 
     //ProcessCommand(inputArgs);
 }
@@ -81,4 +102,17 @@ static void CreateProject()
     Directory.CreateDirectory(projectPath);
 
     Console.WriteLine($"Proje '{projectPath}' oluşturuldu!");
+}
+
+
+public class ProjectOptions
+{
+    [Option('d', "dir", Required = false, HelpText = "Dizin yolu.")]
+    public string Directory { get; set; }
+
+    [Option('r', "rep", Required = false, HelpText = "Repository var mı?")]
+    public bool HasRepository { get; set; }
+
+    [Option('i', "img", Required = false, HelpText = "Resim var mı?")]
+    public bool HasImage { get; set; }
 }
