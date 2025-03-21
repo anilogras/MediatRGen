@@ -19,7 +19,7 @@ namespace MediatRGen.Language
                 case "en":
                     return new LangEn();
                 default:
-                    throw new LanguageException("Tanımlı Dil Bilgisi Bulunamadı");
+                    throw new LanguageNotFoundException("Tanımlı Dil Bilgisi Bulunamadı");
             }
         }
 

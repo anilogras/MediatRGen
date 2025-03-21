@@ -32,25 +32,5 @@ namespace MediatRGen
                 throw new InvalidCommandException(LangHandler.Definitions().InvalidCommandName);
             }
         }
-
-        public class InvalidParameterException : Exception
-        {
-            public InvalidParameterException(string message) : base(message)
-            {
-            }
-        }
-
-        public class InvalidCommandException : Exception
-        {
-            public InvalidCommandException(string message) : base(message)
-            {
-            }
-        }
-        public class LanguageException : Exception
-        {
-            public LanguageException(string message) : base(message)
-            {
-            }
-        }
     }
 }
