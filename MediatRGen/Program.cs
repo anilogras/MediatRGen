@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using CommandLine;
 using MediatRGen;
+using MediatRGen.Exceptions;
 using MediatRGen.Language;
 
 Console.WriteLine("Hello, World!");
@@ -28,7 +29,8 @@ while (true)
     }
     catch (Exception ex)
     {
-        Console.WriteLine(ex.Message);
+
+        BaseException.ExceptionHandler(ex);
         continue;
     }
 

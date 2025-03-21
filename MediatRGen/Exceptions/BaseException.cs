@@ -1,0 +1,57 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MediatRGen.Exceptions
+{
+    public static class BaseException
+    {
+        public static void ExceptionHandler(Exception exception)
+        {
+            switch (exception)
+            {
+
+                case InvalidParameterException invalidParameterException:
+                    HandleException(invalidParameterException);
+                    break;
+
+                case InvalidCommandException invalidCommandException:
+                    HandleException(invalidCommandException);
+                    break;
+
+                case LanguageNotFoundException languageNotFoundException:
+                    HandleException(languageNotFoundException);
+                    break;
+
+
+                default:
+                    break;
+            }
+        }
+
+        private static void HandleException(InvalidCommandException ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+        private static void HandleException(LanguageNotFoundException ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+        private static void HandleException(InvalidParameterException ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+        private static void HandleException(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+    }
+
+
+}
