@@ -15,7 +15,7 @@ namespace MediatRGen.States
 
         private static GlobalState _instance;
 
-        public static GlobalState instance
+        public static GlobalState Instance
         {
             get { 
             

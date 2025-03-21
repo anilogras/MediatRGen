@@ -1,8 +1,8 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using CommandLine;
 using MediatRGen;
+using MediatRGen.Commands;
 using MediatRGen.Exceptions;
-using MediatRGen.Language;
 
 Console.WriteLine("Hello, World!");
 
@@ -10,7 +10,7 @@ Console.WriteLine("Hello, World!");
 string _lang = "en";
 
 int selectedIndex = 0;
-string[] options = { "Proje Oluştur", "Servis Oluştur", "Repository Oluştur", "Çıkış" };
+//string[] options = { "Proje Oluştur", "Servis Oluştur", "Repository Oluştur", "Çıkış" };
 //COmmandValidator.Equals("deneme");
 
 while (true)
@@ -21,24 +21,22 @@ while (true)
     if (string.IsNullOrWhiteSpace(input)) continue;
     if (input.ToLower() == "exit") break;
 
-    string[] commandArgs = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
     try
     {
-        Validator.CommandValidator(commandArgs);
+      CommandProcessor.HandleProcess(input);
     }
     catch (Exception ex)
     {
-
         BaseException.ExceptionHandler(ex);
         continue;
     }
 
 
 
-    ParserResult<ProjectOptions> _parsedOptions = Parser.Default.ParseArguments<ProjectOptions>(commandArgs);
+    //ParserResult<ProjectOptions> _parsedOptions = Parser.Default.ParseArguments<ProjectOptions>(commandArgs);
 
-    ProjectOptions opt = _parsedOptions.Value;
+    //ProjectOptions opt = _parsedOptions.Value;
 
     //Console.Clear();
     //Console.WriteLine("Lütfen bir seçenek seçin (⬆️ / ⬇️ ile, Enter ile onaylayın):\n");

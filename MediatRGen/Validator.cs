@@ -1,4 +1,5 @@
-﻿using MediatRGen.Languages;
+﻿using MediatRGen.Exceptions;
+using MediatRGen.Languages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace MediatRGen
 
         private static void CheckParams(string[] commandArgs)
         {
-            if (commandArgs.Length == 0 || !commandArgs[0].StartsWith("-"))
+            if (commandArgs.Length != 1 && ( commandArgs.Length == 0 || !commandArgs[0].StartsWith("-")))
             {
                 throw new InvalidParameterException(LangHandler.Definitions().InvalidCommandName);
             }
@@ -25,7 +26,7 @@ namespace MediatRGen
 
         private static void CheckCommand(string command)
         {
-            string[] activeCommand = ["create"];
+            string[] activeCommand = ["solution" , "repository" ];
 
             if(!activeCommand.Contains(command))
             {

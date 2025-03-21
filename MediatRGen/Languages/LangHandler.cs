@@ -1,11 +1,5 @@
-﻿using MediatRGen.Language;
+﻿using MediatRGen.Exceptions;
 using MediatRGen.States;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static MediatRGen.Validator;
 
 namespace MediatRGen.Languages
 {
@@ -13,7 +7,7 @@ namespace MediatRGen.Languages
     {
         public static ILang Definitions()
         {
-            switch (GlobalState.instance.Lang)
+            switch (GlobalState.Instance.Lang)
             {
                 case "tr":
                     return new LangTr();
