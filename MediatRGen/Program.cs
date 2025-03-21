@@ -1,11 +1,16 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using CommandLine;
+using MediatRGen;
+using MediatRGen.Language;
 
 Console.WriteLine("Hello, World!");
 
+
+string _lang = "en";
+
 int selectedIndex = 0;
 string[] options = { "Proje Oluştur", "Servis Oluştur", "Repository Oluştur", "Çıkış" };
-
+//COmmandValidator.Equals("deneme");
 
 while (true)
 {
@@ -17,13 +22,19 @@ while (true)
 
     string[] commandArgs = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
-    if (commandArgs.Length == 0 || !commandArgs[0].StartsWith("-"))
+    try
     {
-        Console.WriteLine("Parametreler başında `-` veya `--` olmalıdır.");
+        Validator.CommandValidator(commandArgs);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
         continue;
     }
 
-    ParserResult< ProjectOptions> _parsedOptions =  Parser.Default.ParseArguments<ProjectOptions>(commandArgs);
+
+
+    ParserResult<ProjectOptions> _parsedOptions = Parser.Default.ParseArguments<ProjectOptions>(commandArgs);
 
     ProjectOptions opt = _parsedOptions.Value;
 
@@ -65,6 +76,7 @@ while (true)
 
     //ProcessCommand(inputArgs);
 }
+
 
 
 static void HandleSelection(string selection)
@@ -116,3 +128,4 @@ public class ProjectOptions
     [Option('i', "img", Required = false, HelpText = "Resim var mı?")]
     public bool HasImage { get; set; }
 }
+
