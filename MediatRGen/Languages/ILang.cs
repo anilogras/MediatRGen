@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Language
+namespace MediatRGen.Languages
 {
     public interface ILang
     {
         public string InvalidCommandName { get; }
-        public string InvalidParameter { get;}
+        public string InvalidParameter { get; }
     }
 }

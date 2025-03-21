@@ -1,4 +1,4 @@
-﻿namespace MediatRGen
+﻿namespace MediatRGen.Exceptions
 {
 
     public class InvalidParameterException : Exception

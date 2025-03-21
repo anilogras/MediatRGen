@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Language
+namespace MediatRGen.Languages
 {
-    public class LangTr : ILang
+    public class LangEn : ILang
     {
         public string InvalidCommandName => "Girilen Komut Adı Bulunamadı ...";
         public string InvalidParameter => "Parametreler başında `-` veya `--` olmalıdır.";
-
     }
 }

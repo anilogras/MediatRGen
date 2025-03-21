@@ -1,4 +1,4 @@
-﻿namespace MediatRGen
+﻿namespace MediatRGen.Exceptions
 {
 
     public class InvalidCommandException : Exception
@@ -7,7 +7,7 @@
 
         public InvalidCommandException(string message) : base(message)
         {
-            this.Way = "Deneme";
+            Way = "Deneme";
         }
     }
 

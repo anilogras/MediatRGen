@@ -1,4 +1,5 @@
-﻿using MediatRGen.States;
+﻿using MediatRGen.Language;
+using MediatRGen.States;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static MediatRGen.Validator;
 
-namespace MediatRGen.Language
+namespace MediatRGen.Languages
 {
     public static class LangHandler
     {
