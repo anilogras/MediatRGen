@@ -1,5 +1,6 @@
 ﻿using MediatRGen.Exceptions;
 using MediatRGen.Languages;
+using MediatRGen.States;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace MediatRGen
 {
     public static class Validator
     {
-        public static void CommandValidator(string[] commandArgs)
+        public static void ValidateCommandBeforeProcess(string[] commandArgs)
         {
             CheckCommand(commandArgs[0]);
             CheckParams(commandArgs);            
@@ -26,7 +27,7 @@ namespace MediatRGen
 
         private static void CheckCommand(string command)
         {
-            string[] activeCommand = ["solution" , "repository" ];
+            string[] activeCommand = GlobalState.Instance.Commands;
 
             if(!activeCommand.Contains(command))
             {

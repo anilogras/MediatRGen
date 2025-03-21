@@ -11,6 +11,7 @@ namespace MediatRGen.States
         public GlobalState()
         {
             Lang = "en";
+            Commands = ["create-solution", "create-repository"];
         }
 
         private static GlobalState _instance;
@@ -27,5 +28,6 @@ namespace MediatRGen.States
         }
 
         public string Lang { get; set; }
+        public string[] Commands { get; set; }
     }
 }

@@ -16,7 +16,7 @@ namespace MediatRGen.Commands
         {
             string[] commandArgs = process.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
-            Validator.CommandValidator(commandArgs);
+            Validator.ValidateCommandBeforeProcess(commandArgs);
 
             if (string.IsNullOrWhiteSpace(process))
             {
@@ -25,10 +25,10 @@ namespace MediatRGen.Commands
 
             switch (commandArgs[0].ToLower())
             {
-                case "solution":
+                case "create-solution":
                     return new SolutionCreateProcess(process);
 
-                case "repository":
+                case "create-repository":
                     return new RepositoryProcess(process);
 
                 default:
