@@ -10,7 +10,7 @@ namespace MediatRGen.States
     {
         public GlobalState()
         {
-            Lang = "en";
+            Lang = "tr";
             Commands = ["create-solution", "create-repository"];
         }
 

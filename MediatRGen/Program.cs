@@ -24,7 +24,7 @@ while (true)
 
     try
     {
-      CommandProcessor.HandleProcess(input);
+      CommandProcessor.ProcessHandler(input);
     }
     catch (Exception ex)
     {

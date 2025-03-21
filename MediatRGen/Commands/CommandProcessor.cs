@@ -12,7 +12,7 @@ namespace MediatRGen.Commands
     public static class CommandProcessor
     {
 
-        public static BaseProcess HandleProcess(string process)
+        public static BaseProcess ProcessHandler(string process)
         {
             string[] commandArgs = process.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
