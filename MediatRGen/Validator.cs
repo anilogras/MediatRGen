@@ -1,0 +1,56 @@
+﻿using MediatRGen.Language;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MediatRGen
+{
+    public static class Validator
+    {
+        public static void CommandValidator(string[] commandArgs)
+        {
+            CheckCommand(commandArgs[0]);
+            CheckParams(commandArgs);            
+        }
+
+        private static void CheckParams(string[] commandArgs)
+        {
+            if (commandArgs.Length == 0 || !commandArgs[0].StartsWith("-"))
+            {
+                throw new InvalidParameterException(LangHandler.Definitions().InvalidCommandName);
+            }
+        }
+
+        private static void CheckCommand(string command)
+        {
+            string[] activeCommand = ["create"];
+
+            if(!activeCommand.Contains(command))
+            {
+                throw new InvalidCommandException(LangHandler.Definitions().InvalidCommandName);
+            }
+        }
+
+        public class InvalidParameterException : Exception
+        {
+            public InvalidParameterException(string message) : base(message)
+            {
+            }
+        }
+
+        public class InvalidCommandException : Exception
+        {
+            public InvalidCommandException(string message) : base(message)
+            {
+            }
+        }
+        public class LanguageException : Exception
+        {
+            public LanguageException(string message) : base(message)
+            {
+            }
+        }
+    }
+}
