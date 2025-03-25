@@ -10,5 +10,7 @@ namespace MediatRGen.Languages
     {
         public string InvalidCommandName => "Girilen Komut Adı Bulunamadı ...";
         public string InvalidParameter => "Parametreler başında `-` veya `--` olmalıdır.";
+
+        public string InvalidParamForCreateSolution => "create-solution işlemi için geçersiz parametreler girildi ...";
     }
 }

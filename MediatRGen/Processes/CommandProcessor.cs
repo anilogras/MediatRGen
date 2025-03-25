@@ -1,4 +1,5 @@
 ﻿using MediatRGen.Exceptions;
+using MediatRGen.Helpers;
 using MediatRGen.Languages;
 using MediatRGen.States;
 using System;
@@ -7,18 +8,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Commands
+namespace MediatRGen.Processes
 {
     public static class CommandProcessor
     {
 
-        public static BaseProcess ProcessHandler(string process)
+        public static BaseProcess ProcessHandler(string command)
         {
-            string[] commandArgs = process.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-
+            string[] commandArgs = ArgHelper.SplitArgs(command);
             Validator.ValidateCommandBeforeProcess(commandArgs);
 
-            if (string.IsNullOrWhiteSpace(process))
+            if (string.IsNullOrWhiteSpace(command))
             {
                 throw new InvalidCommandException(LangHandler.Definitions().InvalidCommandName);
             }
@@ -26,10 +26,10 @@ namespace MediatRGen.Commands
             switch (commandArgs[0].ToLower())
             {
                 case "create-solution":
-                    return new SolutionCreateProcess(process);
+                    return new SolutionCreateProcess(command);
 
                 case "create-repository":
-                    return new RepositoryProcess(process);
+                    return new RepositoryProcess(command);
 
                 default:
                     throw new InvalidCommandException(LangHandler.Definitions().InvalidCommandName);

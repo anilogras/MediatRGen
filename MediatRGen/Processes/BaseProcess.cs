@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Commands
+namespace MediatRGen.Processes
 {
     public class BaseProcess
     {

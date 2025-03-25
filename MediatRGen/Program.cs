@@ -1,13 +1,11 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using CommandLine;
 using MediatRGen;
-using MediatRGen.Commands;
 using MediatRGen.Exceptions;
+using MediatRGen.Processes;
 
 Console.WriteLine("Hello, World!");
 
-
-string _lang = "en";
 
 int selectedIndex = 0;
 //string[] options = { "Proje Oluştur", "Servis Oluştur", "Repository Oluştur", "Çıkış" };
@@ -15,7 +13,6 @@ int selectedIndex = 0;
 
 while (true)
 {
-    Console.Write("\nKomut girin: ");
     string? input = Console.ReadLine()?.Trim();
 
     if (string.IsNullOrWhiteSpace(input)) continue;
