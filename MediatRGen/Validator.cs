@@ -31,7 +31,7 @@ namespace MediatRGen
 
             if(!activeCommand.Contains(command))
             {
-                throw new InvalidCommandException(LangHandler.Definitions().InvalidCommandName);
+                throw new InvalidCommandException { Way = "DENEME AAAAAAA" , Message = LangHandler.Definitions().InvalidCommandName};
             }
         }
     }
