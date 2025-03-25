@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using MediatRGen.Languages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,10 @@ namespace MediatRGen.Processes.Parameters.Solution
 {
     public class SolutionCreateParameter
     {
-        [Option('d', "dir", Required = false, HelpText = "Dizin yolu.")]
+        [Option('d', "dir", Required = false)]
         public string Directory { get; set; }
+
+        [Option('n', "name", Required = true)]
+        public string ProjectName { get; set; }
     }
 }

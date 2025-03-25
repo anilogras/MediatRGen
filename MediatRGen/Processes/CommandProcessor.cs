@@ -23,17 +23,12 @@ namespace MediatRGen.Processes
                 throw new InvalidCommandException(LangHandler.Definitions().InvalidCommandName);
             }
 
-            switch (commandArgs[0].ToLower())
+            return commandArgs[0].ToLower() switch
             {
-                case "create-solution":
-                    return new SolutionCreateProcess(command);
-
-                case "create-repository":
-                    return new RepositoryProcess(command);
-
-                default:
-                    throw new InvalidCommandException(LangHandler.Definitions().InvalidCommandName);
-            }
+                "create-solution" => new SolutionCreateProcess(command),
+                "create-repository" => new RepositoryProcess(command),
+                _ => throw new InvalidCommandException(LangHandler.Definitions().InvalidCommandName),
+            };
         }
 
     }
