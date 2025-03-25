@@ -25,7 +25,7 @@ namespace MediatRGen.Helpers
 
         public static string GetAppDirectory()
         {
-            return AppDomain.CurrentDomain.BaseDirectory;
+            return Environment.CurrentDirectory;
         }
     }
 }

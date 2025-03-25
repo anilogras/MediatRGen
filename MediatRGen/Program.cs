@@ -9,7 +9,7 @@ int selectedIndex = 0;
 //string[] options = { "Proje Oluştur", "Servis Oluştur", "Repository Oluştur", "Çıkış" };
 //COmmandValidator.Equals("deneme");
 
-args = ["create-solutiona", "-d22", "D:\\Deneme\\den", "-n", "mysol"];
+args = ["create-solution", "-n", "mysolhh" , "-d" , "\"D:/New folder/deneme\""];
 
 if (args.Length > 0)
 {

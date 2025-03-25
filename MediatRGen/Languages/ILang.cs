@@ -14,5 +14,7 @@ namespace MediatRGen.Languages
         public string EnterCommand { get;}
         public string ExistDirectory { get;}
         public string FileExist { get;}
+
+        public string YouCanWriteCode { get;}
     }
 }
