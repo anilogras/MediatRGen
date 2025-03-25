@@ -16,6 +16,7 @@ namespace MediatRGen.Helpers
                 FileName = command,
                 Arguments = parameters,
                 RedirectStandardOutput = true,
+                RedirectStandardError = true, 
                 UseShellExecute = false,
                 CreateNoWindow = true
             };
@@ -23,13 +24,15 @@ namespace MediatRGen.Helpers
             try
             {
                 string output;
+                string error;
                 using (var process = Process.Start(startInfo))
                 {
                     output = process.StandardOutput.ReadToEnd();
+                    error = process.StandardError.ReadToEnd();
                     process.WaitForExit();
                 }
 
-                return output;
+                return output == "" ? error : output;
 
             }
             catch (Exception ex)

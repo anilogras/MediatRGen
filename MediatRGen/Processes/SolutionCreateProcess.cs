@@ -18,61 +18,6 @@ namespace MediatRGen.Processes
 
         public SolutionCreateProcess(string process)
         {
-
-            List<string> parsedValue = new List<string>();
-            int index = 0;
-            string _temp = string.Empty;
-            bool isquetobegin = false;
-
-
-            while (true)
-            {
-
-
-                if (process[index] =='"' && isquetobegin == false)
-                    isquetobegin = true;
-
-                if (process[index] == '"' && isquetobegin == true)
-                    isquetobegin = false;
-
-
-                if (isquetobegin == false && process[index] != ' ')
-                {
-                    _temp += process[index];
-
-                }
-                else 
-                {
-                    parsedValue.Add(_temp);
-                    _temp = string.Empty;
-
-                }
-
-                //if (isquetobegin == true) 
-                //{
-                //    _temp += process[index];
-
-                //}
-
-                index++;
-
-                if(index == 35)
-                {
-
-
-                }
-
-                if (index == process.Length)
-                    break;
-
-            }
-
-            
-
-            parsedValue[0] = "asdasd";
-            parsedValue[1] = "process";
-
-
             try
             {
                 ParserResult<SolutionCreateParameter> _parsedOptions = Parser.Default.ParseArguments<SolutionCreateParameter>(ArgHelpers.SplitArgs(process));
@@ -100,15 +45,16 @@ namespace MediatRGen.Processes
             if (_parameter.Directory == "." || string.IsNullOrEmpty(_parameter.Directory))
             {
                 _directory = DirectoryHelpers.GetAppDirectory();
-            }else
+            }
+            else
                 _directory = _parameter.Directory;
 
             DirectoryHelpers.CreateIsNotExist(_directory, _parameter.ProjectName);
-            string _combinetPath = PathHelper.GetPath(_directory , _parameter.ProjectName);
+            string _combinetPath = PathHelper.GetPath(_directory, _parameter.ProjectName);
 
-            string commandResult = @$"dotnet new sln -n {_parameter.ProjectName} --output {_combinetPath}";
+            string commandResult = @$"dotnet new sln -n {_parameter.ProjectName} --output ""{_combinetPath}""";
 
-            if (FileHelpers.CheckFile(_combinetPath  , _parameter.ProjectName+".sln") == true) 
+            if (FileHelpers.CheckFile(_combinetPath, _parameter.ProjectName + ".sln") == true)
             {
                 throw new FileException(LangHandler.Definitions().FileExist);
             }
@@ -116,6 +62,7 @@ namespace MediatRGen.Processes
             string res = SystemProcessHelpers.InvokeCommand(commandResult);
             Console.WriteLine(res);
             Console.WriteLine($"cd {_combinetPath}");
+            if(res.IndexOf("Error") == -1)
             Console.WriteLine(LangHandler.Definitions().YouCanWriteCode);
 
         }
