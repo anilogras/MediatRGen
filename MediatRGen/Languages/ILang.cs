@@ -11,5 +11,7 @@ namespace MediatRGen.Languages
         public string InvalidCommandName { get; }
         public string InvalidParameter { get; }
         public string InvalidParamForCreateSolution { get; }
+
+        public string EnterCommand { get;}
     }
 }

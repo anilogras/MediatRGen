@@ -2,77 +2,76 @@
 using CommandLine;
 using MediatRGen;
 using MediatRGen.Exceptions;
+using MediatRGen.Languages;
 using MediatRGen.Processes;
-
-Console.WriteLine("Hello, World!");
-
 
 int selectedIndex = 0;
 //string[] options = { "Proje Oluştur", "Servis Oluştur", "Repository Oluştur", "Çıkış" };
 //COmmandValidator.Equals("deneme");
 
-while (true)
+//args = ["create-solution", "-b", "dir", "-n", "name"];
+
+if (args.Length > 0)
 {
-    string? input = Console.ReadLine()?.Trim();
-
-    if (string.IsNullOrWhiteSpace(input)) continue;
-    if (input.ToLower() == "exit") break;
-
-
+    string? input = string.Join(" ", args);
     try
     {
-      CommandProcessor.ProcessHandler(input);
+        Console.WriteLine(input);
+        CommandProcessor.ProcessHandler(input);
+        args = null;
     }
     catch (Exception ex)
     {
         BaseException.ExceptionHandler(ex);
-        continue;
     }
-
-
-
-    //ParserResult<ProjectOptions> _parsedOptions = Parser.Default.ParseArguments<ProjectOptions>(commandArgs);
-
-    //ProjectOptions opt = _parsedOptions.Value;
-
-    //Console.Clear();
-    //Console.WriteLine("Lütfen bir seçenek seçin (⬆️ / ⬇️ ile, Enter ile onaylayın):\n");
-
-
-
-    //for (int i = 0; i < options.Length; i++)
-    //{
-    //    if (i == selectedIndex)
-    //    {
-    //        Console.ForegroundColor = ConsoleColor.Green;
-    //        Console.WriteLine($"> {options[i]}"); // Seçili öğe
-    //        Console.ResetColor();
-    //    }
-    //    else
-    //    {
-    //        Console.WriteLine($"  {options[i]}");
-    //    }
-    //}
-
-    //ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-
-    //switch (keyInfo.Key)
-    //{
-    //    case ConsoleKey.UpArrow:
-    //        selectedIndex = (selectedIndex == 0) ? options.Length - 1 : selectedIndex - 1;
-    //        break;
-
-    //    case ConsoleKey.DownArrow:
-    //        selectedIndex = (selectedIndex == options.Length - 1) ? 0 : selectedIndex + 1;
-    //        break;
-
-    //    case ConsoleKey.Enter:
-    //        HandleSelection(options[selectedIndex]);
-    //        break;
-    //}
-
-    //ProcessCommand(inputArgs);
 }
+else
+{
+    Console.WriteLine(LangHandler.Definitions().EnterCommand);
+}
+
+//ParserResult<ProjectOptions> _parsedOptions = Parser.Default.ParseArguments<ProjectOptions>(commandArgs);
+
+//ProjectOptions opt = _parsedOptions.Value;
+
+//Console.Clear();
+//Console.WriteLine("Lütfen bir seçenek seçin (⬆️ / ⬇️ ile, Enter ile onaylayın):\n");
+
+
+
+//for (int i = 0; i < options.Length; i++)
+//{
+//    if (i == selectedIndex)
+//    {
+//        Console.ForegroundColor = ConsoleColor.Green;
+//        Console.WriteLine($"> {options[i]}"); // Seçili öğe
+//        Console.ResetColor();
+//    }
+//    else
+//    {
+//        Console.WriteLine($"  {options[i]}");
+//    }
+//}
+
+//ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+
+//switch (keyInfo.Key)
+//{
+//    case ConsoleKey.UpArrow:
+//        selectedIndex = (selectedIndex == 0) ? options.Length - 1 : selectedIndex - 1;
+//        break;
+
+//    case ConsoleKey.DownArrow:
+//        selectedIndex = (selectedIndex == options.Length - 1) ? 0 : selectedIndex + 1;
+//        break;
+
+//    case ConsoleKey.Enter:
+//        HandleSelection(options[selectedIndex]);
+//        break;
+//}
+
+//ProcessCommand(inputArgs);
+
 
 
 

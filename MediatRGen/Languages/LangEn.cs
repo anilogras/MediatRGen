@@ -12,5 +12,7 @@ namespace MediatRGen.Languages
         public string InvalidParameter => "Parametreler başında `-` veya `--` olmalıdır.";
 
         public string InvalidParamForCreateSolution => "create-solution işlemi için geçersiz parametreler girildi ...";
+
+        public string EnterCommand => "Komut Girin";
     }
 }

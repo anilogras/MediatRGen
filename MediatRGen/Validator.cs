@@ -19,7 +19,7 @@ namespace MediatRGen
 
         private static void CheckParams(string[] commandArgs)
         {
-            if (commandArgs.Length != 1 && ( commandArgs.Length == 0 || !commandArgs[0].StartsWith("-")))
+            if (commandArgs.Length != 1 && ( commandArgs.Length == 0  && !commandArgs[0].StartsWith("-")))
             {
                 throw new InvalidParameterException(LangHandler.Definitions().InvalidCommandName);
             }
