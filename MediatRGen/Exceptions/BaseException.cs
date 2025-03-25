@@ -29,6 +29,14 @@ namespace MediatRGen.Exceptions
                     HandleException(parameterParseException);
                     break;
 
+                case DirectoryException parameterParseException:
+                    HandleException(parameterParseException);
+                    break;
+
+                case FileException parameterParseException:
+                    HandleException(parameterParseException);
+                    break;
+
                 default:
                     HandleException(exception);
                     break;
@@ -40,6 +48,14 @@ namespace MediatRGen.Exceptions
             Console.WriteLine(ex.Message);
         }
 
+        private static void HandleException(FileException ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        private static void HandleException(DirectoryException ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
         private static void HandleException(LanguageNotFoundException ex)
         {
             Console.WriteLine(ex.Message);

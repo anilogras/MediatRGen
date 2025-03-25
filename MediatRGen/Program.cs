@@ -9,15 +9,15 @@ int selectedIndex = 0;
 //string[] options = { "Proje Oluştur", "Servis Oluştur", "Repository Oluştur", "Çıkış" };
 //COmmandValidator.Equals("deneme");
 
-//args = ["create-solution", "-b", "dir", "-n", "name"];
+args = ["create-solution", "-d", "D:\\Deneme\\den", "-n", "mysol"];
 
 if (args.Length > 0)
 {
     string? input = string.Join(" ", args);
     try
     {
-        Console.WriteLine(input);
         CommandProcessor.ProcessHandler(input);
+        
         args = null;
     }
     catch (Exception ex)

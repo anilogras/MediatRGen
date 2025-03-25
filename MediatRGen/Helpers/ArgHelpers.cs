@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MediatRGen.Helpers
 {
-    public class ArgHelper
+    public class ArgHelpers
     {
         public static string[] SplitArgs(string command) 
         {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MediatRGen.Helpers
 {
-    public class FileHelper
+    public class FileHelpers
     {
         public static bool Create() { return true; }
 
@@ -15,6 +15,16 @@ namespace MediatRGen.Helpers
         public static bool Delete() { return true; }
 
         public static bool Update() { return true; }
+
+        public static bool CheckFile(string path, string fileName)
+        {
+            string _combinedPathWithFile = PathHelper.GetPath(path , fileName);
+
+            if (File.Exists(_combinedPathWithFile))
+                return true;
+
+            return false;
+        }
 
     }
 }

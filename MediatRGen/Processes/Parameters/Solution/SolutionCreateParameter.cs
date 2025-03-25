@@ -15,7 +15,5 @@ namespace MediatRGen.Processes.Parameters.Solution
 
         [Option('n', "name", Required = true)]
         public string ProjectName { get; set; }
-
-
     }
 }

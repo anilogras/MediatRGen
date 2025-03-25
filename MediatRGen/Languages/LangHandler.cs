@@ -11,8 +11,6 @@ namespace MediatRGen.Languages
             {
                 case "tr":
                     return new LangTr();
-                case "en":
-                    return new LangEn();
                 default:
                     throw new LanguageNotFoundException("Tanımlı Dil Bilgisi Bulunamadı");
             }
