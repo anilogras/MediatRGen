@@ -42,7 +42,7 @@ namespace MediatRGen.Helpers
             return File.ReadAllText(path, Encoding.UTF8);
         }
 
-        public static Config? GetConfig()
+        public static Config GetConfig()
         {
 
             string _file = Get(PathHelper.GetPath(DirectoryHelpers.GetCurrentDirectory(), GlobalState.Instance.ConfigFileName));

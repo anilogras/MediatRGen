@@ -50,9 +50,7 @@ namespace MediatRGen.Helpers
                     parsedValue.Add(_temp);
 
                     break;
-
                 }
-
             }
 
             return parsedValue.Where(x => x != "").ToList().ToArray();

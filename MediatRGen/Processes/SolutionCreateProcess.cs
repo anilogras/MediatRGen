@@ -19,23 +19,8 @@ namespace MediatRGen.Processes
 
         public SolutionCreateProcess(string process)
         {
-            try
-            {
-                ParserResult<SolutionCreateParameter> _parsedOptions = Parser.Default.ParseArguments<SolutionCreateParameter>(ArgHelpers.SplitArgs(process));
-                if (_parsedOptions.Errors.Count() != 0)
-                {
-                    throw new Exception("parse Exception");
-                }
 
-                _parameter = _parsedOptions.Value;
-
-
-            }
-            catch (Exception exception)
-            {
-                throw new ParameterParseException(LangHandler.Definitions().InvalidParamForCreateSolution);
-            }
-
+            ParameterHelper.GetParameter<SolutionCreateParameter>(process, ref _parameter);
             solutionCreate();
         }
 

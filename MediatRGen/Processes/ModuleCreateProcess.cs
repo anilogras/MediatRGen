@@ -2,6 +2,8 @@
 using MediatRGen.Helpers;
 using MediatRGen.Languages;
 using MediatRGen.Models;
+using MediatRGen.Processes.Parameters.Module;
+using MediatRGen.Processes.Parameters.Solution;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,24 +16,25 @@ namespace MediatRGen.Processes
     public class ModuleCreateProcess : BaseProcess
     {
 
-        private ProjectModule _modul;
+        private readonly ProjectModule _modul;
+        private ModuleCreateParameter _parameter;
 
-        public ModuleCreateProcess()
+        public ModuleCreateProcess(string command)
         {
+
+            ParameterHelper.GetParameter<ModuleCreateParameter>(command, ref _parameter);
+
             _modul = new ProjectModule();
 
-            GetModuleName();
 
-            Config? _config = FileHelpers.GetConfig();
-
-            if (_config.Modules == null)
-                _config.Modules = new List<ProjectModule>();
-
-            if (_config.Modules.Where(x => x.Name == _modul.Name).Count() != 0)
+            if (string.IsNullOrEmpty(_parameter.Name))
             {
-                throw new ModuleException(LangHandler.Definitions().ModuleIsDefined);
+                GetModuleName();
             }
 
+            Config _config = FileHelpers.GetConfig();
+
+            CheckModulNameIsExist(_config);
 
             _config.Modules.Add(_modul);
 
@@ -39,7 +42,22 @@ namespace MediatRGen.Processes
 
             DirectoryHelpers.CreateIsNotExist(DirectoryHelpers.GetCurrentDirectory(), _modul.Name);
 
+
+            //DirectoryHelpers.CreateIsNotExist(PathHelper.GetPath(DirectoryHelpers.GetCurrentDirectory() , _modul.Name))
+
+
             FileHelpers.UpdateConfig(_config);
+        }
+
+        private void CheckModulNameIsExist(Config? _config)
+        {
+            if (_config.Modules == null)
+                _config.Modules = new List<ProjectModule>();
+
+            if (_config.Modules.Where(x => x.Name == _modul.Name).Count() != 0)
+            {
+                throw new ModuleException(LangHandler.Definitions().ModuleIsDefined);
+            }
         }
 
         private void GetModuleName()
