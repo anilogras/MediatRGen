@@ -1,5 +1,6 @@
 ﻿using MediatRGen.Exceptions;
 using MediatRGen.Languages;
+using MediatRGen.States;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,9 +24,9 @@ namespace MediatRGen.Helpers
         }
         public static bool Delete() { return true; }
 
-        public static string GetAppDirectory()
+        public static string GetCurrentDirectory()
         {
-            return Environment.CurrentDirectory;
+            return "./"+ GlobalState.Instance.ProjectName;
         }
     }
 }

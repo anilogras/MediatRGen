@@ -13,8 +13,14 @@ namespace MediatRGen.Languages
         public string InvalidParamForCreateSolution { get; }
         public string EnterCommand { get;}
         public string ExistDirectory { get;}
-        public string FileExist { get;}
+        public string ProjectExist { get;}
+        public string ConfigExist { get; }
+        public string ConfigNotFoundVersionExist { get; }
+        public string ConfigNotFound{ get; }
 
         public string YouCanWriteCode { get;}
+
+        public string CreatedConfigFile { get;}
+        public string ModuleActive { get; }
     }
 }

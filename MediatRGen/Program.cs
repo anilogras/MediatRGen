@@ -2,27 +2,56 @@
 using CommandLine;
 using MediatRGen;
 using MediatRGen.Exceptions;
+using MediatRGen.Helpers;
 using MediatRGen.Languages;
 using MediatRGen.Processes;
 
-//args = ["create-solution", "-n", "DenemeSolution" , "-d" , "\"d:/deneme/ddddd\""];
+//args = ["create-config", "-n", "DenemeSolution" , "-d" , "\"d:/creator/ddddd\""];
 
-if (args.Length > 0)
+bool type = true;
+
+if (type)
 {
-    string? input = string.Join(" ", args);
-    //string? input = Console.ReadLine();
-    try
+    while (true)
     {
-        CommandProcessor.ProcessHandler(input);
-        
-        args = null;
-    }
-    catch (Exception ex)
-    {
-        BaseException.ExceptionHandler(ex);
+        //string? input = string.Join(" ", args);
+        string? input = Console.ReadLine();
+        try
+        {
+            CommandProcessor.ProcessHandler(input);
+            Console.WriteLine("\n\n");
+
+            args = null;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("\n\n");
+            BaseException.ExceptionHandler(ex);
+            Console.WriteLine("\n\n");
+        }
+
     }
 }
 else
 {
-    Console.WriteLine(LangHandler.Definitions().EnterCommand);
+
+    if (args.Length > 0)
+    {
+        string? input = string.Join(" ", args);
+        //string? input = Console.ReadLine();
+        try
+        {
+            CommandProcessor.ProcessHandler(input);
+
+            args = null;
+        }
+        catch (Exception ex)
+        {
+            BaseException.ExceptionHandler(ex);
+        }
+    }
+    else
+    {
+        Console.WriteLine(LangHandler.Definitions().EnterCommand);
+    }
 }

@@ -12,6 +12,5 @@ namespace MediatRGen.Helpers
         {
             return string.Join('\\', paths).Replace("\\" , "/").Replace("//","/");
         }
-
     }
 }

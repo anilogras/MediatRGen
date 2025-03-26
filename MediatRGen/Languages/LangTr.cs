@@ -13,8 +13,14 @@ namespace MediatRGen.Languages
         public string InvalidParamForCreateSolution => "create-solution İşlemi İçin Geçersiz Parametreler Girildi ...";
         public string EnterCommand => "Komut Girin";
         public string ExistDirectory => "Verilen Dosya Yolunda Aynı İsimde Bir Proje Daha Önceden Oluşturulmuş";
-        public string FileExist => "Daha Önceden Aynı İsimli Proje Oluşturulmuş.";
+        public string ProjectExist => "Daha Önceden Aynı İsimli Proje Oluşturulmuş.";
         public string YouCanWriteCode => "Üstteki Dizine Giderek Kodlamaya Başlayabilirsiniz.";
+        public string CreatedConfigFile => "Config Dosyası Oluşturuldu";
+        public string ConfigExist => "Config Dosyası Daha Önce  Oluşturulmuş.Tekrardan Oluşturulamaz...";
+        public string ConfigNotFoundVersionExist => "Config Dosyasında Versiyon Bilgisi Bulunamadı...";
+        public string ConfigNotFound => "Config Dosyasında Bulunamadı...";
+
+        public string ModuleActive => "Modül Sistemi Kullanılacak Mı ?";
 
     }
 }
