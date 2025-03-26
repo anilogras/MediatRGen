@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace MediatRGen.Models
 {
-    public class Modul
+    public class ProjectModule
     {
-        public string Name { get; set; }
-
+        public string? Name { get; set; }
     }
 }

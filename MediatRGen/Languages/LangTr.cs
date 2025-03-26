@@ -19,8 +19,14 @@ namespace MediatRGen.Languages
         public string ConfigExist => "Config Dosyası Daha Önce  Oluşturulmuş.Tekrardan Oluşturulamaz...";
         public string ConfigNotFoundVersionExist => "Config Dosyasında Versiyon Bilgisi Bulunamadı...";
         public string ConfigNotFound => "Config Dosyasında Bulunamadı...";
-
         public string ModuleActive => "Modül Sistemi Kullanılacak Mı ?";
+        public string ModuleName => "Modül Adı Girin ...";
+        public string ModuleNameIsRequired => "Modül Adı Boş Geçilemez";
+        public string UseOchelot => "Api Gateway Olarak Ochelot Aktifleştirilsin Mi?";
+        public string Required => "Zorunlu Alan. Değer Girin ...";
+
+        public string ModuleIsDefined => "Modül Daha Önceden Tanımlanmış...";
+
 
     }
 }

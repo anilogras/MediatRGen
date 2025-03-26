@@ -22,5 +22,14 @@ namespace MediatRGen.Languages
 
         public string CreatedConfigFile { get;}
         public string ModuleActive { get; }
+        public string ModuleName{ get; }
+
+        public string ModuleNameIsRequired { get; }
+        public string UseOchelot { get; }
+
+        public string Required { get; }
+
+        public string ModuleIsDefined { get; }
+
     }
 }

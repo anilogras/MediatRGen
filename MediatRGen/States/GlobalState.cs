@@ -11,7 +11,7 @@ namespace MediatRGen.States
         public GlobalState()
         {
             Lang = "tr";
-            Commands = ["create-solution", "create-repository" , "create-config"];
+            Commands = ["create-solution", "create-repository" , "create-config" , "create-module"];
             ConfigFileName = "mediatr-config.cnf";
             ProjectName = "DenemeSolution";
         }

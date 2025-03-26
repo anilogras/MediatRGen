@@ -36,6 +36,11 @@ namespace MediatRGen.Processes
 
             ModuleSystemActive();
 
+            if (_configuration.UseModule == true)
+            {
+                Console.WriteLine(LangHandler.Definitions().UseOchelot);
+            }
+
             FileHelpers.UpdateConfig(_configuration);
             Console.WriteLine("Configuration Created...");
             Console.WriteLine(JsonSerializer.Serialize(_configuration));
@@ -43,25 +48,7 @@ namespace MediatRGen.Processes
 
         private void ModuleSystemActive()
         {
-            while (true)
-            {
-                Console.WriteLine(LangHandler.Definitions().ModuleActive + " (y / n)");
-                string? response = Console.ReadLine();
-
-                if (response?.ToLower() != "y" && response?.ToLower() != "n")
-                    continue;
-
-                if (response.ToLower() == "n")
-                {
-                    _configuration.UseModule = false;
-                    break;
-                }
-                else
-                {
-                    _configuration.UseModule = true;
-                    break;
-                }
-            }
+            _configuration.UseModule = QuestionHelper.YesNoQuestion(LangHandler.Definitions().ModuleActive);
         }
     }
 }

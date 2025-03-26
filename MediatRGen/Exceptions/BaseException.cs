@@ -37,10 +37,18 @@ namespace MediatRGen.Exceptions
                     HandleException(parameterParseException);
                     break;
 
+                case ModuleException moduleParseException:
+                    HandleException(moduleParseException);
+                    break;
+
                 default:
                     HandleException(exception);
                     break;
             }
+        }
+        private static void HandleException(ModuleException ex)
+        {
+            Console.WriteLine(ex.Message);
         }
 
         private static void HandleException(InvalidCommandException ex)

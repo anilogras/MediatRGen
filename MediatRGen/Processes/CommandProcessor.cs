@@ -28,6 +28,7 @@ namespace MediatRGen.Processes
                 "create-solution" => new SolutionCreateProcess(command),
                 "create-repository" => new RepositoryProcess(command),
                 "create-config" => new ConfigCreateProcess(),
+                "create-module" => new ModuleCreateProcess(),
                 _ => throw new InvalidCommandException(LangHandler.Definitions().InvalidCommandName),
             };
         }
