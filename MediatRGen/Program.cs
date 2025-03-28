@@ -9,7 +9,7 @@ using MediatRGen.Processes;
 //args = ["create-config", "-n", "DenemeSolution" , "-d" , "\"d:/creator/ddddd\""];
 //dotnet publish -c Release -o C:\Tools\MyCLI
 
-bool type = false;
+bool type = true;
 
 if (type)
 {

@@ -26,7 +26,7 @@ namespace MediatRGen.Helpers
 
         public static string GetCurrentDirectory()
         {
-            return "./";
+            return "./deneme";
         }
     }
 }

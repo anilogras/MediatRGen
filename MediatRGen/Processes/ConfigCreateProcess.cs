@@ -44,6 +44,9 @@ namespace MediatRGen.Processes
             FileHelpers.UpdateConfig(_configuration);
             Console.WriteLine("Configuration Created...");
             Console.WriteLine(JsonSerializer.Serialize(_configuration));
+
+            new CreateCore();
+
         }
 
         private void ModuleSystemActive()
