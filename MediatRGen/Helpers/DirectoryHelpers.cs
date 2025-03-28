@@ -26,7 +26,7 @@ namespace MediatRGen.Helpers
 
         public static string GetCurrentDirectory()
         {
-            return "./"+ GlobalState.Instance.ProjectName;
+            return "./";
         }
     }
 }

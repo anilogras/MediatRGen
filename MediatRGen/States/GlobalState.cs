@@ -12,7 +12,7 @@ namespace MediatRGen.States
         {
             Lang = "tr";
             Commands = ["create-solution", "create-repository" , "create-config" , "create-module"];
-            ConfigFileName = "mediatr-config.cnf";
+            ConfigFileName = "mediatr-config.json";
             ProjectName = "DenemeSolution";
         }
 

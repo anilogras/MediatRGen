@@ -3,6 +3,7 @@ using MediatRGen.Exceptions;
 using MediatRGen.Helpers;
 using MediatRGen.Languages;
 using MediatRGen.Processes.Parameters.Solution;
+using MediatRGen.States;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,11 +51,12 @@ namespace MediatRGen.Processes
             };
 
             CreateFirstConfigFile(_combinedPath, firstConfig);
+
         }
 
         private static void CreateFirstConfigFile(string _combinedPath, object firstConfig)
         {
-            FileHelpers.Create(_combinedPath, "mediatr-config.cnf", JsonSerializer.Serialize(firstConfig));
+            FileHelpers.Create(_combinedPath, GlobalState.Instance.ConfigFileName , firstConfig);
         }
 
         private string GetPathFromCommand()

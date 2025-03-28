@@ -19,6 +19,20 @@ namespace MediatRGen.Helpers
             string _path = PathHelper.GetPath(path, fileName);
             File.WriteAllText(_path, content);
         }
+        public static void Create(string path, string fileName, object content)
+        {
+
+            string _path = PathHelper.GetPath(path, fileName);
+           
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true 
+            };
+
+            var jsonString = JsonSerializer.Serialize(content, options);
+
+            File.WriteAllText(_path, jsonString);
+        }
 
         public static string Read() { return ""; }
 
@@ -64,12 +78,9 @@ namespace MediatRGen.Helpers
                 throw new FileException(LangHandler.Definitions().ConfigNotFound);
             }
 
-            string _convertedConfig = JsonSerializer.Serialize(config);
-
-
             File.Delete(_configPath);
 
-            Create(DirectoryHelpers.GetCurrentDirectory(), GlobalState.Instance.ConfigFileName, _convertedConfig);
+            Create(DirectoryHelpers.GetCurrentDirectory(), GlobalState.Instance.ConfigFileName, config);
 
         }
 
