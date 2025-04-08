@@ -20,15 +20,15 @@ if (type)
         try
         {
             CommandProcessor.ProcessHandler(input);
-            Console.WriteLine("\n\n");
+            Console.WriteLine("\n");
 
             args = null;
         }
         catch (Exception ex)
         {
-            Console.WriteLine("\n\n");
+            Console.WriteLine("\n");
             BaseException.ExceptionHandler(ex);
-            Console.WriteLine("\n\n");
+            Console.WriteLine("\n");
         }
 
     }

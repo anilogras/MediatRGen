@@ -37,14 +37,10 @@ namespace MediatRGen.Processes
 
             ModuleSystemActive();
             GatewayActive();
-            Console.WriteLine("Configuration Created...");
-
 
             FileHelpers.UpdateConfig(_configuration);
-            Console.WriteLine(JsonSerializer.Serialize(_configuration));
 
-
-            CreateCoreFiles();            
+            CreateCoreFiles();
         }
 
         private void ModuleSystemActive()
@@ -65,7 +61,7 @@ namespace MediatRGen.Processes
         private void CreateCoreFiles()
         {
             new CreateCore();
-            Console.WriteLine("Core Files Created...");
+            Console.WriteLine(LangHandler.Definitions().CoreFilesCreated);
         }
     }
 }

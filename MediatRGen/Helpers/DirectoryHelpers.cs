@@ -21,12 +21,14 @@ namespace MediatRGen.Helpers
             {
                 Directory.CreateDirectory(_combinedPath);
             }
+
+            Console.WriteLine(LangHandler.Definitions().FolderCreated + $" {path}/{folderName}");
         }
         public static bool Delete() { return true; }
 
         public static string GetCurrentDirectory()
         {
-            return "./deneme/denemename";
+            return "./deneme";
         }
     }
 }

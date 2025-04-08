@@ -31,6 +31,11 @@ namespace MediatRGen.Languages
         public string Required { get; }
 
         public string ModuleIsDefined { get; }
+        public string CoreFilesCreated { get; }
+        public string ClassLibraryCreated { get; }
+        public string ConfigurationCreated { get; }
+        public string ConfigurationUpdated { get; }
+        public string FolderCreated { get; }
 
     }
 }

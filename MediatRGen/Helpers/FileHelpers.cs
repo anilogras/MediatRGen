@@ -68,7 +68,13 @@ namespace MediatRGen.Helpers
             return JsonSerializer.Deserialize<Config>(_file);
         }
 
-        public static void UpdateConfig(Config config)
+        public static void CreateConfig(Config config)
+        {
+            ConfigUpdateOrCreate(config);
+            Console.WriteLine(LangHandler.Definitions().ConfigurationCreated);
+        }
+
+        private static void ConfigUpdateOrCreate(Config config)
         {
             string _configPath = PathHelper.GetPath(DirectoryHelpers.GetCurrentDirectory(), GlobalState.Instance.ConfigFileName);
             string _file = Get(_configPath);
@@ -82,7 +88,14 @@ namespace MediatRGen.Helpers
 
             Create(DirectoryHelpers.GetCurrentDirectory(), GlobalState.Instance.ConfigFileName, config);
 
+            Console.WriteLine(JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true }));
         }
+
+        public static void UpdateConfig(Config config)
+        {
+            ConfigUpdateOrCreate(config);
+        }
+
 
     }
 }
