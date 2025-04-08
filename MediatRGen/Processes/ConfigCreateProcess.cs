@@ -14,20 +14,21 @@ namespace MediatRGen.Processes
 {
     public class ConfigCreateProcess : BaseProcess
     {
-        private readonly string _projectName;
-        private readonly string _path;
+        private readonly string? _projectName;
+        private readonly string? _path;
         private Config? _configuration;
 
         public ConfigCreateProcess()
         {
             _configuration = FileHelpers.GetConfig();
+            _configuration.UseGateway = false;
 
             if (_configuration == null)
             {
                 throw new FileException(LangHandler.Definitions().ConfigNotFound);
             }
 
-            if (_configuration?.Modul != null)
+            if (_configuration.Version != null)
             {
                 throw new FileException(LangHandler.Definitions().ConfigExist);
             }
@@ -35,23 +36,36 @@ namespace MediatRGen.Processes
             _configuration.Version = System.Reflection.Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString() ?? "";
 
             ModuleSystemActive();
+            GatewayActive();
+            Console.WriteLine("Configuration Created...");
 
-            if (_configuration.UseModule == true)
-            {
-                Console.WriteLine(LangHandler.Definitions().UseOchelot);
-            }
 
             FileHelpers.UpdateConfig(_configuration);
-            Console.WriteLine("Configuration Created...");
             Console.WriteLine(JsonSerializer.Serialize(_configuration));
 
-            new CreateCore();
 
+            CreateCoreFiles();            
         }
 
         private void ModuleSystemActive()
         {
             _configuration.UseModule = QuestionHelper.YesNoQuestion(LangHandler.Definitions().ModuleActive);
+        }
+
+        private void GatewayActive()
+        {
+            if (_configuration.UseModule == true)
+            {
+                Console.WriteLine(LangHandler.Definitions().UseOchelot);
+                _configuration.UseGateway = QuestionHelper.YesNoQuestion(LangHandler.Definitions().GatewayActive);
+
+            }
+        }
+
+        private void CreateCoreFiles()
+        {
+            new CreateCore();
+            Console.WriteLine("Core Files Created...");
         }
     }
 }
