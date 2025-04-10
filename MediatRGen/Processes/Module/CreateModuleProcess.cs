@@ -2,6 +2,7 @@
 using MediatRGen.Helpers;
 using MediatRGen.Languages;
 using MediatRGen.Models;
+using MediatRGen.Processes.Base;
 using MediatRGen.Processes.Parameters.Module;
 using MediatRGen.Processes.Parameters.Solution;
 using System;
@@ -11,15 +12,15 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Processes
+namespace MediatRGen.Processes.Module
 {
-    public class ModuleCreateProcess : BaseProcess
+    public class CreateModuleProcess : BaseProcess
     {
 
         private readonly ProjectModule _modul;
         private ModuleCreateParameter _parameter;
 
-        public ModuleCreateProcess(string command)
+        public CreateModuleProcess(string command)
         {
 
             ParameterHelper.GetParameter<ModuleCreateParameter>(command, ref _parameter);
@@ -32,11 +33,11 @@ namespace MediatRGen.Processes
                 GetModuleName();
             }
 
-            Config _config = FileHelpers.GetConfig();
+            Configuration _configuration = FileHelpers.GetConfig();
 
-            CheckModulNameIsExist(_config);
+            CheckModulNameIsExist(_configuration);
 
-            _config.Modules.Add(_modul);
+            _configuration.Modules.Add(_modul);
 
 
 
@@ -46,15 +47,15 @@ namespace MediatRGen.Processes
             //DirectoryHelpers.CreateIsNotExist(PathHelper.GetPath(DirectoryHelpers.GetCurrentDirectory() , _modul.Name))
 
 
-            FileHelpers.UpdateConfig(_config);
+            FileHelpers.UpdateConfig(_configuration);
         }
 
-        private void CheckModulNameIsExist(Config? _config)
+        private void CheckModulNameIsExist(Configuration? _configuration)
         {
-            if (_config.Modules == null)
-                _config.Modules = new List<ProjectModule>();
+            if (_configuration.Modules == null)
+                _configuration.Modules = new List<ProjectModule>();
 
-            if (_config.Modules.Where(x => x.Name == _modul.Name).Count() != 0)
+            if (_configuration.Modules.Where(x => x.Name == _modul.Name).Count() != 0)
             {
                 throw new ModuleException(LangHandler.Definitions().ModuleIsDefined);
             }

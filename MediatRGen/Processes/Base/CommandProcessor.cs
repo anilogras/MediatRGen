@@ -1,6 +1,9 @@
 ﻿using MediatRGen.Exceptions;
 using MediatRGen.Helpers;
 using MediatRGen.Languages;
+using MediatRGen.Processes.Config;
+using MediatRGen.Processes.Module;
+using MediatRGen.Processes.Solution;
 using MediatRGen.States;
 using System;
 using System.Collections.Generic;
@@ -8,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Processes
+namespace MediatRGen.Processes.Base
 {
     public static class CommandProcessor
     {
@@ -25,10 +28,10 @@ namespace MediatRGen.Processes
 
             return commandArgs[0].ToLower() switch
             {
-                "create-solution" => new SolutionCreateProcess(command),
+                "create-solution" => new CreateSolutionProcess(command),
                 "create-repository" => new RepositoryProcess(command),
-                "create-config" => new ConfigCreateProcess(),
-                "create-module" => new ModuleCreateProcess(command),
+                "create-config" => new CreateConfigProcess(),
+                "create-module" => new CreateModuleProcess(command),
                 _ => throw new InvalidCommandException(LangHandler.Definitions().InvalidCommandName),
             };
         }

@@ -4,7 +4,7 @@ using MediatRGen;
 using MediatRGen.Exceptions;
 using MediatRGen.Helpers;
 using MediatRGen.Languages;
-using MediatRGen.Processes;
+using MediatRGen.Processes.Base;
 
 //args = ["create-config", "-n", "DenemeSolution" , "-d" , "\"d:/creator/ddddd\""];
 //dotnet publish -c Release -o C:\Tools\MyCLI

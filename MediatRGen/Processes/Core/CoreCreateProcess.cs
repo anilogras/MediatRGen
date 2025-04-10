@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Processes
+namespace MediatRGen.Processes.Core
 {
-    public class CreateCore
+    public class CoreCreateProcess
     {
-        public CreateCore()
+        public CoreCreateProcess()
         {
             DirectoryHelpers.CreateIsNotExist(DirectoryHelpers.GetCurrentDirectory(), "Core");
             ClassLibraryHelpers.Create("Core.Application", PathHelper.GetPath(DirectoryHelpers.GetCurrentDirectory(), "Core"));

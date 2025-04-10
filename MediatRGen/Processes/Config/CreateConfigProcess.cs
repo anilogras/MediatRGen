@@ -2,6 +2,8 @@
 using MediatRGen.Helpers;
 using MediatRGen.Languages;
 using MediatRGen.Models;
+using MediatRGen.Processes.Base;
+using MediatRGen.Processes.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,15 +12,15 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Processes
+namespace MediatRGen.Processes.Config
 {
-    public class ConfigCreateProcess : BaseProcess
+    public class CreateConfigProcess : BaseProcess
     {
         private readonly string? _projectName;
         private readonly string? _path;
-        private Config? _configuration;
+        private Configuration? _configuration;
 
-        public ConfigCreateProcess()
+        public CreateConfigProcess()
         {
             _configuration = FileHelpers.GetConfig();
             _configuration.UseGateway = false;
@@ -60,7 +62,7 @@ namespace MediatRGen.Processes
 
         private void CreateCoreFiles()
         {
-            new CreateCore();
+            new CoreCreateProcess();
             Console.WriteLine(LangHandler.Definitions().CoreFilesCreated);
         }
     }

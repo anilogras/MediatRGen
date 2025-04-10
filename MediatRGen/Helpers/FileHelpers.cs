@@ -56,7 +56,7 @@ namespace MediatRGen.Helpers
             return File.ReadAllText(path, Encoding.UTF8);
         }
 
-        public static Config GetConfig()
+        public static Configuration GetConfig()
         {
 
             string _file = Get(PathHelper.GetPath(DirectoryHelpers.GetCurrentDirectory(), GlobalState.Instance.ConfigFileName));
@@ -65,16 +65,16 @@ namespace MediatRGen.Helpers
             {
                 throw new FileException(LangHandler.Definitions().ConfigNotFound);
             }
-            return JsonSerializer.Deserialize<Config>(_file);
+            return JsonSerializer.Deserialize<Configuration>(_file);
         }
 
-        public static void CreateConfig(Config config)
+        public static void CreateConfig(Configuration config)
         {
             ConfigUpdateOrCreate(config);
             Console.WriteLine(LangHandler.Definitions().ConfigurationCreated);
         }
 
-        private static void ConfigUpdateOrCreate(Config config)
+        private static void ConfigUpdateOrCreate(Configuration config)
         {
             string _configPath = PathHelper.GetPath(DirectoryHelpers.GetCurrentDirectory(), GlobalState.Instance.ConfigFileName);
             string _file = Get(_configPath);
@@ -91,7 +91,7 @@ namespace MediatRGen.Helpers
             Console.WriteLine(JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true }));
         }
 
-        public static void UpdateConfig(Config config)
+        public static void UpdateConfig(Configuration config)
         {
             ConfigUpdateOrCreate(config);
         }
