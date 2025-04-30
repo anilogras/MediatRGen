@@ -6,13 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Application\" />
-    <Folder Include="CrossCuttingConcerns\" />
-    <Folder Include="Persistence\Repositories\" />
-    <Folder Include="Security\" />
-    <Folder Include="Persistence\Dynamic\" />
-    <Folder Include="Persistence\Paging\" />
-  </ItemGroup>
-
 </Project>
