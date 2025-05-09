@@ -26,7 +26,6 @@ namespace MediatRGen.Helpers
 
                 _parameter = _parsedOptions.Value;
 
-
             }
             catch (Exception exception)
             {
