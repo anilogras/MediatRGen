@@ -22,6 +22,7 @@ namespace MediatRGen.Languages
 
         public string CreatedConfigFile { get;}
         public string ModuleActive { get; }
+        public string GatewayActive { get; }
         public string ModuleName{ get; }
 
         public string ModuleNameIsRequired { get; }
@@ -30,6 +31,11 @@ namespace MediatRGen.Languages
         public string Required { get; }
 
         public string ModuleIsDefined { get; }
+        public string CoreFilesCreated { get; }
+        public string ClassLibraryCreated { get; }
+        public string ConfigurationCreated { get; }
+        public string ConfigurationUpdated { get; }
+        public string FolderCreated { get; }
 
         public string EnterProjectName { get; }
 

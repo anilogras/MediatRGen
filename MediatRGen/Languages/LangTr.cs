@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MediatRGen.States;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,12 +21,17 @@ namespace MediatRGen.Languages
         public string ConfigNotFoundVersionExist => "Config Dosyasında Versiyon Bilgisi Bulunamadı...";
         public string ConfigNotFound => "Config Dosyasında Bulunamadı...";
         public string ModuleActive => "Modül Sistemi Kullanılacak Mı ?";
+        public string GatewayActive => "Gateway Yapılandırılsın Mı ?";
         public string ModuleName => "Modül Adı Girin ...";
         public string ModuleNameIsRequired => "Modül Adı Boş Geçilemez";
         public string UseOchelot => "Api Gateway Olarak Ochelot Aktifleştirilsin Mi?";
         public string Required => "Zorunlu Alan. Değer Girin ...";
-
         public string ModuleIsDefined => "Modül Daha Önceden Tanımlanmış...";
+        public string ClassLibraryCreated => "Kütüphane Oluşturuldu...";
+        public string CoreFilesCreated => "Core Kütüphaneler Oluşturuldu...";
+        public string ConfigurationCreated => $"Konfigurasyon Dosyası Oluşturuldu ({GlobalState.Instance.ConfigFileName})";
+        public string ConfigurationUpdated => $"Konfigurasyon Dosyası Güncellendi ({GlobalState.Instance.ConfigFileName})";
+        public string FolderCreated => "Klasör Oluşturuldu";
 
         public string EnterProjectName => "Proje Adı Girin...";
     }

@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace MediatRGen.Models
 {
-    public class Config
+    public class Configuration
     {
 
-        public Config()
+        public Configuration()
         {
             Modules = new List<ProjectModule>();
         }
@@ -18,6 +18,7 @@ namespace MediatRGen.Models
         public bool? Modul { get; set; }
         public string Version { get; set; }
         public bool UseModule { get; set; }
+        public bool UseGateway { get; set; }
         public List<ProjectModule> Modules { get; set; }
     }
 }

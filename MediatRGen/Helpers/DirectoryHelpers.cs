@@ -21,6 +21,8 @@ namespace MediatRGen.Helpers
             {
                 Directory.CreateDirectory(_combinedPath);
             }
+
+            Console.WriteLine(LangHandler.Definitions().FolderCreated + $" {path}/{folderName}");
         }
         public static bool Delete() { return true; }
 

@@ -2,6 +2,7 @@
 using MediatRGen.Exceptions;
 using MediatRGen.Helpers;
 using MediatRGen.Languages;
+using MediatRGen.Processes.Base;
 using MediatRGen.Processes.Parameters.Solution;
 using MediatRGen.States;
 using System;
@@ -11,14 +12,14 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Processes
+namespace MediatRGen.Processes.Solution
 {
-    public class SolutionCreateProcess : BaseProcess
+    public class CreateSolutionProcess : BaseProcess
     {
 
         private readonly SolutionCreateParameter _parameter;
 
-        public SolutionCreateProcess(string process)
+        public CreateSolutionProcess(string process)
         {
 
             ParameterHelper.GetParameter<SolutionCreateParameter>(process, ref _parameter);
@@ -70,7 +71,7 @@ namespace MediatRGen.Processes
 
         private static void CreateFirstConfigFile(string _combinedPath, object firstConfig)
         {
-            FileHelpers.Create(_combinedPath, GlobalState.Instance.ConfigFileName , firstConfig);
+            FileHelpers.Create(_combinedPath, GlobalState.Instance.ConfigFileName, firstConfig);
         }
 
         private string GetPathFromCommand()

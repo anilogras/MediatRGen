@@ -2,6 +2,8 @@
 using MediatRGen.Helpers;
 using MediatRGen.Languages;
 using MediatRGen.Models;
+using MediatRGen.Processes.Base;
+using MediatRGen.Processes.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,24 +12,25 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Processes
+namespace MediatRGen.Processes.Config
 {
-    public class ConfigCreateProcess : BaseProcess
+    public class CreateConfigProcess : BaseProcess
     {
-        private readonly string _projectName;
-        private readonly string _path;
-        private Config? _configuration;
+        private readonly string? _projectName;
+        private readonly string? _path;
+        private Configuration? _configuration;
 
-        public ConfigCreateProcess()
+        public CreateConfigProcess()
         {
             _configuration = FileHelpers.GetConfig();
+            _configuration.UseGateway = false;
 
             if (_configuration == null)
             {
                 throw new FileException(LangHandler.Definitions().ConfigNotFound);
             }
 
-            if (_configuration?.Modul != null)
+            if (_configuration.Version != null)
             {
                 throw new FileException(LangHandler.Definitions().ConfigExist);
             }
@@ -35,23 +38,32 @@ namespace MediatRGen.Processes
             _configuration.Version = System.Reflection.Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString() ?? "";
 
             ModuleSystemActive();
-
-            if (_configuration.UseModule == true)
-            {
-                Console.WriteLine(LangHandler.Definitions().UseOchelot);
-            }
+            GatewayActive();
 
             FileHelpers.UpdateConfig(_configuration);
-            Console.WriteLine("Configuration Created...");
-            Console.WriteLine(JsonSerializer.Serialize(_configuration));
 
-            new CreateCore();
-
+            CreateCoreFiles();
         }
 
         private void ModuleSystemActive()
         {
             _configuration.UseModule = QuestionHelper.YesNoQuestion(LangHandler.Definitions().ModuleActive);
+        }
+
+        private void GatewayActive()
+        {
+            if (_configuration.UseModule == true)
+            {
+                Console.WriteLine(LangHandler.Definitions().UseOchelot);
+                _configuration.UseGateway = QuestionHelper.YesNoQuestion(LangHandler.Definitions().GatewayActive);
+
+            }
+        }
+
+        private void CreateCoreFiles()
+        {
+            new CoreCreateProcess();
+            Console.WriteLine(LangHandler.Definitions().CoreFilesCreated);
         }
     }
 }

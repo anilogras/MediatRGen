@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace MediatRGen.Processes
 {
-    public class CreateCore
+    public class CreateCore22222
     {
-        public CreateCore()
+        public CreateCore22222()
         {
             string classString = @"using System;
 using System.Collections.Generic;
