@@ -15,7 +15,6 @@ if (type)
 {
     while (true)
     {
-        //string? input = string.Join(" ", args);
         string? input = Console.ReadLine();
         try
         {
@@ -30,7 +29,6 @@ if (type)
             BaseException.ExceptionHandler(ex);
             Console.WriteLine("\n");
         }
-
     }
 }
 else
@@ -39,7 +37,6 @@ else
     if (args.Length > 0)
     {
         string? input = string.Join(" ", args);
-        //string? input = Console.ReadLine();
         try
         {
             CommandProcessor.ProcessHandler(input);
