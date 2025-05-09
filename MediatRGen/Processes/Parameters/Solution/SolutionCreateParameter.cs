@@ -13,7 +13,7 @@ namespace MediatRGen.Processes.Parameters.Solution
         [Option('d', "dir", Required = false)]
         public string Directory { get; set; }
 
-        [Option('n', "name", Required = true)]
+        [Option('n', "name", Required = false)]
         public string ProjectName { get; set; }
     }
 }

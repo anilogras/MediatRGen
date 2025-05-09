@@ -22,12 +22,26 @@ namespace MediatRGen.Processes
         {
 
             ParameterHelper.GetParameter<SolutionCreateParameter>(process, ref _parameter);
+            GetParameter();
             solutionCreate();
+        }
+
+        private void GetParameter()
+        {
+            if (string.IsNullOrEmpty(_parameter.ProjectName)) 
+            {
+                Console.WriteLine(LangHandler.Definitions().EnterProjectName);
+                _parameter.ProjectName =  Console.ReadLine();
+            }
         }
 
         private void solutionCreate()
         {
+
+
             string _directory = GetPathFromCommand();
+
+
 
             DirectoryHelpers.CreateIsNotExist(_directory, _parameter.ProjectName);
             string _combinedPath = PathHelper.GetPath(_directory, _parameter.ProjectName);

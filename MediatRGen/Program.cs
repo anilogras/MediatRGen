@@ -7,7 +7,7 @@ using MediatRGen.Languages;
 using MediatRGen.Processes;
 
 //args = ["create-config", "-n", "DenemeSolution" , "-d" , "\"d:/creator/ddddd\""];
-//dotnet publish -c Release -o C:\Tools\MyCLI
+//dotnet publish -c Release -o C:\MediatRGen\cli
 
 bool type = true;
 
@@ -20,15 +20,15 @@ if (type)
         try
         {
             CommandProcessor.ProcessHandler(input);
-            Console.WriteLine("\n\n");
+            Console.WriteLine("\n");
 
             args = null;
         }
         catch (Exception ex)
         {
-            Console.WriteLine("\n\n");
+            Console.WriteLine("\n");
             BaseException.ExceptionHandler(ex);
-            Console.WriteLine("\n\n");
+            Console.WriteLine("\n");
         }
 
     }

@@ -27,6 +27,6 @@ namespace MediatRGen.Languages
 
         public string ModuleIsDefined => "Modül Daha Önceden Tanımlanmış...";
 
-
+        public string EnterProjectName => "Proje Adı Girin...";
     }
 }

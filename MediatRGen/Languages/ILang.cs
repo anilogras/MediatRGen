@@ -31,5 +31,7 @@ namespace MediatRGen.Languages
 
         public string ModuleIsDefined { get; }
 
+        public string EnterProjectName { get; }
+
     }
 }
