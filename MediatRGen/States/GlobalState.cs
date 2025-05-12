@@ -1,4 +1,7 @@
-﻿using MediatRGen.Models;
+﻿using MediatRGen.Exceptions;
+using MediatRGen.Helpers;
+using MediatRGen.Languages;
+using MediatRGen.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +19,15 @@ namespace MediatRGen.States
         {
             Lang = "tr";
             Commands = ["create-solution", "create-repository", "create-config", "create-module"];
-            ConfigFileName = "mediatr-config.json";
             ProjectName = "DenemeSolution";
+            Modules = new List<ProjectModule>();
+
+            Console.WriteLine("GLOBALLLLL");
+
+
+
         }
+        public static string ConfigFileName = "mediatr-config.json";
 
         private static GlobalState _instance;
 
@@ -28,20 +37,28 @@ namespace MediatRGen.States
             {
 
                 if (_instance == null)
-                    _instance = new GlobalState();
+                {
+                    string _configPath = PathHelper.GetPath(DirectoryHelpers.GetCurrentDirectory(), ConfigFileName);
+                    bool _fileExist = FileHelpers.CheckFile("./", ConfigFileName);
 
+                    if (_fileExist == false)
+                        _instance = new GlobalState();
+                    else
+                    {
+                        string _file = FileHelpers.Get(_configPath);
+                        _instance = System.Text.Json.JsonSerializer.Deserialize<GlobalState>(_file);
+                    }
+
+                }
                 return _instance;
             }
         }
-        
-        [JsonIgnore]
-        public string ConfigFileName { get; set; }
-        
+
         public string ProjectName { get; set; }
-        
+
         [JsonIgnore]
         public string Lang { get; set; }
-        
+
         [JsonIgnore]
         public string[] Commands { get; set; }
 

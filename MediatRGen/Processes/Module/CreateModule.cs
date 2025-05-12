@@ -34,7 +34,7 @@ namespace MediatRGen.Processes.Module
 
             CheckModulNameIsExist();
 
-            ClassLibraryHelpers.Create(ClassLibraryHelpers.CreateClassLibraryName(_parameter.ModuleName), DirectoryHelpers.GetCurrentDirectory());
+            ClassLibraryHelpers.Create(_parameter.ModuleName, DirectoryHelpers.GetCurrentDirectory());
 
             GlobalState.Instance.Modules.Add(new ProjectModule()
             {

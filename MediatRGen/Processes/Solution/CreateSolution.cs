@@ -56,13 +56,15 @@ namespace MediatRGen.Processes.Solution
                 Console.WriteLine(LangHandler.Definitions().YouCanWriteCode);
 
             GlobalState.Instance.ProjectName = _parameter.ProjectName;
+            GlobalState.Instance.SolutionName = _parameter.ProjectName;
+
             CreateFirstConfigFile(_combinedPath, GlobalState.Instance);
         }
 
 
         private static void CreateFirstConfigFile(string _combinedPath, object firstConfig)
         {
-            FileHelpers.Create(_combinedPath, GlobalState.Instance.ConfigFileName, firstConfig);
+            FileHelpers.Create(_combinedPath, GlobalState.ConfigFileName, firstConfig);
         }
 
         private void GetPathFromCommand()

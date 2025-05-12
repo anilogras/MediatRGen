@@ -29,8 +29,8 @@ namespace MediatRGen.Languages
         public string ModuleIsDefined => "Modül Daha Önceden Tanımlanmış...";
         public string ClassLibraryCreated => "Kütüphane Oluşturuldu...";
         public string CoreFilesCreated => "Core Kütüphaneler Oluşturuldu...";
-        public string ConfigurationCreated => $"Konfigurasyon Dosyası Oluşturuldu ({GlobalState.Instance.ConfigFileName})";
-        public string ConfigurationUpdated => $"Konfigurasyon Dosyası Güncellendi ({GlobalState.Instance.ConfigFileName})";
+        public string ConfigurationCreated => $"Konfigurasyon Dosyası Oluşturuldu ({GlobalState.ConfigFileName})";
+        public string ConfigurationUpdated => $"Konfigurasyon Dosyası Güncellendi ({GlobalState.ConfigFileName})";
         public string FolderCreated => "Klasör Oluşturuldu";
 
         public string EnterProjectName => "Proje Adı Girin...";

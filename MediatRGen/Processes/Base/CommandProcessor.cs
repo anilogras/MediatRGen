@@ -19,7 +19,7 @@ namespace MediatRGen.Processes.Base
         public static BaseProcess ProcessHandler(string command)
         {
             string[] commandArgs = ArgHelpers.SplitArgs(command);
-            Validator.ValidateCommandBeforeProcess(commandArgs);
+            //Validator.ValidateCommandBeforeProcess(commandArgs);
 
             if (string.IsNullOrWhiteSpace(command))
             {

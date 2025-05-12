@@ -13,13 +13,15 @@ namespace MediatRGen.Helpers
     {
         public static void Create(string name, string path)
         {
-            DirectoryHelpers.CreateIsNotExist(path, name);
-            SystemProcessHelpers.InvokeCommand($"dotnet new classlib -n {name} -o {path}\\{name}");
-            SystemProcessHelpers.InvokeCommand($"dotnet sln {DirectoryHelpers.GetCurrentDirectory()}\\{GlobalState.Instance.ProjectName}.sln add {path}\\{name}\\{name}.csproj");
+            name = CreateClassLibraryName(name);
+
+            SystemProcessHelpers.InvokeCommand($"dotnet new classlib -n {name} -o {path}/{name}");
+            SystemProcessHelpers.InvokeCommand($"dotnet sln {GlobalState.Instance.ProjectName}.sln add {path}/{name}/{name}.csproj");
+            SystemProcessHelpers.InvokeCommand($"dotnet build {GlobalState.Instance.ProjectName}.sln");
             Console.WriteLine(LangHandler.Definitions().ClassLibraryCreated + $" {name}");
         }
 
-        public static string CreateClassLibraryName(string moduleName)
+        private static string CreateClassLibraryName(string moduleName)
         {
             return GlobalState.Instance.SolutionName + "." + moduleName;
         }

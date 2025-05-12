@@ -59,7 +59,7 @@ namespace MediatRGen.Helpers
         public static void UpdateConfig()
         {
 
-            string _configPath = PathHelper.GetPath(DirectoryHelpers.GetCurrentDirectory(), GlobalState.Instance.ConfigFileName);
+            string _configPath = PathHelper.GetPath(DirectoryHelpers.GetCurrentDirectory(), GlobalState.ConfigFileName);
             string _file = Get(_configPath);
 
             if (string.IsNullOrEmpty(_file) == true)
@@ -69,7 +69,7 @@ namespace MediatRGen.Helpers
 
             File.Delete(_configPath);
 
-            Create(DirectoryHelpers.GetCurrentDirectory(), GlobalState.Instance.ConfigFileName, GlobalState.Instance);
+            Create(DirectoryHelpers.GetCurrentDirectory(), GlobalState.ConfigFileName, GlobalState.Instance);
         }
 
 
