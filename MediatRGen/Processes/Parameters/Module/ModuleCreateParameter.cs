@@ -11,6 +11,6 @@ namespace MediatRGen.Processes.Parameters.Module
     {
 
         [Option('n', "name", Required = false)]
-        public string Name { get; set; }
+        public string ModuleName { get; set; }
     }
 }

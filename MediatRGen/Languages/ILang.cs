@@ -38,6 +38,8 @@ namespace MediatRGen.Languages
         public string FolderCreated { get; }
 
         public string EnterProjectName { get; }
+        public string EnterModuleName { get; }
+
 
     }
 }
