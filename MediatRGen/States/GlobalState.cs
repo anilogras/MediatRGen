@@ -14,7 +14,6 @@ namespace MediatRGen.States
     public class GlobalState
     {
 
-        //todo : eğer create-solution komutu çalışırsa global stateyi resetle / yoksa eski projede kalıyor
         public GlobalState()
         {
             Lang = "tr";
