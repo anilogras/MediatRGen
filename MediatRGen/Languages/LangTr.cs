@@ -36,5 +36,7 @@ namespace MediatRGen.Languages
         public string EnterProjectName => "Proje Adı Girin...";
 
         public string EnterModuleName => "Modül Adı Girin...";
+
+        public string WebApiCreated => "WebApi Katmanı Oluşturuldu...";
     }
 }

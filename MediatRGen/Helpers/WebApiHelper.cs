@@ -1,5 +1,4 @@
 ﻿using MediatRGen.Languages;
-using MediatRGen.Models;
 using MediatRGen.States;
 using System;
 using System.Collections.Generic;
@@ -9,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace MediatRGen.Helpers
 {
-    public class ClassLibraryHelpers
+    internal class WebApiHelper
     {
         public static void Create(string name, string path)
         {
 
-            DirectoryHelpers.CreateIsNotExist("./" , "src");
+            DirectoryHelpers.CreateIsNotExist("./", "src");
 
             name = CreateClassLibraryName(name);
             path = "./src/" + path;
 
-            SystemProcessHelpers.InvokeCommand($"dotnet new classlib -n {name} -o {path}/{name}");
+            SystemProcessHelpers.InvokeCommand($"dotnet new webapi -n {name} -o {path}/{name}");
             SystemProcessHelpers.InvokeCommand($"dotnet sln {GlobalState.Instance.ProjectName}.sln add {path}/{name}/{name}.csproj");
             SystemProcessHelpers.InvokeCommand($"dotnet build {GlobalState.Instance.ProjectName}.sln");
             Console.WriteLine(LangHandler.Definitions().ClassLibraryCreated + $" {name}");
@@ -29,5 +28,6 @@ namespace MediatRGen.Helpers
         {
             return GlobalState.Instance.SolutionName + "." + moduleName;
         }
+
     }
 }

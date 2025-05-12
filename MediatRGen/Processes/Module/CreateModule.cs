@@ -33,8 +33,12 @@ namespace MediatRGen.Processes.Module
         {
 
             CheckModulNameIsExist();
+            DirectoryHelpers.CreateIsNotExist("./src", _parameter.ModuleName);
 
-            ClassLibraryHelpers.Create(_parameter.ModuleName, DirectoryHelpers.GetCurrentDirectory());
+            ClassLibraryHelpers.Create(_parameter.ModuleName + "." + "Domain", PathHelper.GetPath(_parameter.ModuleName));
+            ClassLibraryHelpers.Create(_parameter.ModuleName + "." + "Application", PathHelper.GetPath(_parameter.ModuleName));
+            ClassLibraryHelpers.Create(_parameter.ModuleName + "." + "Infrastructure", PathHelper.GetPath(_parameter.ModuleName));
+            WebApiHelper.Create(_parameter.ModuleName + "." + "API", PathHelper.GetPath(_parameter.ModuleName));
 
             GlobalState.Instance.Modules.Add(new ProjectModule()
             {

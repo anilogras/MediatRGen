@@ -20,9 +20,9 @@ namespace MediatRGen.Helpers
             if (!Directory.Exists(_combinedPath))
             {
                 Directory.CreateDirectory(_combinedPath);
+                Console.WriteLine(LangHandler.Definitions().FolderCreated + $" {_combinedPath}");
             }
 
-            Console.WriteLine(LangHandler.Definitions().FolderCreated + $" {_combinedPath}");
         }
         public static bool Delete() { return true; }
 

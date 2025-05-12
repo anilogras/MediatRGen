@@ -11,7 +11,6 @@ namespace MediatRGen.Processes.Core
     {
         public CoreCreateProcess()
         {
-            DirectoryHelpers.CreateIsNotExist(DirectoryHelpers.GetCurrentDirectory(), "Core");
             ClassLibraryHelpers.Create("Core.Application", PathHelper.GetPath(DirectoryHelpers.GetCurrentDirectory(), "Core"));
             ClassLibraryHelpers.Create("Core.CrossCuttingConcerns", PathHelper.GetPath(DirectoryHelpers.GetCurrentDirectory(), "Core"));
             ClassLibraryHelpers.Create("Core.Persistence", PathHelper.GetPath(DirectoryHelpers.GetCurrentDirectory(), "Core"));
