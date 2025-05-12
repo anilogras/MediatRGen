@@ -26,12 +26,7 @@ namespace MediatRGen.Processes.Module
             ParameterHelper.GetParameter<ModuleCreateParameter>(command, ref _parameter);
 
             _modul = new ProjectModule();
-
-
-            if (string.IsNullOrEmpty(_parameter.Name))
-            {
-                GetModuleName();
-            }
+            GetParameters();
 
             Configuration _configuration = FileHelpers.GetConfig();
 
@@ -39,15 +34,20 @@ namespace MediatRGen.Processes.Module
 
             _configuration.Modules.Add(_modul);
 
-
-
-            DirectoryHelpers.CreateIsNotExist(DirectoryHelpers.GetCurrentDirectory(), _modul.Name);
-
+            ClassLibraryHelpers.Create(ClassLibraryHelpers.CreateClassLibraryName(_modul.Name), DirectoryHelpers.GetCurrentDirectory());
 
             //DirectoryHelpers.CreateIsNotExist(PathHelper.GetPath(DirectoryHelpers.GetCurrentDirectory() , _modul.Name))
 
 
             FileHelpers.UpdateConfig(_configuration);
+        }
+
+        private void GetParameters()
+        {
+            if (string.IsNullOrEmpty(_parameter.Name))
+            {
+                GetModuleName();
+            }
         }
 
         private void CheckModulNameIsExist(Configuration? _configuration)

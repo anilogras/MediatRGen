@@ -1,4 +1,5 @@
 ﻿using MediatRGen.Languages;
+using MediatRGen.Models;
 using MediatRGen.States;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,12 @@ namespace MediatRGen.Helpers
             SystemProcessHelpers.InvokeCommand($"dotnet new classlib -n {name} -o {path}\\{name}");
             SystemProcessHelpers.InvokeCommand($"dotnet sln {DirectoryHelpers.GetCurrentDirectory()}\\{GlobalState.Instance.ProjectName}.sln add {path}\\{name}\\{name}.csproj");
             Console.WriteLine(LangHandler.Definitions().ClassLibraryCreated + $" {name}");
+        }
+
+        public static string CreateClassLibraryName(string moduleName) {
+           
+            Configuration _configuration = FileHelpers.GetConfig();
+           return _configuration.SolutionName + "." + moduleName;
         }
     }
 }

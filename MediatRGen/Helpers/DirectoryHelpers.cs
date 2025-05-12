@@ -22,13 +22,13 @@ namespace MediatRGen.Helpers
                 Directory.CreateDirectory(_combinedPath);
             }
 
-            Console.WriteLine(LangHandler.Definitions().FolderCreated + $" {path}/{folderName}");
+            Console.WriteLine(LangHandler.Definitions().FolderCreated + $" {_combinedPath}");
         }
         public static bool Delete() { return true; }
 
         public static string GetCurrentDirectory()
         {
-            return "./deneme";
+            return "./";
         }
     }
 }

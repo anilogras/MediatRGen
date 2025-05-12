@@ -28,7 +28,7 @@ namespace MediatRGen.Processes.Base
 
             return commandArgs[0].ToLower() switch
             {
-                "create-solution" => new CreateSolutionProcess(command),
+                "create-solution" => new CreateSolution(command),
                 "create-repository" => new RepositoryProcess(command),
                 "create-config" => new CreateConfigProcess(),
                 "create-module" => new CreateModuleProcess(command),

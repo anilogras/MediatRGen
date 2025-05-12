@@ -13,8 +13,9 @@ namespace MediatRGen.Helpers
 {
     public static class ParameterHelper
     {
+
         public static T GetParameter<T>(string command, ref T _parameter)
-            where T : class, new()
+        where T : class, new()
         {
             try
             {
@@ -34,5 +35,32 @@ namespace MediatRGen.Helpers
 
             return _parameter;
         }
+
+        public static void GetParameterFromConsole(object target, string propertyName, string message)
+        {
+            var prop = target.GetType().GetProperty(propertyName);
+
+            if (prop == null || !prop.CanWrite) return;
+
+            var currentValue = prop.GetValue(target) as string;
+
+            if (string.IsNullOrWhiteSpace(currentValue))
+            {
+                Console.WriteLine(message);
+
+                while (true)
+                {
+                    string value = Console.ReadLine();
+
+                    if (!string.IsNullOrWhiteSpace(value))
+                    {
+                        prop.SetValue(target, value);
+                        break;
+                    }
+                }
+            }
+        }
+
+
     }
 }

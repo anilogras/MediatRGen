@@ -10,10 +10,26 @@ namespace MediatRGen.Processes.Parameters.Solution
 {
     public class SolutionCreateParameter
     {
-        [Option('d', "dir", Required = false)]
-        public string Directory { get; set; }
-
         [Option('n', "name", Required = false)]
-        public string ProjectName { get; set; }
+        public  string ProjectName { get; set; }
+
+
+        private string _Directory;
+
+        [Option('d', "dir", Required = false)]
+        public string Directory
+        {
+            get { return _Directory; }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    value = "./";
+                }
+
+                _Directory = value;
+            }
+        }
+
     }
 }
