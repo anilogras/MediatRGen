@@ -19,15 +19,13 @@ if (type)
         try
         {
             CommandProcessor.ProcessHandler(input);
-            Console.WriteLine("\n");
-
             args = null;
         }
         catch (Exception ex)
         {
-            Console.WriteLine("\n");
+            Console.WriteLine("**************************");
             BaseException.ExceptionHandler(ex);
-            Console.WriteLine("\n");
+            Console.WriteLine("**************************");
         }
     }
 }
@@ -40,12 +38,13 @@ else
         try
         {
             CommandProcessor.ProcessHandler(input);
-
             args = null;
         }
         catch (Exception ex)
         {
+            Console.WriteLine("**************************");
             BaseException.ExceptionHandler(ex);
+            Console.WriteLine("**************************");
         }
     }
     else
