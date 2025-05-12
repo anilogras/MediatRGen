@@ -21,11 +21,6 @@ namespace MediatRGen.States
             Commands = ["create-solution", "create-repository", "create-config", "create-module"];
             ProjectName = "DenemeSolution";
             Modules = new List<ProjectModule>();
-
-            Console.WriteLine("GLOBALLLLL");
-
-
-
         }
         public static string ConfigFileName = "mediatr-config.json";
 
