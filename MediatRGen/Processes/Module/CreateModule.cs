@@ -32,29 +32,25 @@ namespace MediatRGen.Processes.Module
         private void Execute()
         {
 
-            CheckModulNameIsExist(_parameter.ModuleName);
-
-
-
-        }
-
-        private void CheckModulNameIsExist(string moduleName)
-        {
-
-            if (GlobalState.Instance.Modules.Where(x => x.Name == moduleName).Count() != 0)
-            {
-                throw new ModuleException(LangHandler.Definitions().ModuleIsDefined);
-            }
+            CheckModulNameIsExist();
 
             ClassLibraryHelpers.Create(ClassLibraryHelpers.CreateClassLibraryName(_parameter.ModuleName), DirectoryHelpers.GetCurrentDirectory());
 
             GlobalState.Instance.Modules.Add(new ProjectModule()
             {
-                Name = moduleName
+                Name = _parameter.ModuleName
             });
 
             FileHelpers.UpdateConfig();
 
+        }
+
+        private void CheckModulNameIsExist()
+        {
+            if (GlobalState.Instance.Modules.Where(x => x.Name == _parameter.ModuleName).Count() != 0)
+            {
+                throw new ModuleException(LangHandler.Definitions().ModuleIsDefined);
+            }
         }
     }
 }
