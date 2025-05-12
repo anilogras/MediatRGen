@@ -19,10 +19,9 @@ namespace MediatRGen.Helpers
             Console.WriteLine(LangHandler.Definitions().ClassLibraryCreated + $" {name}");
         }
 
-        public static string CreateClassLibraryName(string moduleName) {
-           
-            Configuration _configuration = FileHelpers.GetConfig();
-           return _configuration.SolutionName + "." + moduleName;
+        public static string CreateClassLibraryName(string moduleName)
+        {
+            return GlobalState.Instance.SolutionName + "." + moduleName;
         }
     }
 }

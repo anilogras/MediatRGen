@@ -34,5 +34,7 @@ namespace MediatRGen.Languages
         public string FolderCreated => "Klasör Oluşturuldu";
 
         public string EnterProjectName => "Proje Adı Girin...";
+
+        public string EnterModuleName => "Modül Adı Girin...";
     }
 }
