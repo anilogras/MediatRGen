@@ -1,9 +1,9 @@
-﻿using MediatRGen.Exceptions;
-using MediatRGen.Helpers;
-using MediatRGen.Languages;
-using MediatRGen.Processes.Base;
-using MediatRGen.Processes.Parameters.Solution;
-using MediatRGen.States;
+﻿using MediatRGen.Cli.Helpers;
+using MediatRGen.Cli.Languages;
+using MediatRGen.Cli.Processes.Base;
+using MediatRGen.Cli.Processes.Parameters.Solution;
+using MediatRGen.Cli.States;
+using MediatRGen.Cli.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Processes.Solution
+namespace MediatRGen.Cli.Processes.Solution
 {
     public class CreateSolution : BaseProcess
     {

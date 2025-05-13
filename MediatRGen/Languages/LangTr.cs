@@ -1,11 +1,11 @@
-﻿using MediatRGen.States;
+﻿using MediatRGen.Cli.States;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Languages
+namespace MediatRGen.Cli.Languages
 {
     public class LangTr : ILang
     {

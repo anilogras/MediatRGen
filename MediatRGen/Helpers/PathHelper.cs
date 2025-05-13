@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Helpers
+namespace MediatRGen.Cli.Helpers
 {
     public static class PathHelper
     {
         public static string GetPath(params string[] paths)
         {
-            return string.Join('\\', paths).Replace("\\" , "/").Replace("//","/");
+            return string.Join('\\', paths).Replace("\\", "/").Replace("//", "/");
         }
     }
 }

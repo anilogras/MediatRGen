@@ -1,11 +1,11 @@
-﻿using MediatRGen.Languages;
+﻿using MediatRGen.Cli.Languages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Helpers
+namespace MediatRGen.Cli.Helpers
 {
     public static class QuestionHelper
     {
@@ -37,7 +37,7 @@ namespace MediatRGen.Helpers
             return answer;
         }
 
-        public static void GetAnswer(string question,ref object answer)
+        public static void GetAnswer(string question, ref object answer)
         {
             while (true)
             {

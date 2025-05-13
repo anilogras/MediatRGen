@@ -1,17 +1,17 @@
 ﻿using CommandLine;
-using MediatRGen.Languages;
+using MediatRGen.Cli.Languages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Processes.Parameters.Solution
+namespace MediatRGen.Cli.Processes.Parameters.Solution
 {
     public class SolutionCreateParameter
     {
         [Option('n', "name", Required = false)]
-        public  string ProjectName { get; set; }
+        public string ProjectName { get; set; }
 
 
         private string _Directory;

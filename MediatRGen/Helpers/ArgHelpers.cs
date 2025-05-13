@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Helpers
+namespace MediatRGen.Cli.Helpers
 {
     public class ArgHelpers
     {
-        public static string[] SplitArgs(string command) 
+        public static string[] SplitArgs(string command)
         {
             List<string> parsedValue = new List<string>();
             int index = 0;
@@ -45,7 +45,7 @@ namespace MediatRGen.Helpers
 
                 index++;
 
-                if (index == command.Length) 
+                if (index == command.Length)
                 {
                     parsedValue.Add(_temp);
 

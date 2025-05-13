@@ -1,4 +1,4 @@
-﻿namespace MediatRGen.Exceptions
+﻿namespace MediatRGen.Cli.Exceptions
 {
 
     public class LanguageNotFoundException : Exception

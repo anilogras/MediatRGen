@@ -1,6 +1,6 @@
-﻿using MediatRGen.Exceptions;
-using MediatRGen.Languages;
-using MediatRGen.States;
+﻿using MediatRGen.Cli.Languages;
+using MediatRGen.Cli.Exceptions;
+using MediatRGen.Cli.States;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Helpers
+namespace MediatRGen.Cli.Helpers
 {
     public class DirectoryHelpers
     {

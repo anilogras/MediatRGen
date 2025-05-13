@@ -1,7 +1,7 @@
-﻿using MediatRGen.Exceptions;
-using MediatRGen.Helpers;
-using MediatRGen.Languages;
-using MediatRGen.Models;
+﻿using MediatRGen.Cli.Helpers;
+using MediatRGen.Cli.Models;
+using MediatRGen.Cli.Exceptions;
+using MediatRGen.Cli.Languages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace MediatRGen.States
+namespace MediatRGen.Cli.States
 {
     public class GlobalState
     {

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Processes
+namespace MediatRGen.Cli.Processes
 {
     public class CreateCore22222
     {
@@ -50,7 +50,7 @@ namespace MediatRGen.Models
             var root = createCs.GetRoot();
             var classDeclaration = root.DescendantNodes().OfType<ClassDeclarationSyntax>().First();
 
-            var accessors = new System.Collections.Generic.List<AccessorDeclarationSyntax>();
+            var accessors = new List<AccessorDeclarationSyntax>();
 
             var newProperty = SyntaxFactory.PropertyDeclaration(SyntaxFactory.PredefinedType(SyntaxFactory.Token(propertyType)), propertyName)
                 .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))

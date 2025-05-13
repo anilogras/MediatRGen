@@ -1,7 +1,7 @@
-﻿using MediatRGen.Exceptions;
-using MediatRGen.Languages;
-using MediatRGen.Models;
-using MediatRGen.States;
+﻿using MediatRGen.Cli.Languages;
+using MediatRGen.Cli.States;
+using MediatRGen.Cli.Exceptions;
+using MediatRGen.Cli.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Helpers
+namespace MediatRGen.Cli.Helpers
 {
     public class FileHelpers
     {

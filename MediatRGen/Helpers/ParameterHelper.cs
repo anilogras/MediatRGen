@@ -1,7 +1,7 @@
 ﻿using CommandLine;
-using MediatRGen.Exceptions;
-using MediatRGen.Languages;
-using MediatRGen.Processes.Parameters.Solution;
+using MediatRGen.Cli.Languages;
+using MediatRGen.Cli.Exceptions;
+using MediatRGen.Cli.Processes.Parameters.Solution;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Helpers
+namespace MediatRGen.Cli.Helpers
 {
     public static class ParameterHelper
     {

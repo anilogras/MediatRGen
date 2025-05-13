@@ -1,10 +1,10 @@
-﻿using MediatRGen.Exceptions;
-using MediatRGen.Helpers;
-using MediatRGen.Languages;
-using MediatRGen.Models;
-using MediatRGen.Processes.Base;
-using MediatRGen.Processes.Parameters.Module;
-using MediatRGen.States;
+﻿using MediatRGen.Cli.Helpers;
+using MediatRGen.Cli.Languages;
+using MediatRGen.Cli.Processes.Base;
+using MediatRGen.Cli.Processes.Parameters.Module;
+using MediatRGen.Cli.States;
+using MediatRGen.Cli.Exceptions;
+using MediatRGen.Cli.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +12,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Processes.Module
+namespace MediatRGen.Cli.Processes.Module
 {
     public class CreateModule : BaseProcess
     {

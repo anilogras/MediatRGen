@@ -1,25 +1,25 @@
-﻿using MediatRGen.Exceptions;
-using MediatRGen.Languages;
-using MediatRGen.States;
+﻿using MediatRGen.Cli.Languages;
+using MediatRGen.Cli.States;
+using MediatRGen.Cli.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen
+namespace MediatRGen.Cli
 {
     public static class Validator
     {
         public static void ValidateCommandBeforeProcess(string[] commandArgs)
         {
             CheckCommand(commandArgs[0]);
-            CheckParams(commandArgs);            
+            CheckParams(commandArgs);
         }
 
         private static void CheckParams(string[] commandArgs)
         {
-            if (commandArgs.Length != 1 && ( commandArgs.Length == 0  && !commandArgs[0].StartsWith("-")))
+            if (commandArgs.Length != 1 && commandArgs.Length == 0 && !commandArgs[0].StartsWith("-"))
             {
                 throw new InvalidParameterException(LangHandler.Definitions().InvalidCommandName);
             }
@@ -29,9 +29,9 @@ namespace MediatRGen
         {
             string[] activeCommand = GlobalState.Instance.Commands;
 
-            if(!activeCommand.Contains(command))
+            if (!activeCommand.Contains(command))
             {
-                throw new InvalidCommandException { Way = "DENEME AAAAAAA" , Message = LangHandler.Definitions().InvalidCommandName};
+                throw new InvalidCommandException { Way = "DENEME AAAAAAA", Message = LangHandler.Definitions().InvalidCommandName };
             }
         }
     }

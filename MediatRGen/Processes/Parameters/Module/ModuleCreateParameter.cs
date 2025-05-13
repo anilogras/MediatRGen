@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Processes.Parameters.Module
+namespace MediatRGen.Cli.Processes.Parameters.Module
 {
     public class ModuleCreateParameter
     {

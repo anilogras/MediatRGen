@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Exceptions
+namespace MediatRGen.Cli.Exceptions
 {
     public class FileException : Exception
     {
         public FileException(string exception) : base(exception)
         {
-            
+
         }
     }
 }

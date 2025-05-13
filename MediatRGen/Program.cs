@@ -1,10 +1,10 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using CommandLine;
 using MediatRGen;
-using MediatRGen.Exceptions;
-using MediatRGen.Helpers;
-using MediatRGen.Languages;
-using MediatRGen.Processes.Base;
+using MediatRGen.Cli.Exceptions;
+using MediatRGen.Cli.Languages;
+using MediatRGen.Cli.Processes.Base;
+using MediatRGen.Cli.Helpers;
 
 //args = ["create-config", "-n", "DenemeSolution" , "-d" , "\"d:/creator/ddddd\""];
 //dotnet publish -c Release -o C:\MediatRGen\cli

@@ -1,12 +1,12 @@
-﻿using MediatRGen.Languages;
-using MediatRGen.States;
+﻿using MediatRGen.Cli.Languages;
+using MediatRGen.Cli.States;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Helpers
+namespace MediatRGen.Cli.Helpers
 {
     internal class WebApiHelper
     {

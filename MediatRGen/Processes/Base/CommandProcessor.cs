@@ -1,17 +1,17 @@
-﻿using MediatRGen.Exceptions;
-using MediatRGen.Helpers;
-using MediatRGen.Languages;
-using MediatRGen.Processes.Config;
-using MediatRGen.Processes.Module;
-using MediatRGen.Processes.Solution;
-using MediatRGen.States;
+﻿using MediatRGen.Cli.Helpers;
+using MediatRGen.Cli.Languages;
+using MediatRGen.Cli.Exceptions;
+using MediatRGen.Cli.Processes.Config;
+using MediatRGen.Cli.Processes.Module;
+using MediatRGen.Cli.Processes.Solution;
+using MediatRGen.Cli.States;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Processes.Base
+namespace MediatRGen.Cli.Processes.Base
 {
     public static class CommandProcessor
     {

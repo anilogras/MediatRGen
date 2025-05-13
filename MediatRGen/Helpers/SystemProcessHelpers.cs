@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Helpers
+namespace MediatRGen.Cli.Helpers
 {
     public static class SystemProcessHelpers
     {
@@ -16,7 +16,7 @@ namespace MediatRGen.Helpers
                 FileName = command,
                 Arguments = parameters,
                 RedirectStandardOutput = true,
-                RedirectStandardError = true, 
+                RedirectStandardError = true,
                 UseShellExecute = false,
                 CreateNoWindow = true
             };

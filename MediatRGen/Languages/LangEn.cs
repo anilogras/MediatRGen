@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Languages
+namespace MediatRGen.Cli.Languages
 {
-    public class LangEn 
+    public class LangEn
     {
         public string InvalidCommandName => "Girilen Komut Adı Bulunamadı ...";
         public string InvalidParameter => "Parametreler başında `-` veya `--` olmalıdır.";

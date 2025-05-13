@@ -1,7 +1,8 @@
-﻿using MediatRGen.Exceptions;
-using MediatRGen.States;
+﻿using MediatRGen.Cli.States;
+using MediatRGen.Cli.Exceptions;
+using MediatRGen.Cli.Languages;
 
-namespace MediatRGen.Languages
+namespace MediatRGen.Cli.Languages
 {
     public static class LangHandler
     {

@@ -1,10 +1,10 @@
-﻿using MediatRGen.Exceptions;
-using MediatRGen.Helpers;
-using MediatRGen.Languages;
-using MediatRGen.Models;
-using MediatRGen.Processes.Base;
-using MediatRGen.Processes.Core;
-using MediatRGen.States;
+﻿using MediatRGen.Cli.Helpers;
+using MediatRGen.Cli.Languages;
+using MediatRGen.Cli.Processes.Base;
+using MediatRGen.Cli.States;
+using MediatRGen.Cli.Exceptions;
+using MediatRGen.Cli.Models;
+using MediatRGen.Cli.Processes.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Processes.Config
+namespace MediatRGen.Cli.Processes.Config
 {
     public class CreateConfigProcess : BaseProcess
     {

@@ -1,4 +1,4 @@
-﻿namespace MediatRGen.Exceptions
+﻿namespace MediatRGen.Cli.Exceptions
 {
 
     public class InvalidCommandException : Exception
@@ -8,7 +8,7 @@
 
         public InvalidCommandException()
         {
-            
+
         }
         public InvalidCommandException(string message) : base(message)
         {
