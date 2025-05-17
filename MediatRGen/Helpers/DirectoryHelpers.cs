@@ -26,6 +26,11 @@ namespace MediatRGen.Cli.Helpers
         }
         public static bool Delete() { return true; }
 
+        public static string GetPath(params string[] paths)
+        {
+            return string.Join('\\', paths).Replace("\\", "/").Replace("//", "/");
+        }
+
         public static string GetCurrentDirectory()
         {
             return "./";

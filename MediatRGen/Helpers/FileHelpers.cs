@@ -16,13 +16,13 @@ namespace MediatRGen.Cli.Helpers
     {
         public static void Create(string path, string fileName, string content)
         {
-            string _path = PathHelper.GetPath(path, fileName);
+            string _path = DirectoryHelpers.GetPath(path, fileName);
             File.WriteAllText(_path, content);
         }
         public static void Create(string path, string fileName, object content)
         {
 
-            string _path = PathHelper.GetPath(path, fileName);
+            string _path = DirectoryHelpers.GetPath(path, fileName);
 
             var options = new JsonSerializerOptions
             {
@@ -42,7 +42,7 @@ namespace MediatRGen.Cli.Helpers
 
         public static bool CheckFile(string path, string fileName)
         {
-            string _combinedPathWithFile = PathHelper.GetPath(path, fileName);
+            string _combinedPathWithFile = DirectoryHelpers.GetPath(path, fileName);
 
             if (File.Exists(_combinedPathWithFile))
                 return true;
@@ -59,7 +59,7 @@ namespace MediatRGen.Cli.Helpers
         public static void UpdateConfig()
         {
 
-            string _configPath = PathHelper.GetPath(DirectoryHelpers.GetCurrentDirectory(), GlobalState.ConfigFileName);
+            string _configPath = DirectoryHelpers.GetPath(DirectoryHelpers.GetCurrentDirectory(), GlobalState.ConfigFileName);
             string _file = Get(_configPath);
 
             if (string.IsNullOrEmpty(_file) == true)

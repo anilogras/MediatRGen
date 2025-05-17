@@ -39,7 +39,7 @@ namespace MediatRGen.Cli.Processes.Solution
             DirectoryHelpers.CreateIsNotExist(DirectoryHelpers.GetCurrentDirectory(), _parameter.ProjectName);
             string _directory = _parameter.Directory;
 
-            string _combinedPath = PathHelper.GetPath(_directory, _parameter.ProjectName);
+            string _combinedPath = DirectoryHelpers.GetPath(_directory, _parameter.ProjectName);
 
 
             if (FileHelpers.CheckFile(_combinedPath, _parameter.ProjectName + ".sln") == true)

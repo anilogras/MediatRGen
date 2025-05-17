@@ -52,6 +52,18 @@
 			<OldPackages Include="$(PublishDir)nugetpackages\Core.Persistence.*.nupkg" />
 		</ItemGroup>
 		<Delete Files="@(OldPackages)" />
-		<Exec Command="dotnet pack &quot;$(ProjectDir)..\Core.Persistence\Core.Persistence.csproj&quot; --configuration Release --output &quot;$(PublishDir)nugetpackages&quot;" />
+		<Exec Command="dotnet pack &quot;$(ProjectDir)..\Core.Persistence\Core.Persistence.csproj&quot; --configuration Debug --output &quot;$(PublishDir)nugetpackages&quot;" />
 	</Target>
+
+<Target Name="PackCoreProjectsOnDebug" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
+  <ItemGroup>
+    <OldPackages Include="$(OutputPath)nugetpackages\Core.*.nupkg" />
+  </ItemGroup>
+  <Delete Files="@(OldPackages)" />
+  <Exec Command="dotnet pack &quot;$(ProjectDir)..\Core.Domain\Core.Domain.csproj&quot; --configuration Debug --output &quot;$(OutputPath)nugetpackages&quot;" />
+  <Exec Command="dotnet pack &quot;$(ProjectDir)..\Core.Application\Core.Application.csproj&quot; --configuration Debug --output &quot;$(OutputPath)nugetpackages&quot;" />
+  <Exec Command="dotnet pack &quot;$(ProjectDir)..\Core.CrossCuttingConcerns\Core.CrossCuttingConcerns.csproj&quot; --configuration Debug --output &quot;$(OutputPath)nugetpackages&quot;" />
+  <Exec Command="dotnet pack &quot;$(ProjectDir)..\Core.Persistence\Core.Persistence.csproj&quot; --configuration Debug --output &quot;$(OutputPath)nugetpackages&quot;" />
+</Target>
+
 </Project>
