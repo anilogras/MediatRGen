@@ -38,5 +38,8 @@ namespace MediatRGen.Cli.Languages
         public string EnterModuleName => "Modül Adı Girin...";
 
         public string WebApiCreated => "WebApi Katmanı Oluşturuldu...";
+
+
+        public string NugetPackageCreated => "Nuget Paketi Eklendi...";
     }
 }

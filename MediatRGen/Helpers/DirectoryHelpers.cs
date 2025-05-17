@@ -24,7 +24,13 @@ namespace MediatRGen.Cli.Helpers
             }
 
         }
-        public static bool Delete() { return true; }
+        public static void Delete(string path)
+        {
+            if (Directory.Exists(path))
+            {
+                Directory.Delete(path , true);
+            }
+        }
 
         public static string GetPath(params string[] paths)
         {

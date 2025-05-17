@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace MediatRGen.Cli.States
 {
@@ -46,6 +47,13 @@ namespace MediatRGen.Cli.States
                 }
                 return _instance;
             }
+        }
+
+        public static void UpdateInstance()
+        {
+            string _configPath = DirectoryHelpers.GetPath(DirectoryHelpers.GetCurrentDirectory(), ConfigFileName);
+            string _file = FileHelpers.Get(_configPath);
+            _instance = System.Text.Json.JsonSerializer.Deserialize<GlobalState>(_file);
         }
 
         public string ProjectName { get; set; }

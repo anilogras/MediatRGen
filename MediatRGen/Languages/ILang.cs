@@ -42,6 +42,8 @@ namespace MediatRGen.Cli.Languages
         public string EnterProjectName { get; }
         public string EnterModuleName { get; }
 
+        public string NugetPackageCreated { get; }
+
 
     }
 }

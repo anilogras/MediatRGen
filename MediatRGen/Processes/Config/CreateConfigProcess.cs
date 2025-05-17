@@ -26,10 +26,10 @@ namespace MediatRGen.Cli.Processes.Config
                 throw new FileException(LangHandler.Definitions().ConfigNotFound);
             }
 
-            if (GlobalState.Instance.Version != null)
-            {
-                throw new FileException(LangHandler.Definitions().ConfigExist);
-            }
+            //if (GlobalState.Instance.Version != null)
+            //{
+            //    throw new FileException(LangHandler.Definitions().ConfigExist);
+            //}
 
             GlobalState.Instance.Version = System.Reflection.Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString() ?? "";
 
