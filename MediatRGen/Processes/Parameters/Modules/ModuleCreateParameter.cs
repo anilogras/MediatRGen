@@ -12,5 +12,7 @@ namespace MediatRGen.Cli.Processes.Parameters.Module
 
         [Option('n', "name", Required = false)]
         public string ModuleName { get; set; }
+
+
     }
 }

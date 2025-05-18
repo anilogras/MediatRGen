@@ -34,7 +34,7 @@ namespace MediatRGen.Cli.States
                 if (_instance == null)
                 {
                     string _configPath = DirectoryHelpers.GetPath(DirectoryHelpers.GetCurrentDirectory(), ConfigFileName);
-                    bool _fileExist = FileHelpers.CheckFile("./", ConfigFileName);
+                    bool _fileExist = FileHelpers.CheckFile(DirectoryHelpers.GetCurrentDirectory(), ConfigFileName);
 
                     if (_fileExist == false)
                         _instance = new GlobalState();

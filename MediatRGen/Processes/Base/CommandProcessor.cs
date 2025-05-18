@@ -32,7 +32,7 @@ namespace MediatRGen.Cli.Processes.Base
                 "create-repository" => new RepositoryProcess(command),
                 "create-config" => new CreateConfigProcess(),
                 "update-config" => new UpdateConfigProcess(),
-                "create-module" => new CreateModule(command),
+                "create-module" => new CreateModuleProcess(command),
                 _ => throw new InvalidCommandException(LangHandler.Definitions().InvalidCommandName),
             };
         }

@@ -39,7 +39,7 @@ namespace MediatRGen.Cli.Helpers
 
         public static string GetCurrentDirectory()
         {
-            return "./";
+            return "./DENSOL/";
         }
     }
 }

@@ -14,18 +14,16 @@ using System.Threading.Tasks;
 
 namespace MediatRGen.Cli.Processes.Module
 {
-    public class CreateModule : BaseProcess
+    public class CreateModuleProcess : BaseProcess
     {
         private ModuleCreateParameter _parameter;
 
 
 
-        public CreateModule(string command)
+        public CreateModuleProcess(string command)
         {
             ParameterHelper.GetParameter<ModuleCreateParameter>(command, ref _parameter);
-
             ParameterHelper.GetParameterFromConsole(_parameter, "ModuleName", LangHandler.Definitions().EnterModuleName);
-
             Execute();
         }
 
@@ -33,7 +31,7 @@ namespace MediatRGen.Cli.Processes.Module
         {
 
             CheckModulNameIsExist();
-            DirectoryHelpers.CreateIsNotExist("./src", _parameter.ModuleName);
+            DirectoryHelpers.CreateIsNotExist( DirectoryHelpers.GetCurrentDirectory() +  "src", _parameter.ModuleName);
 
             ClassLibraryHelpers.Create(_parameter.ModuleName + "." + "Domain", DirectoryHelpers.GetPath(_parameter.ModuleName));
             ClassLibraryHelpers.Create(_parameter.ModuleName + "." + "Application", DirectoryHelpers.GetPath(_parameter.ModuleName));
@@ -47,6 +45,7 @@ namespace MediatRGen.Cli.Processes.Module
 
             FileHelpers.UpdateConfig();
 
+            Console.WriteLine(_parameter.ModuleName + LangHandler.Definitions().ModuleCreated);
         }
 
         private void CheckModulNameIsExist()

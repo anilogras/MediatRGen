@@ -13,15 +13,16 @@ namespace MediatRGen.Cli.Helpers
     {
         public static void Create(string name, string path)
         {
-
-            DirectoryHelpers.CreateIsNotExist("./", "src");
-
+            DirectoryHelpers.CreateIsNotExist(DirectoryHelpers.GetCurrentDirectory(), "src");
             name = CreateClassLibraryName(name);
-            path = "./src/" + path;
+            path = DirectoryHelpers.GetCurrentDirectory() + "src/" + path;
+            string res1 = SystemProcessHelpers.InvokeCommand($"dotnet new classlib -n {name} -o {path}/{name}");
+            Console.WriteLine(res1);
+            string res2 = SystemProcessHelpers.InvokeCommand($"dotnet sln {DirectoryHelpers.GetCurrentDirectory()}{GlobalState.Instance.ProjectName}.sln add {path}/{name}/{name}.csproj");
+            Console.WriteLine(res2);
+            string res3 = SystemProcessHelpers.InvokeCommand($"dotnet build {DirectoryHelpers.GetCurrentDirectory()}{GlobalState.Instance.ProjectName}.sln");
+            Console.WriteLine(res3);
 
-            SystemProcessHelpers.InvokeCommand($"dotnet new classlib -n {name} -o {path}/{name}");
-            SystemProcessHelpers.InvokeCommand($"dotnet sln {GlobalState.Instance.ProjectName}.sln add {path}/{name}/{name}.csproj");
-            SystemProcessHelpers.InvokeCommand($"dotnet build {GlobalState.Instance.ProjectName}.sln");
             Console.WriteLine(LangHandler.Definitions().ClassLibraryCreated + $" {name}");
         }
 
