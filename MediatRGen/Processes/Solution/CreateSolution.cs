@@ -14,13 +14,13 @@ using System.Threading.Tasks;
 
 namespace MediatRGen.Cli.Processes.Solution
 {
-    public class CreateSolution : BaseProcess
+    public class CreateSolutionProcess : BaseProcess
     {
 
         private readonly SolutionCreateParameter _parameter;
 
 
-        public CreateSolution(string command)
+        public CreateSolutionProcess(string command)
         {
             ParameterHelper.GetParameter<SolutionCreateParameter>(command, ref _parameter);
             GetParameters();
