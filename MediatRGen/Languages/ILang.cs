@@ -37,6 +37,10 @@ namespace MediatRGen.Cli.Languages
         public string EnterEntityName { get; }
         public string NugetPackageCreated { get; }
         public string ModuleCreated { get; }
+        public string DirectoryCreated { get; }
+        public string FileCreated { get; }
+        public string EntityNotFound { get; }
+        public string ServiceCreated { get; }
 
     }
 }

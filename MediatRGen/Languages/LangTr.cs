@@ -32,11 +32,17 @@ namespace MediatRGen.Cli.Languages
         public string ConfigurationCreated => $"Konfigurasyon Dosyası Oluşturuldu ({GlobalState.ConfigFileName})";
         public string ConfigurationUpdated => $"Konfigurasyon Dosyası Güncellendi ({GlobalState.ConfigFileName})";
         public string FolderCreated => "Klasör Oluşturuldu";
+        public string FileCreated => "Dosya Oluşturuldu...";
         public string EnterProjectName => "Proje Adı Girin...";
         public string EnterModuleName => "Modül Adı Girin...";
         public string WebApiCreated => "WebApi Katmanı Oluşturuldu...";
         public string NugetPackageCreated => "Nuget Paketi Eklendi...";
-        public string ModuleCreated => " Modülü Oluşturuldu ...";
+        public string ModuleCreated => " Modülü Oluşturuldu...";
         public string EnterEntityName => "Entity Adı Girin...";
+        public string DirectoryCreated => "Klasör Oluşturuldu ...";
+        public string EntityNotFound => "Entity Bulunamadı...";
+        public string ServiceCreated => "Servis Oluşturuldu...";
+
+
     }
 }

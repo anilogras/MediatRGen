@@ -34,7 +34,7 @@ namespace MediatRGen.Cli.Processes.Base
                 "create-config" => new CreateConfigProcess(),
                 "update-config" => new UpdateConfigProcess(),
                 "create-module" => new CreateModuleProcess(command),
-                "create-services" => new CreateServiceProcess(command),
+                "create-service" => new CreateServiceProcess(command),
 
                 _ => throw new InvalidCommandException(LangHandler.Definitions().InvalidCommandName),
             };

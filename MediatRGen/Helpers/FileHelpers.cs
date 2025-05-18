@@ -17,29 +17,44 @@ namespace MediatRGen.Cli.Helpers
         public static void Create(string path, string fileName, string content)
         {
             string _path = DirectoryHelpers.GetPath(path, fileName);
-            File.WriteAllText(_path, content);
+            if (!File.Exists(_path))
+            {
+                File.WriteAllText(_path, content);
+                Console.WriteLine(LangHandler.Definitions().FileCreated + $" ({fileName})");
+            }
         }
         public static void Create(string path, string fileName, object content)
         {
 
             string _path = DirectoryHelpers.GetPath(path, fileName);
-
-            var options = new JsonSerializerOptions
+            if (!File.Exists(_path))
             {
-                WriteIndented = true
-            };
+                var options = new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                };
 
-            var jsonString = JsonSerializer.Serialize(content, options);
+                var jsonString = JsonSerializer.Serialize(content, options);
 
-            File.WriteAllText(_path, jsonString);
+                File.WriteAllText(_path, jsonString);
+                Console.WriteLine(LangHandler.Definitions().FileCreated + $" ({fileName})");
+            }
+        }
+
+        public static void Create(string path, string fileName)
+        {
+            string _path = DirectoryHelpers.GetPath(path, fileName);
+
+            if (!File.Exists(_path))
+            {
+                File.Create(_path).Close();
+                Console.WriteLine(LangHandler.Definitions().FileCreated + $" ({fileName})");
+            }
         }
 
         public static string Read() { return ""; }
-
         public static bool Delete() { return true; }
-
         public static bool Update() { return true; }
-
         public static bool CheckFile(string path, string fileName)
         {
             string _combinedPathWithFile = DirectoryHelpers.GetPath(path, fileName);
@@ -49,13 +64,11 @@ namespace MediatRGen.Cli.Helpers
 
             return false;
         }
-
         public static string Get(string path)
         {
 
             return File.ReadAllText(path, Encoding.UTF8);
         }
-
         public static void UpdateConfig()
         {
 
@@ -70,6 +83,24 @@ namespace MediatRGen.Cli.Helpers
             File.Delete(_configPath);
 
             Create(DirectoryHelpers.GetCurrentDirectory(), GlobalState.ConfigFileName, GlobalState.Instance);
+        }
+
+        public static string FindFileRecursive(string directory, string targetFile)
+        {
+            foreach (var file in Directory.GetFiles(directory))
+            {
+                if (Path.GetFileName(file).Equals(targetFile, StringComparison.OrdinalIgnoreCase))
+                    return file;
+            }
+
+            foreach (var dir in Directory.GetDirectories(directory))
+            {
+                string found = FindFileRecursive(dir, targetFile);
+                if (found != null)
+                    return found;
+            }
+
+            return null;
         }
 
 
