@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MediatRGen.Cli.States;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -39,6 +40,14 @@ namespace MediatRGen.Cli.Helpers
             {
                 throw new Exception(ex.Message);
             }
+
+        }
+
+        public static void BuildProject()
+        {
+
+            string res3 = SystemProcessHelpers.InvokeCommand($"dotnet build {DirectoryHelpers.GetCurrentDirectory()}{GlobalState.Instance.ProjectName}.sln");
+            Console.WriteLine(res3);
 
         }
     }

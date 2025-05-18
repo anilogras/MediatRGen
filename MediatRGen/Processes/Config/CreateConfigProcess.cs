@@ -12,6 +12,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using MediatRGen.Cli.Processes.Nuget;
 
 namespace MediatRGen.Cli.Processes.Config
 {
@@ -39,6 +40,8 @@ namespace MediatRGen.Cli.Processes.Config
             FileHelpers.UpdateConfig();
 
             CreateCoreFiles();
+
+            Console.WriteLine(LangHandler.Definitions().CreatedConfigFile);
         }
 
         private void ModuleSystemActive()
@@ -59,6 +62,11 @@ namespace MediatRGen.Cli.Processes.Config
         {
             new CoreCreateProcess();
             Console.WriteLine(LangHandler.Definitions().CoreFilesCreated);
+
+
+            new CreateNugetPackages();
+            Console.WriteLine(LangHandler.Definitions().NugetPackagesCreated);
+
         }
     }
 }

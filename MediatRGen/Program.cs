@@ -9,7 +9,7 @@ using MediatRGen.Cli.Helpers;
 //args = ["create-config", "-n", "DenemeSolution" , "-d" , "\"d:/creator/ddddd\""];
 //dotnet publish -c Release -o C:\MediatRGen\cli
 
-bool type = true;
+bool type = false;
 
 if (type)
 {

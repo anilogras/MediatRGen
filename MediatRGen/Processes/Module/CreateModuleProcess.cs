@@ -31,12 +31,14 @@ namespace MediatRGen.Cli.Processes.Module
         {
 
             CheckModulNameIsExist();
-            DirectoryHelpers.CreateIsNotExist( DirectoryHelpers.GetCurrentDirectory() +  "src", _parameter.ModuleName);
+            DirectoryHelpers.CreateIsNotExist(DirectoryHelpers.GetCurrentDirectory() + "src", _parameter.ModuleName);
 
             ClassLibraryHelpers.Create(_parameter.ModuleName + "." + "Domain", DirectoryHelpers.GetPath(_parameter.ModuleName));
             ClassLibraryHelpers.Create(_parameter.ModuleName + "." + "Application", DirectoryHelpers.GetPath(_parameter.ModuleName));
             ClassLibraryHelpers.Create(_parameter.ModuleName + "." + "Infrastructure", DirectoryHelpers.GetPath(_parameter.ModuleName));
             WebApiHelper.Create(_parameter.ModuleName + "." + "API", DirectoryHelpers.GetPath(_parameter.ModuleName));
+
+            SystemProcessHelpers.BuildProject();
 
             GlobalState.Instance.Modules.Add(new ProjectModule()
             {

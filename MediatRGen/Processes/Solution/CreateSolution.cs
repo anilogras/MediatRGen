@@ -51,7 +51,7 @@ namespace MediatRGen.Cli.Processes.Solution
 
             string res = SystemProcessHelpers.InvokeCommand(commandResult);
             Console.WriteLine(res);
-            Console.WriteLine($"cd {_combinedPath}");
+            Console.WriteLine($"cd ./{_parameter.ProjectName}");
             if (res.IndexOf("Error") == -1)
                 Console.WriteLine(LangHandler.Definitions().YouCanWriteCode);
 

@@ -25,7 +25,7 @@ namespace MediatRGen.Cli.Helpers
 
         }
 
-        public static void CreateIsNotExist(string path )
+        public static void CreateIsNotExist(string path)
         {
             string _combinedPath = Path.Combine(path);
 
@@ -40,18 +40,18 @@ namespace MediatRGen.Cli.Helpers
         {
             if (Directory.Exists(path))
             {
-                Directory.Delete(path , true);
+                Directory.Delete(path, true);
             }
         }
 
         public static string GetPath(params string[] paths)
         {
-            return string.Join('\\', paths).Replace("\\", "/").Replace("//", "/");
+            return string.Join('\\', paths);
         }
 
         public static string GetCurrentDirectory()
         {
-            return ".\\DENSOL\\";
+            return ".\\";
         }
     }
 }

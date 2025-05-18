@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MediatRGen.Cli.Processes.Service;
+using MediatRGen.Cli.Processes.Nuget;
 
 namespace MediatRGen.Cli.Processes.Base
 {
@@ -30,11 +31,13 @@ namespace MediatRGen.Cli.Processes.Base
             return commandArgs[0].ToLower() switch
             {
                 "create-solution" => new CreateSolutionProcess(command),
-                "create-repository" => new RepositoryProcess(command),
                 "create-config" => new CreateConfigProcess(),
                 "update-config" => new UpdateConfigProcess(),
+                "create-nuget" => new CreateNugetPackages(),
+                "create-update" => new UpdateNugetPackageProcess(),
                 "create-module" => new CreateModuleProcess(command),
                 "create-service" => new CreateServiceProcess(command),
+                "create-repository" => new RepositoryProcess(command),
 
                 _ => throw new InvalidCommandException(LangHandler.Definitions().InvalidCommandName),
             };

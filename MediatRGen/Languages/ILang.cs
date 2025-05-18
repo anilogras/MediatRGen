@@ -27,6 +27,7 @@ namespace MediatRGen.Cli.Languages
         public string Required { get; }
         public string ModuleIsDefined { get; }
         public string CoreFilesCreated { get; }
+        public string NugetPackagesCreated { get; }
         public string ClassLibraryCreated { get; }
         public string WebApiCreated { get; }
         public string ConfigurationCreated { get; }
