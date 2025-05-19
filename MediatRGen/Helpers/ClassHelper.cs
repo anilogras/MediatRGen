@@ -1,4 +1,5 @@
-﻿using MediatRGen.Cli.Languages;
+﻿using MediatRGen.Cli.Exceptions;
+using MediatRGen.Cli.Languages;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -72,9 +73,8 @@ namespace MediatRGen.Cli.Helpers
             string? _classText = FileHelpers.Get(classPath);
 
             newNameSpace = newNameSpace.Substring(newNameSpace.IndexOf("\\src\\") + 5);
+            newNameSpace = newNameSpace.Substring(newNameSpace.IndexOf("\\") + 1);
             newNameSpace = newNameSpace.Replace("\\", ".");
-
-
 
             if (string.IsNullOrEmpty(_classText))
                 throw new FileNotFoundException(LangHandler.Definitions().ClassNotFound);
@@ -106,7 +106,7 @@ namespace MediatRGen.Cli.Helpers
             }
             else
             {
-                Console.WriteLine(LangHandler.Definitions().NameSpaceNotFound);
+                throw new SystemProcessException(LangHandler.Definitions().NameSpaceNotFound);
             }
         }
 
