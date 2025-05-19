@@ -1,8 +1,6 @@
 ﻿using MediatRGen.Cli.Helpers;
-using MediatRGen.Cli.Languages;
 using MediatRGen.Cli.Processes.Base;
 using MediatRGen.Cli.States;
-using MediatRGen.Cli.Exceptions;
 using MediatRGen.Cli.Models;
 using MediatRGen.Cli.Processes.Core;
 using System;
@@ -13,6 +11,8 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using MediatRGen.Cli.Processes.Nuget;
+using MediatRGen.Core.Exceptions;
+
 
 namespace MediatRGen.Cli.Processes.Config
 {

@@ -1,12 +1,11 @@
 ﻿using CommandLine;
-using MediatRGen.Cli.Languages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Cli.Processes.Parameters.Solution
+namespace MediatRGen.Cli.Processes.Parameters.Solutions
 {
     public class SolutionCreateParameter
     {

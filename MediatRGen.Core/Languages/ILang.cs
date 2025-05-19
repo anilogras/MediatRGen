@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Cli.Languages
+namespace MediatRGen.Core.Languages
 {
     public interface ILang
     {
@@ -30,7 +30,6 @@ namespace MediatRGen.Cli.Languages
         public string NugetPackagesCreated { get; }
         public string ClassLibraryCreated { get; }
         public string ClassNotFound { get; }
-
         public string WebApiCreated { get; }
         public string ConfigurationCreated { get; }
         public string ConfigurationUpdated { get; }

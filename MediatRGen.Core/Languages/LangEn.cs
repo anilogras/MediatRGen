@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Cli.Languages
+namespace MediatRGen.Core.Languages
 {
     public class LangEn
     {

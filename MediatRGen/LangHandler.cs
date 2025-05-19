@@ -1,14 +1,14 @@
-﻿using MediatRGen.Cli.States;
-using MediatRGen.Cli.Exceptions;
-using MediatRGen.Cli.Languages;
+﻿using MediatRGen.Core.Exceptions;
+using MediatRGen.Core.Languages;
 
-namespace MediatRGen.Cli.Languages
+
+namespace MediatRGen.Cli
 {
     public static class LangHandler
     {
         public static ILang Definitions()
         {
-            switch (GlobalState.Instance.Lang)
+            switch ("tr")
             {
                 case "tr":
                     return new LangTr();
@@ -16,7 +16,5 @@ namespace MediatRGen.Cli.Languages
                     throw new LanguageNotFoundException("Tanımlı Dil Bilgisi Bulunamadı");
             }
         }
-
-
     }
 }

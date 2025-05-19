@@ -1,11 +1,4 @@
-﻿using MediatRGen.Cli.Languages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MediatRGen.Cli.Helpers
+﻿namespace MediatRGen.Cli.Helpers
 {
     public static class QuestionHelper
     {

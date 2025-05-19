@@ -1,11 +1,10 @@
-﻿using MediatRGen.Cli.States;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Cli.Languages
+namespace MediatRGen.Core.Languages
 {
     public class LangTr : ILang
     {
@@ -29,8 +28,8 @@ namespace MediatRGen.Cli.Languages
         public string ModuleIsDefined => "Modül Daha Önceden Tanımlanmış...";
         public string ClassLibraryCreated => "Kütüphane Oluşturuldu...";
         public string CoreFilesCreated => "Core Kütüphaneler Oluşturuldu...";
-        public string ConfigurationCreated => $"Konfigurasyon Dosyası Oluşturuldu ({GlobalState.ConfigFileName})";
-        public string ConfigurationUpdated => $"Konfigurasyon Dosyası Güncellendi ({GlobalState.ConfigFileName})";
+        public string ConfigurationCreated => $"Konfigurasyon Dosyası Oluşturuldu...";
+        public string ConfigurationUpdated => $"Konfigurasyon Dosyası Güncellendi...";
         public string FolderCreated => "Klasör Oluşturuldu";
         public string ClassNotFound => "Class Bulunamadı...";
         public string FileCreated => "Dosya Oluşturuldu...";

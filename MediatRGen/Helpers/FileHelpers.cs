@@ -1,15 +1,7 @@
-﻿using MediatRGen.Cli.Exceptions;
-using MediatRGen.Cli.Languages;
-using MediatRGen.Cli.Models;
-using MediatRGen.Cli.States;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using MediatRGen.Cli.States;
+using MediatRGen.Core.Exceptions;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace MediatRGen.Cli.Helpers
 {

@@ -1,11 +1,4 @@
-﻿using MediatRGen.Cli.Languages;
-using MediatRGen.Cli.States;
-using MediatRGen.Cli.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatRGen.Cli.States;
 
 namespace MediatRGen.Cli.Helpers
 {

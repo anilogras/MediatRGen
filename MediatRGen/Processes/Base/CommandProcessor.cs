@@ -1,6 +1,5 @@
 ﻿using MediatRGen.Cli.Helpers;
-using MediatRGen.Cli.Languages;
-using MediatRGen.Cli.Exceptions;
+
 using MediatRGen.Cli.Processes.Config;
 using MediatRGen.Cli.Processes.Module;
 using MediatRGen.Cli.Processes.Solution;
@@ -12,6 +11,8 @@ using System.Text;
 using System.Threading.Tasks;
 using MediatRGen.Cli.Processes.Service;
 using MediatRGen.Cli.Processes.Nuget;
+using MediatRGen.Core.Exceptions;
+
 
 namespace MediatRGen.Cli.Processes.Base
 {

@@ -1,7 +1,5 @@
 ﻿using MediatRGen.Cli.Helpers;
 using MediatRGen.Cli.Models;
-using MediatRGen.Cli.Exceptions;
-using MediatRGen.Cli.Languages;
 using System;
 using System.Collections.Generic;
 using System.Linq;

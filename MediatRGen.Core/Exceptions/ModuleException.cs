@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Cli.Exceptions
+namespace MediatRGen.Core.Exceptions
 {
     public class ModuleException : Exception
     {

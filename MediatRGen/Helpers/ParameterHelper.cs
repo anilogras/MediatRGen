@@ -1,7 +1,5 @@
 ﻿using CommandLine;
-using MediatRGen.Cli.Languages;
-using MediatRGen.Cli.Exceptions;
-using MediatRGen.Cli.Processes.Parameters.Solution;
+using MediatRGen.Core.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

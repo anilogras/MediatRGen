@@ -1,5 +1,4 @@
-﻿using MediatRGen.Cli.Exceptions;
-using MediatRGen.Cli.Languages;
+﻿using MediatRGen.Core.Exceptions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -14,14 +13,6 @@ namespace MediatRGen.Cli.Helpers
 {
     public static class ClassHelper
     {
-
-        //public ClassHelper()
-        //{
-        //    //var classString2 = ChangeNameSpace(classString, "NewNameSpace");
-
-        //    //var res = AddNewProperty(classString2, "DenemeProp", SyntaxKind.StringKeyword, false, false);
-        //}
-
         public static string AddNewProperty(string classString, string propertyName, SyntaxKind propertyType, bool getProp = true, bool setProp = true)
         {
             var createCs = CSharpSyntaxTree.ParseText(classString);
@@ -61,26 +52,13 @@ namespace MediatRGen.Cli.Helpers
             root = root.ReplaceNode(classDeclaration, updatedClassDeclaration);
             return root.NormalizeWhitespace().ToFullString();
         }
-
         public static void ChangeNameSpace(string classPath, string newNameSpace)
         {
-
-            string? extension = Path.GetExtension(classPath);
-
-            if (string.IsNullOrEmpty(extension))
-                classPath = classPath + ".cs";
-
-            string? _classText = FileHelpers.Get(classPath);
+            SyntaxNode root = GetClassRoot(classPath);
 
             newNameSpace = newNameSpace.Substring(newNameSpace.IndexOf("\\src\\") + 5);
             newNameSpace = newNameSpace.Substring(newNameSpace.IndexOf("\\") + 1);
             newNameSpace = newNameSpace.Replace("\\", ".");
-
-            if (string.IsNullOrEmpty(_classText))
-                throw new FileNotFoundException(LangHandler.Definitions().ClassNotFound);
-
-            var tree = CSharpSyntaxTree.ParseText(_classText);
-            var root = tree.GetRoot();
 
 
             var fileScopedNs = root.DescendantNodes()
@@ -99,16 +77,44 @@ namespace MediatRGen.Cli.Helpers
                 var newNamespaceNode = namespaceNode.WithName(newNamespace);
                 var newRoot = root.ReplaceNode(namespaceNode, newNamespaceNode);
 
-                var updatedCode = newRoot.NormalizeWhitespace().ToFullString();
-
-
-                File.WriteAllText(classPath, updatedCode);
+                ReWriteClass(classPath, newRoot);
             }
             else
             {
                 throw new SystemProcessException(LangHandler.Definitions().NameSpaceNotFound);
             }
         }
+        public static void SetBaseInheritance(string classPath, string baseClassName)
+        {
+            SyntaxNode root = GetClassRoot(classPath);
+            var classNode = root.DescendantNodes().OfType<ClassDeclarationSyntax>().First();
+            var baseType = SyntaxFactory.SimpleBaseType(SyntaxFactory.ParseTypeName(baseClassName));
+            var baseList = SyntaxFactory.BaseList(SyntaxFactory.SeparatedList<BaseTypeSyntax>().Add(baseType));
+            var newClassNode = classNode.WithBaseList(baseList);
+            var newRoot = root.ReplaceNode(classNode, newClassNode);
+            ReWriteClass(classPath, newRoot);
+        }
+        private static void ReWriteClass(string classPath, SyntaxNode newRoot)
+        {
+            var updatedCode = newRoot.NormalizeWhitespace().ToFullString();
+            File.WriteAllText(classPath + ".cs", updatedCode);
+        }
+        private static SyntaxNode GetClassRoot(string classPath)
+        {
+            string? extension = Path.GetExtension(classPath);
 
+            if (string.IsNullOrEmpty(extension))
+                classPath = classPath + ".cs";
+
+            string? _classText = FileHelpers.Get(classPath);
+
+            if (string.IsNullOrEmpty(_classText))
+                throw new FileNotFoundException(LangHandler.Definitions().ClassNotFound);
+
+
+            var tree = CSharpSyntaxTree.ParseText(_classText);
+            var root = tree.GetRoot();
+            return root;
+        }
     }
 }

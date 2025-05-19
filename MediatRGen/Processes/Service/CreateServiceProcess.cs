@@ -1,16 +1,9 @@
 ﻿using Humanizer;
-using MediatRGen.Cli.Exceptions;
 using MediatRGen.Cli.Helpers;
-using MediatRGen.Cli.Languages;
 using MediatRGen.Cli.Processes.Base;
-using MediatRGen.Cli.Processes.Parameters.Module;
 using MediatRGen.Cli.Processes.Parameters.Services;
 using MediatRGen.Cli.States;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MediatRGen.Core.Exceptions;
 
 namespace MediatRGen.Cli.Processes.Service
 {
@@ -61,7 +54,7 @@ namespace MediatRGen.Cli.Processes.Service
             SystemProcessHelpers.InvokeCommand($"dotnet new class -n {_businessRulesClassName} -o {_applicationRulesDirectoryPath}");
 
             ClassHelper.ChangeNameSpace(DirectoryHelpers.GetPath(_applicationRulesDirectoryPath, _businessRulesClassName), _applicationRulesDirectoryPath);
-
+            ClassHelper.SetBaseInheritance(DirectoryHelpers.GetPath(_applicationRulesDirectoryPath, _businessRulesClassName) , "DenemeBaseModel");
         }
 
         private void CreateConstants(string _entityPath, string _applicationModulePath, string _pluralEntityName)
@@ -71,7 +64,6 @@ namespace MediatRGen.Cli.Processes.Service
             string _constantsClassName = $"{_parameter.EntityName}Messages";
             SystemProcessHelpers.InvokeCommand($"dotnet new class -n {_constantsClassName} -o {_applicationConstantsDirectoryPath}");
             ClassHelper.ChangeNameSpace(DirectoryHelpers.GetPath(_applicationConstantsDirectoryPath, _constantsClassName), _applicationConstantsDirectoryPath);
-
         }
 
         private void CreateMapping(string _entityPath, string _applicationModulePath, string _pluralEntityName)
