@@ -1,9 +1,10 @@
-﻿using MediatRGen.Cli.Languages;
-using MediatRGen.Cli.States;
-using MediatRGen.Cli.Exceptions;
+﻿using MediatRGen.Cli.Exceptions;
+using MediatRGen.Cli.Languages;
 using MediatRGen.Cli.Models;
+using MediatRGen.Cli.States;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -64,10 +65,14 @@ namespace MediatRGen.Cli.Helpers
 
             return false;
         }
-        public static string Get(string path)
+        public static string? Get(string path)
         {
+            if (File.Exists(path))
+            {
+                return File.ReadAllText(path, Encoding.UTF8);
+            }
 
-            return File.ReadAllText(path, Encoding.UTF8);
+            return null;
         }
         public static void UpdateConfig()
         {

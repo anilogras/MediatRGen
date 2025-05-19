@@ -46,12 +46,31 @@ namespace MediatRGen.Cli.Helpers
 
         public static string GetPath(params string[] paths)
         {
-            return string.Join('\\', paths);
+            string _text = "";
+            int index = 1;
+
+            foreach (var item in paths)
+            {
+                string _tempItem = "";
+
+                if (item.EndsWith("\\"))
+                    _tempItem = item.Substring(0, item.Length - 1);
+                else
+                    _tempItem = item;
+
+                    _text += _tempItem;
+                if (index != paths.Length)
+                    _text += "\\";
+
+                index++;
+            }
+
+            return _text;
         }
 
         public static string GetCurrentDirectory()
         {
-            return ".\\";
+            return ".\\DENSOL\\";
         }
     }
 }

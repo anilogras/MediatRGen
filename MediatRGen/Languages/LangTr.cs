@@ -32,6 +32,7 @@ namespace MediatRGen.Cli.Languages
         public string ConfigurationCreated => $"Konfigurasyon Dosyası Oluşturuldu ({GlobalState.ConfigFileName})";
         public string ConfigurationUpdated => $"Konfigurasyon Dosyası Güncellendi ({GlobalState.ConfigFileName})";
         public string FolderCreated => "Klasör Oluşturuldu";
+        public string ClassNotFound => "Class Bulunamadı...";
         public string FileCreated => "Dosya Oluşturuldu...";
         public string EnterProjectName => "Proje Adı Girin...";
         public string EnterModuleName => "Modül Adı Girin...";
@@ -44,7 +45,8 @@ namespace MediatRGen.Cli.Languages
         public string ServiceCreated => "Servis Oluşturuldu...";
         public string NugetPackagesCreated => "NuGet Paketleri Oluşturuldu...";
 
-        
+        public string NameSpaceNotFound => "Namespace Bulunamadı...";
+
 
     }
 }

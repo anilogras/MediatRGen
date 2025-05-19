@@ -29,6 +29,8 @@ namespace MediatRGen.Cli.Languages
         public string CoreFilesCreated { get; }
         public string NugetPackagesCreated { get; }
         public string ClassLibraryCreated { get; }
+        public string ClassNotFound { get; }
+
         public string WebApiCreated { get; }
         public string ConfigurationCreated { get; }
         public string ConfigurationUpdated { get; }
@@ -42,6 +44,7 @@ namespace MediatRGen.Cli.Languages
         public string FileCreated { get; }
         public string EntityNotFound { get; }
         public string ServiceCreated { get; }
+        public string NameSpaceNotFound { get; }
 
     }
 }

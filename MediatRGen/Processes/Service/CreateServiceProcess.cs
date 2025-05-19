@@ -58,7 +58,10 @@ namespace MediatRGen.Cli.Processes.Service
             string _applicationRulesDirectoryPath = _applicationModulePath + _entityPath + _pluralEntityName + "\\Rules";
             DirectoryHelpers.CreateIsNotExist(_applicationRulesDirectoryPath);
             string _businessRulesClassName = $"{_parameter.EntityName}BusinessRules";
-            FileHelpers.Create(_applicationRulesDirectoryPath, _businessRulesClassName + ".cs");
+            SystemProcessHelpers.InvokeCommand($"dotnet new class -n {_businessRulesClassName} -o {_applicationRulesDirectoryPath}");
+
+            ClassHelper.ChangeNameSpace(DirectoryHelpers.GetPath(_applicationRulesDirectoryPath, _businessRulesClassName), _applicationRulesDirectoryPath);
+
         }
 
         private void CreateConstants(string _entityPath, string _applicationModulePath, string _pluralEntityName)
@@ -66,7 +69,9 @@ namespace MediatRGen.Cli.Processes.Service
             string _applicationConstantsDirectoryPath = _applicationModulePath + _entityPath + _pluralEntityName + "\\Constants";
             DirectoryHelpers.CreateIsNotExist(_applicationConstantsDirectoryPath);
             string _constantsClassName = $"{_parameter.EntityName}Messages";
-            FileHelpers.Create(_applicationConstantsDirectoryPath, _constantsClassName + ".cs");
+            SystemProcessHelpers.InvokeCommand($"dotnet new class -n {_constantsClassName} -o {_applicationConstantsDirectoryPath}");
+            ClassHelper.ChangeNameSpace(DirectoryHelpers.GetPath(_applicationConstantsDirectoryPath, _constantsClassName), _applicationConstantsDirectoryPath);
+
         }
 
         private void CreateMapping(string _entityPath, string _applicationModulePath, string _pluralEntityName)
@@ -74,7 +79,9 @@ namespace MediatRGen.Cli.Processes.Service
             string _applicationMappingProfilesDirectoryPath = _applicationModulePath + _entityPath + _pluralEntityName + "\\Profiles";
             DirectoryHelpers.CreateIsNotExist(_applicationMappingProfilesDirectoryPath);
             string _mappingProfilesClassName = $"{_parameter.EntityName}MappingProfiles";
-            FileHelpers.Create(_applicationMappingProfilesDirectoryPath, _mappingProfilesClassName + ".cs");
+            SystemProcessHelpers.InvokeCommand($"dotnet new class -n {_mappingProfilesClassName} -o {_applicationMappingProfilesDirectoryPath}");
+            ClassHelper.ChangeNameSpace(DirectoryHelpers.GetPath(_applicationMappingProfilesDirectoryPath, _mappingProfilesClassName), _applicationMappingProfilesDirectoryPath);
+
         }
     }
 }
