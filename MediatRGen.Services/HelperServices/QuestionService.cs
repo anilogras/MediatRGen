@@ -1,8 +1,15 @@
-﻿namespace MediatRGen.Core.Helpers
+﻿using MediatRGen.Services.Base;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MediatRGen.Services.HelperServices
 {
-    public static class QuestionHelper
+    public class QuestionService
     {
-        public static bool YesNoQuestion(string question)
+        public static ServiceResult<bool> YesNoQuestion(string question)
         {
 
             bool answer = false;
@@ -27,25 +34,24 @@
                 }
             }
 
-            return answer;
+            return new ServiceResult<bool>(answer, true, "");
         }
 
-        public static void GetAnswer(string question, ref object answer)
+        public static ServiceResult<string> GetAnswer(string question)
         {
             while (true)
             {
 
                 Console.WriteLine(question);
-                string moduleName = Console.ReadLine();
+                string answer = Console.ReadLine();
 
-                if (string.IsNullOrEmpty(moduleName))
+                if (string.IsNullOrEmpty(answer))
                 {
                     Console.WriteLine(LangHandler.Definitions().Required);
                     continue;
                 }
 
-                answer = moduleName;
-                break;
+                return new ServiceResult<string>(answer, true, "");
             }
         }
     }
