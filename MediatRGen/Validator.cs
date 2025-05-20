@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MediatRGen.Cli
 {
-    public static class Validator
+    public static class Validator 
     {
         public static void ValidateCommandBeforeProcess(string[] commandArgs)
         {
