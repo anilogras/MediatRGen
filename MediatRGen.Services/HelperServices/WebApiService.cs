@@ -19,7 +19,7 @@ namespace MediatRGen.Services.HelperServices
                 string _directory = DirectoryServices.GetPath(DirectoryServices.GetCurrentDirectory().Value, "src").Value;
                 DirectoryServices.CreateIsNotExist(_directory);
 
-                name = CreateClassLibraryName(name);
+                name = CreateClassLibraryName(name).Value;
                 path = DirectoryServices.GetCurrentDirectory().Value + "src/" + path;
 
                 string res1 = SystemProcessHelpers.InvokeCommand($"dotnet new webapi -n {name} -o {path}/{name}");
