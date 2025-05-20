@@ -1,6 +1,8 @@
 ﻿using MediatRGen.Cli.Processes.Base;
 using MediatRGen.Core;
 using MediatRGen.Core.Helpers;
+using MediatRGen.Services.HelperServices;
+using MediatRGen.Services.NugetServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +22,13 @@ namespace MediatRGen.Cli.Processes.Nuget
 
         private static void CreateCoreNugetPackages()
         {
-            DirectoryHelpers.Delete(DirectoryHelpers.GetPath(DirectoryHelpers.GetCurrentDirectory(), "CoreNugetPackages"));
 
-            DirectoryHelpers.CreateIsNotExist(DirectoryHelpers.GetPath(DirectoryHelpers.GetCurrentDirectory()), "CoreNugetPackages");
+            NugetService _nugetService = new NugetService();
+            _nugetService.DeleteNugets();
 
-            Assembly.GetExecutingAssembly().Location.ToString();
+            string _newPath = DirectoryServices.GetPath(DirectoryServices.GetCurrentDirectory().Value, "CoreNugetPackages").Value;
+
+            DirectoryServices.CreateIsNotExist(_newPath);
 
             string _rootpath =
                 Assembly.GetExecutingAssembly().Location.Substring
@@ -32,7 +36,7 @@ namespace MediatRGen.Cli.Processes.Nuget
 
             string[] _nugetPackages = Directory.GetFiles($"{_rootpath}/nugetpackages");
 
-            string _copyDestination = DirectoryHelpers.GetPath(DirectoryHelpers.GetCurrentDirectory(), "CoreNugetPackages");
+            string _copyDestination = DirectoryServices.GetPath(DirectoryServices.GetCurrentDirectory().Value, "CoreNugetPackages").Value;
 
             foreach (var item in _nugetPackages)
             {
