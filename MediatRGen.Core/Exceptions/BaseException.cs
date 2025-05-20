@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MediatRGen.Core.Exceptions.FileExceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
