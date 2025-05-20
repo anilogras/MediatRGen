@@ -1,12 +1,11 @@
-﻿using MediatRGen.Cli.States;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Cli.Helpers
+namespace MediatRGen.Core.Helpers
 {
     public class DirectoryHelpers
     {

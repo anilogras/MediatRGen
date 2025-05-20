@@ -1,9 +1,10 @@
 ﻿using Humanizer;
-using MediatRGen.Cli.Helpers;
 using MediatRGen.Cli.Processes.Base;
 using MediatRGen.Cli.Processes.Parameters.Services;
-using MediatRGen.Cli.States;
+using MediatRGen.Core;
 using MediatRGen.Core.Exceptions;
+using MediatRGen.Core.Helpers;
+using MediatRGen.Core.States;
 
 namespace MediatRGen.Cli.Processes.Service
 {

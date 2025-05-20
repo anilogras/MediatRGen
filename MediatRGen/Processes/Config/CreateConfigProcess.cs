@@ -1,7 +1,4 @@
-﻿using MediatRGen.Cli.Helpers;
-using MediatRGen.Cli.Processes.Base;
-using MediatRGen.Cli.States;
-using MediatRGen.Cli.Models;
+﻿using MediatRGen.Cli.Processes.Base;
 using MediatRGen.Cli.Processes.Core;
 using System;
 using System.Collections.Generic;
@@ -12,6 +9,9 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using MediatRGen.Cli.Processes.Nuget;
 using MediatRGen.Core.Exceptions;
+using MediatRGen.Core.States;
+using MediatRGen.Core.Helpers;
+using MediatRGen.Core;
 
 
 namespace MediatRGen.Cli.Processes.Config

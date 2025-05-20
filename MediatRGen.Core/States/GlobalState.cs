@@ -1,5 +1,5 @@
-﻿using MediatRGen.Cli.Helpers;
-using MediatRGen.Cli.Models;
+﻿using MediatRGen.Core.Helpers;
+using MediatRGen.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Cli.States
+namespace MediatRGen.Core.States
 {
     public class GlobalState
     {

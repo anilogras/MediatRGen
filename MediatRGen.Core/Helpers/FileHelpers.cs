@@ -1,9 +1,9 @@
-﻿using MediatRGen.Cli.States;
-using MediatRGen.Core.Exceptions;
+﻿using MediatRGen.Core.Exceptions;
+using MediatRGen.Core.States;
 using System.Text;
 using System.Text.Json;
 
-namespace MediatRGen.Cli.Helpers
+namespace MediatRGen.Core.Helpers
 {
     public class FileHelpers
     {

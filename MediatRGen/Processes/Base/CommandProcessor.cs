@@ -1,9 +1,6 @@
-﻿using MediatRGen.Cli.Helpers;
-
-using MediatRGen.Cli.Processes.Config;
+﻿using MediatRGen.Cli.Processes.Config;
 using MediatRGen.Cli.Processes.Module;
 using MediatRGen.Cli.Processes.Solution;
-using MediatRGen.Cli.States;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +9,8 @@ using System.Threading.Tasks;
 using MediatRGen.Cli.Processes.Service;
 using MediatRGen.Cli.Processes.Nuget;
 using MediatRGen.Core.Exceptions;
+using MediatRGen.Core.Helpers;
+using MediatRGen.Core;
 
 
 namespace MediatRGen.Cli.Processes.Base

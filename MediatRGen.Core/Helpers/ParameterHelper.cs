@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Cli.Helpers
+namespace MediatRGen.Core.Helpers
 {
     public static class ParameterHelper
     {

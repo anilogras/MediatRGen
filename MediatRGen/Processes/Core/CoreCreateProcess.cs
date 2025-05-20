@@ -1,5 +1,4 @@
-﻿using MediatRGen.Cli.Helpers;
-using MediatRGen.Cli.States;
+﻿using MediatRGen.Core.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;

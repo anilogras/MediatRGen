@@ -2,7 +2,7 @@
 using MediatRGen.Core.Languages;
 
 
-namespace MediatRGen.Cli
+namespace MediatRGen.Services
 {
     public static class LangHandler
     {

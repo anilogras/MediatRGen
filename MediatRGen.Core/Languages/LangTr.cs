@@ -43,9 +43,6 @@ namespace MediatRGen.Core.Languages
         public string EntityNotFound => "Entity Bulunamadı...";
         public string ServiceCreated => "Servis Oluşturuldu...";
         public string NugetPackagesCreated => "NuGet Paketleri Oluşturuldu...";
-
         public string NameSpaceNotFound => "Namespace Bulunamadı...";
-
-
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Cli.Models
+namespace MediatRGen.Core.Models
 {
     public class ProjectModule
     {

@@ -1,4 +1,4 @@
-﻿namespace MediatRGen.Cli.Helpers
+﻿namespace MediatRGen.Core.Helpers
 {
     public static class QuestionHelper
     {
