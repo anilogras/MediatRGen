@@ -44,5 +44,21 @@ namespace MediatRGen.Core.Languages
         public string ServiceCreated => "Servis Oluşturuldu...";
         public string NugetPackagesCreated => "NuGet Paketleri Oluşturuldu...";
         public string NameSpaceNotFound => "Namespace Bulunamadı...";
+        public string NugetPackageDeleted => "Nuget Paketleri Silindi";
+        public string DirectoryDeleted => "Klasör Silindi...";
+        public string DirectoryDeleteError => "Klasör Silme Hatası ....";
+        public string DirectoryCreateError => "Klasör Oluşturulamadı...";
+        public string DirectoryPathError => "Klasör Yolu Bulunamadı...";
+        public string DirectoryPathCreated => "Klasör Yolu Oluşturuldu...";
+        public string FileCreateError => "Dosya Oluşturulurken Hata Oluştu...";
+        public string FileNotFound => "Dosya Bulunamadı...";
+        public string FileReadError => "Dosya Okunamadı...";
+        public string ConfigUpdated => "Config Güncellendi...";
+        public string ConfigUpdateError => "Config Güncellenemedi...";
+        public string FileFounded => "Dosya Bulundu...";
+        public string FileFindError => "Dosya bulunamadı...";
+        public string ClassLibraryCreateError => "Kütüphane Oluşturulamadı...";
+        public string ClassLibraryNameCreated => "Kütüphane Adı Oluşturuldu";
+        public string WebApiCreateError => "Web Api Oluşturulamadı...";
     }
 }

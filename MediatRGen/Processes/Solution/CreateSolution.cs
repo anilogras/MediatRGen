@@ -11,6 +11,7 @@ using MediatRGen.Core.Exceptions;
 using MediatRGen.Core.States;
 using MediatRGen.Core.Helpers;
 using MediatRGen.Core;
+using MediatRGen.Core.Exceptions.FileExceptions;
 
 
 namespace MediatRGen.Cli.Processes.Solution

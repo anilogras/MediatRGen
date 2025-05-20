@@ -59,7 +59,6 @@ namespace MediatRGen.Core.Languages
         public string FileFindError { get; }
         public string ClassLibraryCreateError { get; }
         public string ClassLibraryNameCreated { get; }
-
-
+        public string WebApiCreateError { get; }
     }
 }
