@@ -44,6 +44,22 @@ namespace MediatRGen.Core.Languages
         public string EntityNotFound { get; }
         public string ServiceCreated { get; }
         public string NameSpaceNotFound { get; }
+        public string NugetPackageDeleted { get; }
+        public string DirectoryDeleted { get; }
+        public string DirectoryDeleteError { get; }
+        public string DirectoryCreateError { get; }
+        public string DirectoryPathError { get; }
+        public string DirectoryPathCreated { get; }
+        public string FileCreateError { get; }
+        public string FileNotFound { get; }
+        public string FileReadError { get; }
+        public string ConfigUpdated { get; }
+        public string ConfigUpdateError { get; }
+        public string FileFounded { get; }
+        public string FileFindError { get; }
+        public string ClassLibraryCreateError { get; }
+        public string ClassLibraryNameCreated { get; }
+
 
     }
 }
