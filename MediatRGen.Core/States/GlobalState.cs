@@ -55,7 +55,6 @@ namespace MediatRGen.Core.States
 
         public string ProjectName { get; set; }
 
-        [JsonIgnore]
         public string Lang { get; set; }
 
         [JsonIgnore]
