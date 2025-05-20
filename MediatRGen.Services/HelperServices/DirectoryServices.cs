@@ -38,10 +38,11 @@ namespace MediatRGen.Services.HelperServices
             }
             catch (Exception ex)
             {
-                return new ServiceResult<string>(string.Empty, false, LangHandler.Definitions().DirectoryPathError
-                        + $" {string.Join("\\", paths)} ", new DirectoryException(ex.Message));
+                return new ServiceResult<string>(string.Empty, false, LangHandler.Definitions().DirectoryPathError,
+                    new DirectoryException(ex.Message));
             }
-            return new ServiceResult<string>(_text, true, LangHandler.Definitions().DirectoryPathCreated + $" {_text}");
+
+            return new ServiceResult<string>(_text, true, "");
         }
 
         public static ServiceResult<string> GetCurrentDirectory()
@@ -83,18 +84,6 @@ namespace MediatRGen.Services.HelperServices
             }
 
             return new ServiceResult<bool>(true, true, LangHandler.Definitions().DirectoryDeleted + $" {path}");
-        }
-
-        public static void CreateIsNotExist(string path, string folderName)
-        {
-            string _combinedPath = Path.Combine(path, folderName);
-
-            if (!Directory.Exists(_combinedPath))
-            {
-                Directory.CreateDirectory(_combinedPath);
-                Console.WriteLine(LangHandler.Definitions().FolderCreated + $" {_combinedPath}");
-            }
-
         }
     }
 }
