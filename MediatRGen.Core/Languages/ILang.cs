@@ -8,6 +8,11 @@ namespace MediatRGen.Core.Languages
 {
     public interface ILang
     {
+        public string ReWriteClassError { get; }
+
+        public string ReWriteClass { get; }
+        public string BaseClassSet { get; }
+        public string BaseClassSetError { get; }
         public string InvalidCommandName { get; }
         public string InvalidParameter { get; }
         public string InvalidParamForCreateSolution { get; }
@@ -60,5 +65,10 @@ namespace MediatRGen.Core.Languages
         public string ClassLibraryCreateError { get; }
         public string ClassLibraryNameCreated { get; }
         public string WebApiCreateError { get; }
+        public string ClassCreated { get; }
+        public string ClassCreateError { get; }
+        public string NameSpaceChanged { get; }
+        public string NameSpaceChangeException { get; }
+
     }
 }

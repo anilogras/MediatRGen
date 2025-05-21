@@ -40,7 +40,6 @@ namespace MediatRGen.Services.Base
                     Console.Write(Message);
 
                 throw Error;
-
             }
             else
                 Console.Write(Message);
