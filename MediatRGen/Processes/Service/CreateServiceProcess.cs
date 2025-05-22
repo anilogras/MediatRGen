@@ -43,6 +43,7 @@ namespace MediatRGen.Cli.Processes.Service
 
             DirectoryServices.CreateIsNotExist(_applicationModulePath + _entityPath + _pluralEntityName + "\\Commands");
             DirectoryServices.CreateIsNotExist(_applicationModulePath + _entityPath + _pluralEntityName + "\\Queries");
+            DirectoryServices.CreateIsNotExist(_applicationModulePath + _entityPath + _pluralEntityName + "\\DTOs");
 
             Console.WriteLine(LangHandler.Definitions().ServiceCreated);
         }
