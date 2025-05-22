@@ -1,18 +1,19 @@
 ﻿using CommandLine;
 using MediatRGen.Core.Exceptions;
+using MediatRGen.Core.Helpers;
+using MediatRGen.Services.Base;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Core.Helpers
+namespace MediatRGen.Services.HelperServices
 {
-    public static class ParameterHelper
+    public class ParameterService
     {
 
-        public static T GetParameter<T>(string command, ref T _parameter)
+        public static ServiceResult<T> GetParameter<T>(string command, ref T _parameter)
         where T : class, new()
         {
             try
@@ -20,25 +21,23 @@ namespace MediatRGen.Core.Helpers
                 ParserResult<T> _parsedOptions = Parser.Default.ParseArguments<T>(ArgHelpers.SplitArgs(command));
                 if (_parsedOptions.Errors.Count() != 0)
                 {
-                    throw new Exception("parse Exception");
+                    return new ServiceResult<T>(null, false, LangHandler.Definitions().ParameterParseError);
                 }
-
                 _parameter = _parsedOptions.Value;
-
             }
             catch (Exception exception)
             {
-                throw new ParameterParseException(LangHandler.Definitions().InvalidParamForCreateSolution);
+                return new ServiceResult<T>(null, false, LangHandler.Definitions().InvalidParamForCreateSolution, exception);
             }
 
-            return _parameter;
+            return new ServiceResult<T>(_parameter, true, LangHandler.Definitions().ParameterParsed);
         }
 
-        public static void GetParameterFromConsole(object target, string propertyName, string message)
+        public static ServiceResult GetParameterFromConsole(object target, string propertyName, string message)
         {
             var prop = target.GetType().GetProperty(propertyName);
 
-            if (prop == null || !prop.CanWrite) return;
+            if (prop == null || !prop.CanWrite) return new ServiceResult(false, LangHandler.Definitions().PropertyNotFountOrWeritable);
 
             var currentValue = prop.GetValue(target) as string;
 
@@ -57,6 +56,7 @@ namespace MediatRGen.Core.Helpers
                     }
                 }
             }
+            return new ServiceResult(false, LangHandler.Definitions().PropertySetted);
         }
 
 

@@ -1,15 +1,15 @@
-﻿using System;
+﻿using MediatRGen.Services.Base;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Core.Helpers
+namespace MediatRGen.Services.HelperServices
 {
-    public class ArgHelpers
+    public class ArgsService
     {
-        public static string[] SplitArgs(string command)
+        public static ServiceResult<string[]> SplitArgs(string command)
         {
             List<string> parsedValue = new List<string>();
             int index = 0;
@@ -53,7 +53,10 @@ namespace MediatRGen.Core.Helpers
                 }
             }
 
-            return parsedValue.Where(x => x != "").ToList().ToArray();
+
+            var result = parsedValue.Where(x => x != "").ToList().ToArray();
+
+            return new ServiceResult<string[]>(result, true, LangHandler.Definitions().ArgsSplited);
 
         }
     }

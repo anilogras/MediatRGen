@@ -7,6 +7,41 @@ using System.Threading.Tasks;
 
 namespace MediatRGen.Services.Base
 {
+    public class  ServiceResult
+    {
+        public bool Status { get; set; }
+        public string Message { get; set; }
+        public Exception? Error { get; set; }
+
+        public ServiceResult(bool status, string message)
+        {
+            Status = status;
+            Message = message;
+            InvokeResult();
+        }
+
+        public ServiceResult( bool status, string message, Exception? error)
+        {
+            Status = status;
+            Message = message;
+            Error = error;
+            InvokeResult();
+        }
+
+        private void InvokeResult()
+        {
+            if (Error != null)
+            {
+                if (Message is not "")
+                    Console.Write(Message);
+
+                throw Error;
+            }
+            else
+                Console.Write(Message);
+        }
+    }
+
     public class ServiceResult<T>
     {
 

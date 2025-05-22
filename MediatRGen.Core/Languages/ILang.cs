@@ -8,6 +8,11 @@ namespace MediatRGen.Core.Languages
 {
     public interface ILang
     {
+        public string ArgsSplited { get; }
+        public string ParameterParseError { get; }
+        public string ParameterParsed { get; }
+        public string PropertySetted { get; }
+        public string PropertyNotFountOrWeritable { get; }
         public string ProcessInvoked { get; }
         public string ProcessInvokeError { get; }
         public string ClassLibraryBuild { get; }

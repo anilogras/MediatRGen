@@ -60,5 +60,22 @@ namespace MediatRGen.Core.Languages
         public string ClassLibraryCreateError => "Kütüphane Oluşturulamadı...";
         public string ClassLibraryNameCreated => "Kütüphane Adı Oluşturuldu";
         public string WebApiCreateError => "Web Api Oluşturulamadı...";
+        public string ArgsSplited => "Args. Parse Edildi...";
+        public string ParameterParseError =>"Parametre Parse İşleminde Hata Oluştu...";
+        public string ParameterParsed => "Parametreler Parse Edildi...";
+        public string PropertySetted => "Property Set Edildi...";
+        public string PropertyNotFountOrWeritable => "Property Bulunamadı veya Set Edilebilir Değil...";
+        public string ProcessInvoked => "İşlem Çalıştırıldı...";
+        public string ProcessInvokeError => "İşlem Çalıştırılmasında Hata Oluştu";
+        public string ClassLibraryBuild => "Class Library Derlendi...";
+        public string ReWriteClassError => "Class Güncellenemedi...";
+        public string ClassLibraryBuildError => "Class Library Derlenemedi...";
+        public string ReWriteClass => "Class Güncellendi...";
+        public string BaseClassSet => "Base Class Set Edildi...";
+        public string BaseClassSetError => "Base Class Implementasyonunda Hata oluştu...";
+        public string ClassCreated => "Class Oluşturuldu...";
+        public string ClassCreateError => "Class Oluşturulamadı...";
+        public string NameSpaceChanged => "Namespace Güncellendi...";
+        public string NameSpaceChangeException => "Namespace Değiştirilken Hata Oluştu...";
     }
 }
