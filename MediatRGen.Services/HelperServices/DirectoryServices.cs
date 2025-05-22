@@ -40,7 +40,7 @@ namespace MediatRGen.Services.HelperServices
 
         public static ServiceResult<string> GetCurrentDirectory()
         {
-            return new ServiceResult<string>(".\\DENSOL\\", true, "");
+            return new ServiceResult<string>(".\\", true, "");
         }
 
         public static ServiceResult<bool> CreateIsNotExist(string path)
@@ -52,6 +52,8 @@ namespace MediatRGen.Services.HelperServices
                 if (!Directory.Exists(_combinedPath))
                 {
                     Directory.CreateDirectory(_combinedPath);
+                    return new ServiceResult<bool>(true, true, LangHandler.Definitions().DirectoryCreated + $" {_combinedPath}");
+
                 }
             }
             catch (Exception ex)
@@ -59,7 +61,8 @@ namespace MediatRGen.Services.HelperServices
                 return new ServiceResult<bool>(false, false, LangHandler.Definitions().DirectoryCreateError + $" {path} ", new DirectoryException(ex.Message));
             }
 
-            return new ServiceResult<bool>(true, true, LangHandler.Definitions().DirectoryCreated + $" {_combinedPath}");
+            return new ServiceResult<bool>(true, true, "");
+
         }
 
         public static ServiceResult<bool> Delete(string path)

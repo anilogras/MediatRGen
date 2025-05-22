@@ -1,17 +1,9 @@
 ﻿using MediatRGen.Cli.Processes.Base;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MediatRGen.Cli.Processes.Parameters.Solutions;
-using MediatRGen.Core.Exceptions;
-using MediatRGen.Core.States;
-using MediatRGen.Core.Helpers;
-using MediatRGen.Core;
+using MediatRGen.Cli.States;
 using MediatRGen.Core.Exceptions.FileExceptions;
+using MediatRGen.Services;
+using MediatRGen.Services.HelperServices;
 
 
 namespace MediatRGen.Cli.Processes.Solution
@@ -24,7 +16,7 @@ namespace MediatRGen.Cli.Processes.Solution
 
         public CreateSolutionProcess(string command)
         {
-            ParameterHelper.GetParameter<SolutionCreateParameter>(command, ref _parameter);
+            ParameterService.GetParameter<SolutionCreateParameter>(command, ref _parameter);
             GetParameters();
             GetPathFromCommand();
             Execute();
@@ -32,28 +24,31 @@ namespace MediatRGen.Cli.Processes.Solution
 
         private void GetParameters()
         {
-            ParameterHelper.GetParameterFromConsole(_parameter, "ProjectName", LangHandler.Definitions().EnterProjectName);
+            ParameterService.GetParameterFromConsole(_parameter, "ProjectName", LangHandler.Definitions().EnterProjectName);
         }
 
         private void Execute()
         {
 
-            DirectoryHelpers.CreateIsNotExist(DirectoryHelpers.GetCurrentDirectory(), _parameter.ProjectName);
+            DirectoryServices.CreateIsNotExist(DirectoryServices.GetCurrentDirectory().Value + _parameter.ProjectName);
             string _directory = _parameter.Directory;
 
-            string _combinedPath = DirectoryHelpers.GetPath(_directory, _parameter.ProjectName);
+            string _combinedPath = DirectoryServices.GetPath(_directory, _parameter.ProjectName).Value;
 
 
-            if (FileHelpers.CheckFile(_combinedPath, _parameter.ProjectName + ".sln") == true)
+            if (FileService.CheckFile(_combinedPath, _parameter.ProjectName + ".sln").Value == true)
             {
                 throw new FileException(LangHandler.Definitions().ProjectExist);
             }
 
             string commandResult = @$"dotnet new sln -n {_parameter.ProjectName} --output ""{_combinedPath}""";
 
-            string res = SystemProcessHelpers.InvokeCommand(commandResult);
+            string res = SystemProcessService.InvokeCommand(commandResult).Value;
+
             Console.WriteLine(res);
+
             Console.WriteLine($"cd ./{_parameter.ProjectName}");
+
             if (res.IndexOf("Error") == -1)
                 Console.WriteLine(LangHandler.Definitions().YouCanWriteCode);
 
@@ -66,7 +61,7 @@ namespace MediatRGen.Cli.Processes.Solution
 
         private static void CreateFirstConfigFile(string _combinedPath, object firstConfig)
         {
-            FileHelpers.Create(_combinedPath, GlobalState.ConfigFileName, firstConfig);
+            FileService.Create(_combinedPath, GlobalState.ConfigFileName, firstConfig);
         }
 
         private void GetPathFromCommand()
@@ -75,7 +70,7 @@ namespace MediatRGen.Cli.Processes.Solution
 
             if (_parameter.Directory == "." || string.IsNullOrEmpty(_parameter.Directory))
             {
-                _directory = DirectoryHelpers.GetCurrentDirectory();
+                _directory = DirectoryServices.GetCurrentDirectory().Value;
             }
             else
                 _directory = _parameter.Directory;

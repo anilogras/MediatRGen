@@ -1,16 +1,10 @@
 ﻿using MediatRGen.Cli.Processes.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using MediatRGen.Cli.Processes.Parameters.Modules;
+using MediatRGen.Cli.States;
 using MediatRGen.Core.Exceptions;
-using MediatRGen.Core.States;
-using MediatRGen.Core.Helpers;
 using MediatRGen.Core.Models;
-using MediatRGen.Core;
+using MediatRGen.Services;
+using MediatRGen.Services.HelperServices;
 
 
 namespace MediatRGen.Cli.Processes.Module
@@ -23,8 +17,8 @@ namespace MediatRGen.Cli.Processes.Module
 
         public CreateModuleProcess(string command)
         {
-            ParameterHelper.GetParameter<ModuleCreateParameter>(command, ref _parameter);
-            ParameterHelper.GetParameterFromConsole(_parameter, "ModuleName", LangHandler.Definitions().EnterModuleName);
+            ParameterService.GetParameter<ModuleCreateParameter>(command, ref _parameter);
+            ParameterService.GetParameterFromConsole(_parameter, "ModuleName", LangHandler.Definitions().EnterModuleName);
             Execute();
         }
 
@@ -32,21 +26,21 @@ namespace MediatRGen.Cli.Processes.Module
         {
 
             CheckModulNameIsExist();
-            DirectoryHelpers.CreateIsNotExist(DirectoryHelpers.GetCurrentDirectory() + "src", _parameter.ModuleName);
+            DirectoryServices.CreateIsNotExist(DirectoryServices.GetCurrentDirectory().Value + "src\\" + _parameter.ModuleName);
 
-            ClassLibraryHelpers.Create(_parameter.ModuleName + "." + "Domain", DirectoryHelpers.GetPath(_parameter.ModuleName));
-            ClassLibraryHelpers.Create(_parameter.ModuleName + "." + "Application", DirectoryHelpers.GetPath(_parameter.ModuleName));
-            ClassLibraryHelpers.Create(_parameter.ModuleName + "." + "Infrastructure", DirectoryHelpers.GetPath(_parameter.ModuleName));
-            WebApiHelper.Create(_parameter.ModuleName + "." + "API", DirectoryHelpers.GetPath(_parameter.ModuleName));
+            ClassLibraryService.Create(_parameter.ModuleName + "." + "Domain", DirectoryServices.GetPath(_parameter.ModuleName).Value, GlobalState.Instance.ProjectName, GlobalState.Instance.SolutionName);
+            ClassLibraryService.Create(_parameter.ModuleName + "." + "Application", DirectoryServices.GetPath(_parameter.ModuleName).Value, GlobalState.Instance.ProjectName, GlobalState.Instance.SolutionName);
+            ClassLibraryService.Create(_parameter.ModuleName + "." + "Infrastructure", DirectoryServices.GetPath(_parameter.ModuleName).Value, GlobalState.Instance.ProjectName, GlobalState.Instance.SolutionName);
+            WebApiService.Create(_parameter.ModuleName + "." + "API", DirectoryServices.GetPath(_parameter.ModuleName).Value, GlobalState.Instance.ProjectName, GlobalState.Instance.SolutionName);
 
-            SystemProcessHelpers.BuildProject();
+            SystemProcessService.BuildProject(GlobalState.Instance.ProjectName);
 
             GlobalState.Instance.Modules.Add(new ProjectModule()
             {
                 Name = _parameter.ModuleName
             });
 
-            FileHelpers.UpdateConfig();
+            FileService.UpdateConfig(GlobalState.ConfigFileName, GlobalState.Instance);
 
             Console.WriteLine(_parameter.ModuleName + LangHandler.Definitions().ModuleCreated);
         }

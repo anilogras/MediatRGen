@@ -51,7 +51,7 @@ namespace MediatRGen.Services.HelperServices
 
             var result = parsedValue.Where(x => x != "").ToList().ToArray();
 
-            return new ServiceResult<string[]>(result, true, LangHandler.Definitions().ArgsSplited);
+            return new ServiceResult<string[]>(result, true, "");
 
         }
     }

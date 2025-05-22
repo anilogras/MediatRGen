@@ -1,16 +1,11 @@
 ﻿using MediatRGen.Cli.Processes.Config;
 using MediatRGen.Cli.Processes.Module;
-using MediatRGen.Cli.Processes.Solution;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatRGen.Cli.Processes.Service;
 using MediatRGen.Cli.Processes.Nuget;
+using MediatRGen.Cli.Processes.Service;
+using MediatRGen.Cli.Processes.Solution;
 using MediatRGen.Core.Exceptions;
-using MediatRGen.Core.Helpers;
-using MediatRGen.Core;
+using MediatRGen.Services;
+using MediatRGen.Services.HelperServices;
 
 
 namespace MediatRGen.Cli.Processes.Base
@@ -20,7 +15,7 @@ namespace MediatRGen.Cli.Processes.Base
 
         public static BaseProcess ProcessHandler(string command)
         {
-            string[] commandArgs = ArgHelpers.SplitArgs(command);
+            string[] commandArgs = ArgsService.SplitArgs(command).Value;
             //Validator.ValidateCommandBeforeProcess(commandArgs);
 
             if (string.IsNullOrWhiteSpace(command))

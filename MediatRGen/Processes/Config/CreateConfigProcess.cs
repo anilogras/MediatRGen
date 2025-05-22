@@ -1,17 +1,10 @@
 ﻿using MediatRGen.Cli.Processes.Base;
 using MediatRGen.Cli.Processes.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using MediatRGen.Cli.Processes.Nuget;
-using MediatRGen.Core.Exceptions;
-using MediatRGen.Core.States;
-using MediatRGen.Core.Helpers;
-using MediatRGen.Core;
+using MediatRGen.Cli.States;
+using MediatRGen.Core.Exceptions.FileExceptions;
+using MediatRGen.Services;
+using MediatRGen.Services.HelperServices;
 
 
 namespace MediatRGen.Cli.Processes.Config
@@ -37,7 +30,7 @@ namespace MediatRGen.Cli.Processes.Config
             ModuleSystemActive();
             GatewayActive();
 
-            FileHelpers.UpdateConfig();
+            FileService.UpdateConfig(GlobalState.ConfigFileName, GlobalState.Instance);
 
             CreateCoreFiles();
 
@@ -46,7 +39,7 @@ namespace MediatRGen.Cli.Processes.Config
 
         private void ModuleSystemActive()
         {
-            GlobalState.Instance.UseModule = QuestionHelper.YesNoQuestion(LangHandler.Definitions().ModuleActive);
+            GlobalState.Instance.UseModule = QuestionService.YesNoQuestion(LangHandler.Definitions().ModuleActive).Value;
         }
 
         private void GatewayActive()
@@ -54,7 +47,7 @@ namespace MediatRGen.Cli.Processes.Config
             if (GlobalState.Instance.UseModule == true)
             {
                 Console.WriteLine(LangHandler.Definitions().UseOchelot);
-                GlobalState.Instance.UseGateway = QuestionHelper.YesNoQuestion(LangHandler.Definitions().GatewayActive);
+                GlobalState.Instance.UseGateway = QuestionService.YesNoQuestion(LangHandler.Definitions().GatewayActive).Value;
             }
         }
 

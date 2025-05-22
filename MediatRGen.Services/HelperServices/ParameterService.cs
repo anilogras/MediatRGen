@@ -11,7 +11,7 @@ namespace MediatRGen.Services.HelperServices
         {
             try
             {
-                ParserResult<T> _parsedOptions = Parser.Default.ParseArguments<T>(ArgHelpers.SplitArgs(command));
+                ParserResult<T> _parsedOptions = Parser.Default.ParseArguments<T>(ArgsService.SplitArgs(command).Value);
                 if (_parsedOptions.Errors.Count() != 0)
                 {
                     return new ServiceResult<T>(null, false, LangHandler.Definitions().ParameterParseError);
@@ -23,7 +23,7 @@ namespace MediatRGen.Services.HelperServices
                 return new ServiceResult<T>(null, false, LangHandler.Definitions().InvalidParamForCreateSolution, exception);
             }
 
-            return new ServiceResult<T>(_parameter, true, LangHandler.Definitions().ParameterParsed);
+            return new ServiceResult<T>(_parameter, true, "");
         }
 
         public static ServiceResult GetParameterFromConsole(object target, string propertyName, string message)

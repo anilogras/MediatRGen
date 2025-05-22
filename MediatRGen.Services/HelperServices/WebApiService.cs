@@ -1,11 +1,10 @@
-﻿using MediatRGen.Core.States;
-using MediatRGen.Services.Base;
+﻿using MediatRGen.Services.Base;
 
 namespace MediatRGen.Services.HelperServices
 {
     public class WebApiService
     {
-        public static ServiceResult<bool> Create(string name, string path)
+        public static ServiceResult<bool> Create(string name, string path, string projectName, string solutionName)
         {
 
             try
@@ -13,13 +12,12 @@ namespace MediatRGen.Services.HelperServices
                 string _directory = DirectoryServices.GetPath(DirectoryServices.GetCurrentDirectory().Value, "src").Value;
                 DirectoryServices.CreateIsNotExist(_directory);
 
-                name = CreateClassLibraryName(name).Value;
+                name = CreateClassLibraryName(name, solutionName).Value;
                 path = DirectoryServices.GetCurrentDirectory().Value + "src/" + path;
 
-                string res1 = SystemProcessHelpers.InvokeCommand($"dotnet new webapi -n {name} -o {path}/{name}");
-                Console.WriteLine(res1);
-                string res2 = SystemProcessHelpers.InvokeCommand($"dotnet sln {DirectoryServices.GetCurrentDirectory().Value}{GlobalState.Instance.ProjectName}.sln add {path}/{name}/{name}.csproj");
-                Console.WriteLine(res2);
+                SystemProcessService.InvokeCommand($"dotnet new webapi -n {name} -o {path}/{name}");
+
+                SystemProcessService.InvokeCommand($"dotnet sln {DirectoryServices.GetCurrentDirectory().Value}{projectName}.sln add {path}/{name}/{name}.csproj");
 
                 return new ServiceResult<bool>(true, true, LangHandler.Definitions().WebApiCreated + $" {name}");
             }
@@ -31,9 +29,9 @@ namespace MediatRGen.Services.HelperServices
 
         }
 
-        private static ServiceResult<string> CreateClassLibraryName(string moduleName)
+        private static ServiceResult<string> CreateClassLibraryName(string moduleName, string solutionName)
         {
-            return new ServiceResult<string>(GlobalState.Instance.SolutionName + "." + moduleName, true, "");
+            return new ServiceResult<string>(solutionName + "." + moduleName, true, "");
         }
     }
 }

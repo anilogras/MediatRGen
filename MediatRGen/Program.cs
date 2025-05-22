@@ -4,11 +4,12 @@ using MediatRGen.Cli.Processes.Base;
 using MediatRGen.Core.Exceptions;
 using MediatRGen.Core.Languages;
 using MediatRGen.Core;
+using MediatRGen.Services;
 
 //args = ["create-config", "-n", "DenemeSolution" , "-d" , "\"d:/creator/ddddd\""];
 //dotnet publish -c Release -o C:\MediatRGen\cli
 
-bool type = true;
+bool type = false;
 
 if (type)
 {

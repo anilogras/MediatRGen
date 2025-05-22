@@ -1,10 +1,5 @@
-﻿using MediatRGen.Core.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatRGen.Cli.States;
+using MediatRGen.Services.HelperServices;
 
 namespace MediatRGen.Cli.Processes.Core
 {
@@ -12,8 +7,8 @@ namespace MediatRGen.Cli.Processes.Core
     {
         public CoreCreateProcess()
         {
-            ClassLibraryHelpers.Create("Core.Persistence", "Core");
-            SystemProcessHelpers.BuildProject();
+            ClassLibraryService.Create("Core.Persistence", "Core", GlobalState.Instance.ProjectName, GlobalState.Instance.SolutionName);
+            SystemProcessService.BuildProject(GlobalState.Instance.ProjectName);
         }
 
     }

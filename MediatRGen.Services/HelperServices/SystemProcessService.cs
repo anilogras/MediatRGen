@@ -1,5 +1,4 @@
 ﻿using MediatRGen.Core.Exceptions;
-using MediatRGen.Core.States;
 using MediatRGen.Services.Base;
 using System.Diagnostics;
 
@@ -38,11 +37,11 @@ namespace MediatRGen.Services.HelperServices
             }
 
         }
-        public static ServiceResult<bool> BuildProject()
+        public static ServiceResult<bool> BuildProject(string projectName)
         {
             try
             {
-                string res3 = InvokeCommand($"dotnet build {DirectoryServices.GetCurrentDirectory().Value}{GlobalState.Instance.ProjectName}.sln").Value;
+                string res3 = InvokeCommand($"dotnet build {DirectoryServices.GetCurrentDirectory().Value}{projectName}.sln").Value;
                 return new ServiceResult<bool>(true, true, LangHandler.Definitions().ClassLibraryBuild + "\n" + res3 , null);
             }
             catch (Exception ex)

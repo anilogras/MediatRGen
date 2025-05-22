@@ -1,25 +1,22 @@
 ﻿using MediatRGen.Core.Exceptions;
-using MediatRGen.Core.States;
 using MediatRGen.Services.Base;
 
 namespace MediatRGen.Services.HelperServices
 {
     public static class ClassLibraryService
     {
-        public static ServiceResult<bool> Create(string name, string path)
+        public static ServiceResult<bool> Create(string name, string path, string projectName, string solutionName)
         {
             try
             {
                 string _srcPath = DirectoryServices.GetPath(DirectoryServices.GetCurrentDirectory().Value, "src").Value;
                 DirectoryServices.CreateIsNotExist(_srcPath);
-                name = CreateClassLibraryName(name).Value;
+                name = CreateClassLibraryName(name, solutionName).Value;
                 path = DirectoryServices.GetCurrentDirectory().Value + "src/" + path;
 
-                string res1 = SystemProcessHelpers.InvokeCommand($"dotnet new classlib -n {name} -o {path}/{name}");
-                Console.WriteLine(res1);
+                SystemProcessService.InvokeCommand($"dotnet new classlib -n {name} -o {path}/{name}");
 
-                string res2 = SystemProcessHelpers.InvokeCommand($"dotnet sln {DirectoryServices.GetCurrentDirectory().Value}{GlobalState.Instance.ProjectName}.sln add {path}/{name}/{name}.csproj");
-                Console.WriteLine(res2);
+                SystemProcessService.InvokeCommand($"dotnet sln {DirectoryServices.GetCurrentDirectory().Value}{projectName}.sln add {path}/{name}/{name}.csproj");
 
                 return new ServiceResult<bool>(true, true, LangHandler.Definitions().ClassLibraryCreated, null);
 
@@ -30,9 +27,9 @@ namespace MediatRGen.Services.HelperServices
             }
         }
 
-        private static ServiceResult<string> CreateClassLibraryName(string moduleName)
+        private static ServiceResult<string> CreateClassLibraryName(string moduleName, string solutionName)
         {
-            return new ServiceResult<string>(GlobalState.Instance.SolutionName + "." + moduleName, true, LangHandler.Definitions().ClassLibraryNameCreated);
+            return new ServiceResult<string>(solutionName + "." + moduleName, true, LangHandler.Definitions().ClassLibraryNameCreated);
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MediatRGen.Services.Base
 {
-    public class  ServiceResult
+    public class ServiceResult
     {
         public bool Status { get; set; }
         public string Message { get; set; }
@@ -20,7 +20,7 @@ namespace MediatRGen.Services.Base
             InvokeResult();
         }
 
-        public ServiceResult( bool status, string message, Exception? error)
+        public ServiceResult(bool status, string message, Exception? error)
         {
             Status = status;
             Message = message;
@@ -33,12 +33,15 @@ namespace MediatRGen.Services.Base
             if (Error != null)
             {
                 if (Message is not "")
-                    Console.Write(Message);
+                    Console.WriteLine(Message);
 
                 throw Error;
             }
             else
-                Console.Write(Message);
+            {
+                if (Message is not "")
+                    Console.WriteLine(Message);
+            }
         }
     }
 
@@ -72,12 +75,15 @@ namespace MediatRGen.Services.Base
             if (Error != null)
             {
                 if (Message is not "")
-                    Console.Write(Message);
+                    Console.WriteLine(Message);
 
                 throw Error;
             }
             else
-                Console.Write(Message);
+            {
+                if (Message is not "")
+                    Console.WriteLine(Message);
+            }
         }
 
     }

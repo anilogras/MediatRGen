@@ -1,13 +1,8 @@
-﻿using MediatRGen.Core.Helpers;
-using MediatRGen.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using MediatRGen.Core.Models;
+using MediatRGen.Services.HelperServices;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
-namespace MediatRGen.Core.States
+namespace MediatRGen.Cli.States
 {
     public class GlobalState
     {
@@ -30,14 +25,14 @@ namespace MediatRGen.Core.States
 
                 if (_instance == null)
                 {
-                    string _configPath = DirectoryHelpers.GetPath(DirectoryHelpers.GetCurrentDirectory(), ConfigFileName);
-                    bool _fileExist = FileHelpers.CheckFile(DirectoryHelpers.GetCurrentDirectory(), ConfigFileName);
+                    string _configPath = DirectoryServices.GetPath(DirectoryServices.GetCurrentDirectory().Value, ConfigFileName).Value;
+                    bool _fileExist = FileService.CheckFile(DirectoryServices.GetCurrentDirectory().Value, ConfigFileName).Value;
 
                     if (_fileExist == false)
                         _instance = new GlobalState();
                     else
                     {
-                        string _file = FileHelpers.Get(_configPath);
+                        string _file = FileService.Get(_configPath).Value;
                         _instance = System.Text.Json.JsonSerializer.Deserialize<GlobalState>(_file);
                     }
 
@@ -48,8 +43,8 @@ namespace MediatRGen.Core.States
 
         public static void UpdateInstance()
         {
-            string _configPath = DirectoryHelpers.GetPath(DirectoryHelpers.GetCurrentDirectory(), ConfigFileName);
-            string _file = FileHelpers.Get(_configPath);
+            string _configPath = DirectoryServices.GetPath(DirectoryServices.GetCurrentDirectory().Value, ConfigFileName).Value;
+            string _file = FileService.Get(_configPath).Value;
             _instance = System.Text.Json.JsonSerializer.Deserialize<GlobalState>(_file);
         }
 

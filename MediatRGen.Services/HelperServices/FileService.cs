@@ -1,5 +1,4 @@
 ﻿using MediatRGen.Core.Exceptions.FileExceptions;
-using MediatRGen.Core.States;
 using MediatRGen.Services.Base;
 using System.Text;
 using System.Text.Json;
@@ -91,12 +90,12 @@ namespace MediatRGen.Services.HelperServices
             }
         }
 
-        public static ServiceResult<bool> UpdateConfig()
+        public static ServiceResult<bool> UpdateConfig(string configFileName , object stateInstance)
         {
 
             try
             {
-                string _configPath = DirectoryServices.GetPath(DirectoryServices.GetCurrentDirectory().Value, GlobalState.ConfigFileName).Value;
+                string _configPath = DirectoryServices.GetPath(DirectoryServices.GetCurrentDirectory().Value, configFileName).Value;
 
                 string? _file = Get(_configPath).Value;
 
@@ -107,7 +106,7 @@ namespace MediatRGen.Services.HelperServices
 
                 File.Delete(_configPath);
 
-                Create(DirectoryServices.GetCurrentDirectory().Value, GlobalState.ConfigFileName, GlobalState.Instance);
+                Create(DirectoryServices.GetCurrentDirectory().Value, configFileName, stateInstance);
 
                 return new ServiceResult<bool>(true, true, LangHandler.Definitions().ConfigUpdated, null);
             }

@@ -1,6 +1,6 @@
 ﻿using MediatRGen.Cli.Processes.Base;
 using MediatRGen.Cli.Processes.Core;
-using MediatRGen.Core.States;
+using MediatRGen.Cli.States;
 using System;
 using System.Collections.Generic;
 using System.Linq;

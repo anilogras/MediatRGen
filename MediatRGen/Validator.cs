@@ -1,6 +1,7 @@
-﻿using MediatRGen.Core;
+﻿using MediatRGen.Cli.States;
+using MediatRGen.Core;
 using MediatRGen.Core.Exceptions;
-using MediatRGen.Core.States;
+using MediatRGen.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
