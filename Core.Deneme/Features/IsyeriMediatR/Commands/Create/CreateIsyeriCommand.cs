@@ -1,4 +1,5 @@
-﻿using Core.Deneme.Features.IsyeriMediatR.Results;
+﻿using Core.Application.MediatRBase.Commads.Create;
+using Core.Deneme.Features.IsyeriMediatR.Results;
 using Core.Persistence.Repository;
 using MediatR;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Core.Deneme.Features.IsyeriMediatR.Commands.Create
 {
-    public class CreateIsyeriCommand : IRequest<CreateIsyeriResult>
+    public class CreateIsyeriCommand : BaseCreateCommand<CreateIsyeriResult>
     {
         public string Name { get; set; }
     }

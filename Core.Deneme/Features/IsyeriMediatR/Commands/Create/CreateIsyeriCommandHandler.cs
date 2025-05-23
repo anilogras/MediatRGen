@@ -1,5 +1,7 @@
-﻿using Core.Application.MediatRBase.Commads;
+﻿using AutoMapper;
+using Core.Application.MediatRBase.Commads.Create;
 using Core.Deneme.Features.IsyeriMediatR.Results;
+using Core.Persistence.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +12,9 @@ namespace Core.Deneme.Features.IsyeriMediatR.Commands.Create
 {
     public class CreateIsyeriCommandHandler : BaseCreateCommandHandler<CreateIsyeriCommand, CreateIsyeriResult, Isyeri>
     {
-
+        public CreateIsyeriCommandHandler(IRepository<Isyeri> repository , IMapper mapper)
+            : base(repository, mapper)
+        {
+        }
     }
 }
