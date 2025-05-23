@@ -39,13 +39,31 @@ namespace MediatRGen.Cli.Processes.Service
             CreateBusinessRules(_entityPath, _applicationModulePath, _pluralEntityName);
             CreateConstants(_entityPath, _applicationModulePath, _pluralEntityName);
             CreateMapping(_entityPath, _applicationModulePath, _pluralEntityName);
+            CreateCommands(_entityPath, _applicationModulePath, _pluralEntityName);
 
-
-            DirectoryServices.CreateIsNotExist(_applicationModulePath + _entityPath + _pluralEntityName + "\\Commands");
             DirectoryServices.CreateIsNotExist(_applicationModulePath + _entityPath + _pluralEntityName + "\\Queries");
             DirectoryServices.CreateIsNotExist(_applicationModulePath + _entityPath + _pluralEntityName + "\\DTOs");
 
             Console.WriteLine(LangHandler.Definitions().ServiceCreated);
+        }
+
+        private void CreateCommands(string _entityPath, string _applicationModulePath, string _pluralEntityName)
+        {
+            string _applicationCommandsDirectoryPath = _applicationModulePath + _entityPath + _pluralEntityName + "\\Commands";
+            DirectoryServices.CreateIsNotExist(_applicationCommandsDirectoryPath);
+
+            CreateBaseCommand(_entityPath, _applicationModulePath, _pluralEntityName);
+
+            string _businessRulesClassName = $"{_parameter.EntityName}BusinessRules";
+            SystemProcessService.InvokeCommand($"dotnet new class -n {_businessRulesClassName} -o {_applicationCommandsDirectoryPath}");
+
+            ClassService.ChangeNameSpace(DirectoryServices.GetPath(_applicationCommandsDirectoryPath, _businessRulesClassName).Value, _applicationCommandsDirectoryPath);
+            ClassService.SetBaseInheritance(DirectoryServices.GetPath(_applicationCommandsDirectoryPath, _businessRulesClassName).Value, "DenemeBaseModel");
+        }
+
+        private void CreateBaseCommand(string _entityPath, string _applicationModulePath, string _pluralEntityName)
+        { 
+            
         }
 
         private void CreateBusinessRules(string _entityPath, string _applicationModulePath, string _pluralEntityName)
