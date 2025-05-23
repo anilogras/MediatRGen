@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Application.MediatRBase.Queries
+namespace Core.Application.MediatRBase.Queries.GetById
 {
     public class GetByIdBaseCommand<TRequest, TResponse, TEntity> : IRequestHandler<TRequest, TResponse>
         where TRequest : IRequest<TResponse>

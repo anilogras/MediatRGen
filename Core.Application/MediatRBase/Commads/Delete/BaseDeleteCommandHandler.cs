@@ -1,19 +1,28 @@
-﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using Core.Persistence.Repository;
+using MediatR;
 
 namespace Core.Application.MediatRBase.Commads.Delete
 {
     public class BaseDeleteCommandHandler<TRequest, TResponse, TEntity> : IRequestHandler<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
-        where TEntity : class, new()
+        where TResponse : IResponse
+        where TEntity : class, IEntity, new()
     {
-        public Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken)
+        private readonly IRepository<TEntity> _repository;
+        private readonly IMapper _mapper;
+
+        public BaseDeleteCommandHandler(IRepository<TEntity> repository, IMapper mapper)
         {
-            throw new NotImplementedException();
+            _repository = repository;
+            _mapper = mapper;
+        }
+
+        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken)
+        {
+            TEntity entity = _mapper.Map<TEntity>(request);
+            var result = await _repository.DeleteAsync(entity);
+            return _mapper.Map<TResponse>(result);
         }
     }
 }

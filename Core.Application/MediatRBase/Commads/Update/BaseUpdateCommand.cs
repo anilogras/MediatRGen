@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Core.Application.MediatRBase.Commads.Update
 {
     public class BaseUpdateCommand<TResponse> : IRequest<TResponse>
-        where TResponse : class, new()
+        where TResponse : IResponse
     {
     }
 }

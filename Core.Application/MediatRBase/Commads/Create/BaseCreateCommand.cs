@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Core.Application.MediatRBase.Commads.Create
 {
     public class BaseCreateCommand<TResponse> : IRequest<TResponse>, ICreateRequest
-        where TResponse : class, new()
+        where TResponse : IResponse
     {
     }
 }

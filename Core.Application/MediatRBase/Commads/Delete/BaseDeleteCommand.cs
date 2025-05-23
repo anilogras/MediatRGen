@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Core.Application.MediatRBase.Commads.Delete
 {
     public class BaseDeleteCommand<TResponse> : IRequest<TResponse>
-        where TResponse : class , new()
+        where TResponse : IResponse
     {
     }
 }
