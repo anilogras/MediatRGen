@@ -1,12 +1,6 @@
 ﻿using AutoMapper;
-using Core.Application.Pipelines.CreateRequestSetProperty;
 using Core.Persistence.Repository;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Core.Application.MediatRBase.Commads.Create
 {
