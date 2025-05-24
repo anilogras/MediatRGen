@@ -1,5 +1,4 @@
-﻿using Core.Application.ASDDSS;
-using MediatR;
+﻿using MediatR;
 
 namespace Core.Application.MediatRBase.Commands.Delete
 {
