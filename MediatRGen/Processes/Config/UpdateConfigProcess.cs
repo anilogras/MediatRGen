@@ -13,7 +13,7 @@ namespace MediatRGen.Cli.Processes.Config
     {
         public UpdateConfigProcess()
         {
-            new CoreCreateProcess();
+            new CreateConfigProcess();
             GlobalState.UpdateInstance();
         }
     }

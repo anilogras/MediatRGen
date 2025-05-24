@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace MediatRGen.Services.HelperServices
 {
-    public class FileService
+    public  class FileService
     {
         public static ServiceResult<bool> Create(string path, string fileName, string content)
         {
@@ -120,25 +120,31 @@ namespace MediatRGen.Services.HelperServices
         {
             try
             {
-                foreach (var file in Directory.GetFiles(directory))
-                {
-                    if (Path.GetFileName(file).Equals(targetFile, StringComparison.OrdinalIgnoreCase))
-                        return new ServiceResult<string>(file, true, "");
-                }
-
-                foreach (var dir in Directory.GetDirectories(directory))
-                {
-                    string found = FindFileRecursive(dir, targetFile).Value;
-                    if (found != null)
-                        return new ServiceResult<string>(found, true, "");
-                }
-
-                return new ServiceResult<string>(string.Empty, false, LangHandler.Definitions().FileNotFound, new FileException(LangHandler.Definitions().FileNotFound));
+                string _searchResult = FindFile(directory, targetFile);
+                return new ServiceResult<string>(_searchResult, false, LangHandler.Definitions().FileFounded);
             }
             catch (Exception ex)
             {
                 return new ServiceResult<string>(string.Empty, false, LangHandler.Definitions().FileNotFound, new FileException(ex.Message));
             }
+        }
+
+        private static string FindFile(string directory, string targetFile)
+        {
+            foreach (var file in Directory.GetFiles(directory))
+            {
+                if (Path.GetFileName(file).Equals(targetFile, StringComparison.OrdinalIgnoreCase))
+                    return file;
+            }
+
+            foreach (var dir in Directory.GetDirectories(directory))
+            {
+                string found = FindFile(dir, targetFile);
+                if (found != null)
+                    return found;
+            }
+
+            return null;
         }
 
         public static ServiceResult<bool> CheckFile(string path, string fileName)

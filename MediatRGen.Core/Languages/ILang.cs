@@ -77,6 +77,9 @@ namespace MediatRGen.Core.Languages
         public string ClassCreateError { get; }
         public string NameSpaceChanged { get; }
         public string NameSpaceChangeException { get; }
+        public string BackSlashClearError { get; }
+        public string UsingAdded { get; }
+
 
     }
 }

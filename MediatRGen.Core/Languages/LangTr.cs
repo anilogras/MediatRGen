@@ -77,5 +77,7 @@ namespace MediatRGen.Core.Languages
         public string ClassCreateError => "Class Oluşturulamadı...";
         public string NameSpaceChanged => "Namespace Güncellendi...";
         public string NameSpaceChangeException => "Namespace Değiştirilken Hata Oluştu...";
+        public string BackSlashClearError => "Backslash Temizlenirhen Sorun Oluştu...";
+        public string UsingAdded => "Using Eklendi";
     }
 }

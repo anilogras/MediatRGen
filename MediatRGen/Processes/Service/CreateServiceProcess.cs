@@ -1,5 +1,4 @@
-﻿using Humanizer;
-using MediatRGen.Cli.Processes.Base;
+﻿using MediatRGen.Cli.Processes.Base;
 using MediatRGen.Cli.Processes.Parameters.Services;
 using MediatRGen.Cli.States;
 using MediatRGen.Core.Exceptions.FileExceptions;
@@ -20,50 +19,47 @@ namespace MediatRGen.Cli.Processes.Service
             ParameterService.GetParameterFromConsole(_parameter, "ModuleName", LangHandler.Definitions().EnterModuleName);
 
             Execute();
+
         }
 
         private void Execute()
         {
-            string _modulePath = $"{DirectoryServices.GetCurrentDirectory().Value}src\\{_parameter.ModuleName}\\{GlobalState.Instance.SolutionName}.{_parameter.ModuleName}.Domain\\";
-            string _entityPath = FileService.FindFileRecursive(_modulePath, _parameter.EntityName + ".cs").Value?.Replace(_modulePath, "");
+            string _domainPath = $"{DirectoryServices.GetCurrentDirectory().Value}src\\{_parameter.ModuleName}\\{GlobalState.Instance.SolutionName}.{_parameter.ModuleName}.Domain\\";
+            string _entityPath = FileService.FindFileRecursive(_domainPath, _parameter.EntityName + ".cs").Value?.Replace(_domainPath, "");
 
             if (string.IsNullOrEmpty(_entityPath))
                 throw new FileException($"{LangHandler.Definitions().EntityNotFound} ({_parameter.ModuleName} -> {_parameter.EntityName})");
 
             _entityPath = _entityPath.Replace(_parameter.EntityName + ".cs", "");
             string _applicationModulePath = $"{DirectoryServices.GetCurrentDirectory().Value}src\\{_parameter.ModuleName}\\{GlobalState.Instance.SolutionName}.{_parameter.ModuleName}.Application\\Features\\";
-            string _pluralEntityName = _parameter.EntityName.Pluralize();
+            
+            string _pluralEntityName = PluralWord(_parameter.EntityName);
 
             DirectoryServices.CreateIsNotExist(_applicationModulePath + _entityPath + _pluralEntityName);
 
             CreateBusinessRules(_entityPath, _applicationModulePath, _pluralEntityName);
             CreateConstants(_entityPath, _applicationModulePath, _pluralEntityName);
             CreateMapping(_entityPath, _applicationModulePath, _pluralEntityName);
-            CreateCommands(_entityPath, _applicationModulePath, _pluralEntityName);
 
-            DirectoryServices.CreateIsNotExist(_applicationModulePath + _entityPath + _pluralEntityName + "\\Queries");
+
+            CommandServices commandServices = new CommandServices(_parameter);
+            commandServices.CreateCommands(_entityPath, _applicationModulePath, _pluralEntityName);
+
+
+            QueryServices queryServices = new QueryServices(_parameter);
+            queryServices.CreateQueries(_entityPath, _applicationModulePath, _pluralEntityName);
+
+
             DirectoryServices.CreateIsNotExist(_applicationModulePath + _entityPath + _pluralEntityName + "\\DTOs");
-
             Console.WriteLine(LangHandler.Definitions().ServiceCreated);
         }
 
-        private void CreateCommands(string _entityPath, string _applicationModulePath, string _pluralEntityName)
+        private string PluralWord(string word)
         {
-            string _applicationCommandsDirectoryPath = _applicationModulePath + _entityPath + _pluralEntityName + "\\Commands";
-            DirectoryServices.CreateIsNotExist(_applicationCommandsDirectoryPath);
+            string[] kalinUnluler = { "a", "ı", "o", "u" };
+            string sonUnlu = word.Reverse().FirstOrDefault(c => "aeıioöuü".Contains(c)).ToString();
+            return kalinUnluler.Contains(sonUnlu) ? word + "lar" : word + "ler";
 
-            CreateBaseCommand(_entityPath, _applicationModulePath, _pluralEntityName);
-
-            string _businessRulesClassName = $"{_parameter.EntityName}BusinessRules";
-            SystemProcessService.InvokeCommand($"dotnet new class -n {_businessRulesClassName} -o {_applicationCommandsDirectoryPath}");
-
-            ClassService.ChangeNameSpace(DirectoryServices.GetPath(_applicationCommandsDirectoryPath, _businessRulesClassName).Value, _applicationCommandsDirectoryPath);
-            ClassService.SetBaseInheritance(DirectoryServices.GetPath(_applicationCommandsDirectoryPath, _businessRulesClassName).Value, "DenemeBaseModel");
-        }
-
-        private void CreateBaseCommand(string _entityPath, string _applicationModulePath, string _pluralEntityName)
-        { 
-            
         }
 
         private void CreateBusinessRules(string _entityPath, string _applicationModulePath, string _pluralEntityName)
@@ -72,7 +68,6 @@ namespace MediatRGen.Cli.Processes.Service
             DirectoryServices.CreateIsNotExist(_applicationRulesDirectoryPath);
             string _businessRulesClassName = $"{_parameter.EntityName}BusinessRules";
             SystemProcessService.InvokeCommand($"dotnet new class -n {_businessRulesClassName} -o {_applicationRulesDirectoryPath}");
-
             ClassService.ChangeNameSpace(DirectoryServices.GetPath(_applicationRulesDirectoryPath, _businessRulesClassName).Value, _applicationRulesDirectoryPath);
             ClassService.SetBaseInheritance(DirectoryServices.GetPath(_applicationRulesDirectoryPath, _businessRulesClassName).Value, "DenemeBaseModel");
         }
@@ -93,7 +88,6 @@ namespace MediatRGen.Cli.Processes.Service
             string _mappingProfilesClassName = $"{_parameter.EntityName}MappingProfiles";
             SystemProcessService.InvokeCommand($"dotnet new class -n {_mappingProfilesClassName} -o {_applicationMappingProfilesDirectoryPath}");
             ClassService.ChangeNameSpace(DirectoryServices.GetPath(_applicationMappingProfilesDirectoryPath, _mappingProfilesClassName).Value, _applicationMappingProfilesDirectoryPath);
-
         }
     }
 }

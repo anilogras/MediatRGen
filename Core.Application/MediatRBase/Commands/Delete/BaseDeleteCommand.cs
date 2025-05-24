@@ -1,6 +1,7 @@
-﻿using MediatR;
+﻿using Core.Application.ASDDSS;
+using MediatR;
 
-namespace Core.Application.MediatRBase.Commads.Delete
+namespace Core.Application.MediatRBase.Commands.Delete
 {
     public class BaseDeleteCommand<TResponse> : IRequest<TResponse>
         where TResponse : IResponse

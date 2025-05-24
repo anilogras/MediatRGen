@@ -2,7 +2,7 @@
 using Core.Persistence.Repository;
 using MediatR;
 
-namespace Core.Application.MediatRBase.Commads.Delete
+namespace Core.Application.MediatRBase.Commands.Delete
 {
     public class BaseDeleteCommandHandler<TRequest, TResponse, TEntity> : IRequestHandler<TRequest, TResponse>
         where TRequest : IRequest<TResponse>

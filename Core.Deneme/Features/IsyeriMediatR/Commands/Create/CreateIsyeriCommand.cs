@@ -1,5 +1,4 @@
-﻿using Core.Application.MediatRBase.Commads.Create;
-using Core.Deneme.Features.IsyeriMediatR.Results;
+﻿using Core.Deneme.Features.IsyeriMediatR.Results;
 using Core.Persistence.Repository;
 using MediatR;
 using System;
@@ -7,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Core.Application.MediatRBase.Commands.Create;
 
 namespace Core.Deneme.Features.IsyeriMediatR.Commands.Create
 {

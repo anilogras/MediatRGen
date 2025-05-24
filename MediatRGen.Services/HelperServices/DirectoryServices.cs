@@ -38,9 +38,24 @@ namespace MediatRGen.Services.HelperServices
             return new ServiceResult<string>(_text, true, "");
         }
 
+        public static ServiceResult<string> ClearTwiceBackSlash(string path)
+        {
+
+            try
+            {
+                return new ServiceResult<string>(path.Replace("\\\\", "\\") , true , "");
+            }
+            catch (Exception ex)
+            {
+
+                return new ServiceResult<string>("", false, "", new DirectoryException(LangHandler.Definitions().BackSlashClearError));
+            }
+
+        }
+
         public static ServiceResult<string> GetCurrentDirectory()
         {
-            return new ServiceResult<string>(".\\", true, "");
+            return new ServiceResult<string>(".\\DENSOL\\", true, "");
         }
 
         public static ServiceResult<bool> CreateIsNotExist(string path)

@@ -2,7 +2,7 @@
 using Core.Persistence.Repository;
 using MediatR;
 
-namespace Core.Application.MediatRBase.Commads.Create
+namespace Core.Application.MediatRBase.Commands.Create
 {
     public class BaseCreateCommandHandler<TRequest, TResponse, TEntity> : IRequestHandler<TRequest, TResponse>
         where TRequest : IRequest<TResponse>

@@ -1,10 +1,14 @@
 ﻿using Core.Application.Pipelines.CreateRequestSetProperty;
 using MediatR;
 
-namespace Core.Application.MediatRBase.Commads.Create
+namespace Core.Application.MediatRBase.Commands.Create
 {
     public class BaseCreateCommand<TResponse> : IRequest<TResponse>, ICreateRequest
         where TResponse : IResponse
     {
+        public BaseCreateCommand()
+        {
+            
+        }
     }
 }

@@ -95,6 +95,33 @@ namespace MediatRGen.Services.HelperServices
                 return new ServiceResult<bool>(false, false, LangHandler.Definitions().NameSpaceChangeException, new ClassLibraryException(ex.Message));
             }
         }
+        public static ServiceResult<bool> AddUsing(string classPath, string usingName)
+        {
+            try
+            {
+                SyntaxNode root = GetClassRoot(classPath).Value;
+                var parsedRoot = root as CompilationUnitSyntax;
+
+                if (parsedRoot.Usings.Any(u => u.Name.ToString() == usingName))
+                    return new ServiceResult<bool>(true, true, "");
+
+                var newUsing = SyntaxFactory.UsingDirective(SyntaxFactory.ParseName(usingName))
+                                             .WithTrailingTrivia(SyntaxFactory.ElasticCarriageReturnLineFeed);
+
+                var newRoot = parsedRoot.AddUsings(newUsing);
+
+                var convertedRoot = newRoot as SyntaxNode;
+
+                ReWriteClass(classPath, newRoot);
+
+                return new ServiceResult<bool>(true, true, usingName + "\n" + LangHandler.Definitions().UsingAdded);
+
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult<bool>(false, false, LangHandler.Definitions().NameSpaceChangeException, new ClassLibraryException(ex.Message));
+            }
+        }
         public static ServiceResult<bool> SetBaseInheritance(string classPath, string baseClassName)
         {
             try
