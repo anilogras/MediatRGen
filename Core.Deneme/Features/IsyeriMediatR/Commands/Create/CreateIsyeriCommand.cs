@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Core.Application.MediatRBase.Commands.Create;
+using Core.Application.BaseCQRS.Commands.Create;
 
 namespace Core.Deneme.Features.IsyeriMediatR.Commands.Create
 {

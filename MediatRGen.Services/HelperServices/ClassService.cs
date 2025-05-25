@@ -95,15 +95,64 @@ namespace MediatRGen.Services.HelperServices
                 return new ServiceResult<bool>(false, false, LangHandler.Definitions().NameSpaceChangeException, new ClassLibraryException(ex.Message));
             }
         }
+
+        public static ServiceResult<string> GetNameSpace(string classPath)
+        {
+            try
+            {
+
+                string? extension = Path.GetExtension(classPath);
+
+                if (string.IsNullOrEmpty(extension))
+                    classPath = classPath + ".cs";
+
+                SyntaxNode root = GetClassRoot(classPath).Value;
+
+                var fileScopedNs = root.DescendantNodes()
+                   .OfType<FileScopedNamespaceDeclarationSyntax>()
+                   .FirstOrDefault();
+
+                var blockNs = root.DescendantNodes()
+                    .OfType<NamespaceDeclarationSyntax>()
+                    .FirstOrDefault();
+
+                var namespaceNode = (BaseNamespaceDeclarationSyntax?)fileScopedNs ?? blockNs;
+
+                if (string.IsNullOrEmpty(namespaceNode?.Name.ToString()))
+                    return new ServiceResult<string>("", false, "", new ClassLibraryException(LangHandler.Definitions().NameSpaceNotFound));
+                else
+                    return new ServiceResult<string>(namespaceNode.Name.ToString(), true, LangHandler.Definitions().NameSpaceFound);
+            }
+            catch (Exception ex)
+            {
+
+                return new ServiceResult<string>("", true, LangHandler.Definitions().NameSpaceFound, new ClassLibraryException(ex.Message));
+            }
+        }
+
         public static ServiceResult<bool> AddUsing(string classPath, string usingName)
         {
             try
             {
+                string? extension = Path.GetExtension(classPath);
+
+                if (string.IsNullOrEmpty(extension))
+                    classPath = classPath + ".cs";
+
                 SyntaxNode root = GetClassRoot(classPath).Value;
                 var parsedRoot = root as CompilationUnitSyntax;
 
                 if (parsedRoot.Usings.Any(u => u.Name.ToString() == usingName))
                     return new ServiceResult<bool>(true, true, "");
+
+
+                if (usingName.IndexOf("\\src\\") != -1)
+                    usingName = usingName.Substring(usingName.IndexOf("\\src\\") + 5);
+
+                if (usingName.IndexOf("\\") != -1)
+                    usingName = usingName.Substring(usingName.IndexOf("\\") + 1);
+
+                usingName = usingName.Replace("\\", ".");
 
                 var newUsing = SyntaxFactory.UsingDirective(SyntaxFactory.ParseName(usingName))
                                              .WithTrailingTrivia(SyntaxFactory.ElasticCarriageReturnLineFeed);
@@ -126,6 +175,12 @@ namespace MediatRGen.Services.HelperServices
         {
             try
             {
+                string? extension = Path.GetExtension(classPath);
+
+                if (string.IsNullOrEmpty(extension))
+                    classPath = classPath + ".cs";
+
+
                 SyntaxNode root = GetClassRoot(classPath).Value;
                 var classNode = root.DescendantNodes().OfType<ClassDeclarationSyntax>().First();
                 var baseType = SyntaxFactory.SimpleBaseType(SyntaxFactory.ParseTypeName(baseClassName));
@@ -145,8 +200,14 @@ namespace MediatRGen.Services.HelperServices
         {
             try
             {
+
+                string? extension = Path.GetExtension(classPath);
+
+                if (string.IsNullOrEmpty(extension))
+                    classPath = classPath + ".cs";
+
                 var updatedCode = newRoot.NormalizeWhitespace().ToFullString();
-                File.WriteAllText(classPath + ".cs", updatedCode);
+                File.WriteAllText(classPath, updatedCode);
                 return new ServiceResult<bool>(true, true, LangHandler.Definitions().ReWriteClass, null);
             }
             catch (Exception ex)

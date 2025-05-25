@@ -1,4 +1,4 @@
-﻿using Core.Application.MediatRBase;
+﻿using Core.Application.BaseCQRS;
 using System;
 using System.Collections.Generic;
 using System.Linq;

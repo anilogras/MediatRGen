@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Core.Application.MediatRBase.Commands.Create;
+using Core.Application.BaseCQRS.Commands.Create;
 using Core.Deneme.Features.IsyeriMediatR.Results;
 using Core.Persistence.Repository;
 using System;

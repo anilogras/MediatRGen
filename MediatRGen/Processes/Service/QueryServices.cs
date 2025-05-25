@@ -11,51 +11,65 @@ namespace MediatRGen.Cli.Processes.Service
     internal class QueryServices
     {
         private readonly ServiceCreateParameter _parameter;
-        public QueryServices(ServiceCreateParameter parameter)
+        private readonly ServicePaths _paths;
+
+        public QueryServices(ServiceCreateParameter parameter, ServicePaths paths)
         {
             _parameter = parameter;
+            _paths = paths;
         }
 
-        public void CreateQueries(string _entityPath, string _applicationModulePath, string _pluralEntityName)
+        private string _entityRoot;
+
+        public void CreateQueries()
         {
 
-            string _applicationQueriesDirectoryPath = _applicationModulePath + _entityPath + _pluralEntityName + "\\Queries";
-            DirectoryServices.CreateIsNotExist(_applicationQueriesDirectoryPath);
+            string _applicationCommandsDirectoryPath = DirectoryServices.GetPath(_paths.ApplicationModulePath, _paths.EntityLocalDirectory, _paths.EntityPluralName, "Queries").Value;
+            DirectoryServices.CreateIsNotExist(_applicationCommandsDirectoryPath);
 
-            GetByIdQuery(_entityPath, _applicationModulePath, _pluralEntityName, _applicationQueriesDirectoryPath);
-            GetListQuery(_entityPath, _applicationModulePath, _pluralEntityName, _applicationQueriesDirectoryPath);
-            GetListDynamicQuery(_entityPath, _applicationModulePath, _pluralEntityName, _applicationQueriesDirectoryPath);
 
+            CreateBaseQueryClasses("GetById");
+            CreateBaseQueryClasses("GetList");
+            CreateBaseQueryClasses("GetListDynamic");
         }
 
-        private void GetByIdQuery(string _entityPath, string _applicationModulePath, string _pluralEntityName, string fullPath)
+        private void CreateBaseQueryClasses(string workType)
         {
-            CreateBaseQueryClasses(fullPath, "GetById");
+
+            string _queryPath = DirectoryServices.GetPath(_paths.ApplicationModulePath, _paths.EntityLocalDirectory, _paths.EntityPluralName, "Queries", workType).Value;
+            DirectoryServices.CreateIsNotExist(_queryPath);
+
+            QueryConfiguration(workType, _queryPath);
+            QueryHandlerConfiguration(workType, _queryPath);
         }
 
-        private void GetListQuery(string _entityPath, string _applicationModulePath, string _pluralEntityName, string fullPath)
+        private void QueryConfiguration(string workType, string _queryPath)
         {
-            CreateBaseQueryClasses(fullPath, "GetList");
+            string _queryClassName = $"{workType}{_parameter.EntityName}Query";
+            SystemProcessService.InvokeCommand($"dotnet new class -n {_queryClassName} -o {_queryPath}");
+
+            ClassService.SetBaseInheritance(_queryPath + "\\" + _queryClassName, $"Base{workType}Query<{_parameter.EntityName}>");
+            ClassService.AddUsing(_queryPath + "\\" + _queryClassName, $"Core.Application.BaseCQRS.Queries.{workType}");
+
+            ClassService.ChangeNameSpace(_queryPath + "\\" + _queryClassName, _queryPath);
+            ClassService.AddUsing(_queryPath + "\\" + _queryClassName, _paths.EntityDirectory);
         }
 
-        private void GetListDynamicQuery(string _entityPath, string _applicationModulePath, string _pluralEntityName, string fullPath)
+        private void QueryHandlerConfiguration(string workType, string _queryPath)
         {
-            CreateBaseQueryClasses(fullPath, "GetListByDynamic");
+            string _queryHandlerHandlerClassName = $"{workType}{_parameter.EntityName}QueryHandler";
+            SystemProcessService.InvokeCommand($"dotnet new class -n {_queryHandlerHandlerClassName} -o {_queryPath}");
+
+            string _queryHandlerClassRoot = DirectoryServices.GetPath(_queryPath, _queryHandlerHandlerClassName).Value;
+
+            ClassService.ChangeNameSpace(DirectoryServices.GetPath(_queryPath, _queryHandlerHandlerClassName).Value, _queryPath);
+            ClassService.SetBaseInheritance(_queryHandlerClassRoot, $"Base{workType}QueryHandler<{_parameter.EntityName}>");
+            ClassService.AddUsing(_queryHandlerClassRoot, $"Core.Application.BaseCQRS.Queries.{workType}");
+            ClassService.AddUsing(_queryHandlerClassRoot, $"Core.Application.BaseCQRS.Queries.{workType}");
+
+
+            string _entityNamespace = ClassService.GetNameSpace(_paths.EntityPath).Value;
+            ClassService.AddUsing(_queryHandlerClassRoot, _entityNamespace);
         }
-
-
-        private void CreateBaseQueryClasses(string fullPath, string name)
-        {
-            string _createCommandPath = fullPath + $"\\{name}";
-            DirectoryServices.CreateIsNotExist(_createCommandPath);
-
-            string _createCommandClassName = $"{name}{_parameter.EntityName}Query";
-            SystemProcessService.InvokeCommand($"dotnet new class -n {_createCommandClassName} -o {_createCommandPath}");
-
-            string _createCommandHandlerClassName = $"{name}{_parameter.EntityName}QueryHandler";
-            SystemProcessService.InvokeCommand($"dotnet new class -n {_createCommandHandlerClassName} -o {_createCommandPath}");
-        }
-
-
     }
 }
