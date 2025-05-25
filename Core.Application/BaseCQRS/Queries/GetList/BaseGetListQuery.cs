@@ -1,15 +1,16 @@
-﻿using Core.Persistence.Repository;
+﻿using AutoMapper;
+using Core.Persistence.Repository;
 using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Core.Application.BaseCQRS.Queries.GetList
 {
-    public class BaseGetListQuery<TRequest, TResponse, TEntity> : IRequestHandler<TRequest, TResponse>
-        where TRequest : IRequest<TResponse>
-        where TEntity : class, IEntity, new()
+    public class BaseGetListQuery<TResponse> : IRequest<TResponse>
     {
-        public Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

@@ -31,6 +31,8 @@ namespace MediatRGen.Cli.Processes.Service
             CreateBaseQueryClasses("GetById");
             CreateBaseQueryClasses("GetList");
             CreateBaseQueryClasses("GetListDynamic");
+            CreateBaseQueryClasses("GetListPaged");
+
         }
 
         private void CreateBaseQueryClasses(string workType)
@@ -64,7 +66,6 @@ namespace MediatRGen.Cli.Processes.Service
 
             ClassService.ChangeNameSpace(DirectoryServices.GetPath(_queryPath, _queryHandlerHandlerClassName).Value, _queryPath);
             ClassService.SetBaseInheritance(_queryHandlerClassRoot, $"Base{workType}QueryHandler<{_parameter.EntityName}>");
-            ClassService.AddUsing(_queryHandlerClassRoot, $"Core.Application.BaseCQRS.Queries.{workType}");
             ClassService.AddUsing(_queryHandlerClassRoot, $"Core.Application.BaseCQRS.Queries.{workType}");
 
 

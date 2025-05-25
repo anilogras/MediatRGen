@@ -9,7 +9,7 @@
   <ItemGroup>
     <Folder Include="Features\IsyeriMediatR\Commands\Delete\" />
     <Folder Include="Features\IsyeriMediatR\Commands\Update\" />
-    <Folder Include="Features\IsyeriMediatR\Queries\GetById\" />
+    <Folder Include="Features\IsyeriMediatR\Queries\GetListDynamic\" />
     <Folder Include="Features\IsyeriMediatR\Queries\GetList\" />
   </ItemGroup>
 

@@ -56,6 +56,26 @@ namespace MediatRGen.Cli.Processes.Service
 
             CommandConfiguration(workType);
             CommandHandlerConfiguration(workType);
+            ResultConfiguration(workType);
+        }
+
+        
+
+        private void ResultConfiguration(string workType)
+        {
+            string _resultsPath = DirectoryServices.GetPath(_paths.ApplicationModulePath, _paths.EntityLocalDirectory, _paths.EntityPluralName, "Results").Value;
+            DirectoryServices.CreateIsNotExist(_resultsPath);
+
+            string _resultClassName = $"{workType}{_paths.EntityNameNotExt}Result";
+
+            SystemProcessService.InvokeCommand($"dotnet new class -n {_resultClassName} -o {_resultsPath}");
+            
+            ClassService.ChangeNameSpace(DirectoryServices.GetPath(_resultsPath , _resultClassName).Value, _resultsPath);
+            ClassService.SetBaseInheritance(DirectoryServices.GetPath(_resultsPath, _resultClassName).Value, $"IResponse");
+            
+            ClassService.AddUsing(DirectoryServices.GetPath(_resultsPath, _resultClassName).Value, "Core.Application.BaseCQRS");
+
+
         }
 
         private void CommandConfiguration(string workType)
@@ -66,14 +86,27 @@ namespace MediatRGen.Cli.Processes.Service
 
             string _commandClassRoot = DirectoryServices.GetPath(_commandPath, _commandClassName).Value;
             ClassService.SetBaseInheritance(_commandClassRoot, $"Base{workType}Command<{_parameter.EntityName}>");
-            ClassService.AddUsing(_commandClassRoot, $"Core.Application.BaseCQRS.Commands.{workType}");
-
             ClassService.ChangeNameSpace(DirectoryServices.GetPath(_commandPath, _commandClassName).Value, _commandPath);
 
-            string entityNameSpace = ClassService.GetNameSpace(_commandClassRoot).Value;
-            ClassService.AddUsing(_commandClassRoot, entityNameSpace);
+            ClassService.AddUsing(_commandClassRoot, $"Core.Application.BaseCQRS.Commands.{workType}");
+
+
+            string _entityNamespace = ClassService.GetNameSpace(_paths.EntityPath).Value;
+            ClassService.AddUsing(_commandClassRoot, _entityNamespace);
+
+            ValidatiorConfiguration(workType, _commandPath);
 
         }
+
+        private void ValidatiorConfiguration(string workType, string _commandPath)
+        {
+            string _validatorClassName = $"{workType}{_paths.EntityNameNotExt}CommandValidator";
+            SystemProcessService.InvokeCommand($"dotnet new class -n {_validatorClassName} -o {_commandPath}");
+            ClassService.ChangeNameSpace(DirectoryServices.GetPath(_commandPath, _validatorClassName).Value, _commandPath);
+            ClassService.SetBaseInheritance(DirectoryServices.GetPath(_commandPath, _validatorClassName).Value, $"AbstractValidator<{workType}{_paths.EntityNameNotExt}Command>");
+            ClassService.AddConstructor(DirectoryServices.GetPath(_commandPath, _validatorClassName).Value);
+        }
+
 
         private void CommandHandlerConfiguration(string workType)
         {
@@ -87,8 +120,8 @@ namespace MediatRGen.Cli.Processes.Service
             ClassService.AddUsing(_commandHandlerClassRoot, $"Core.Application.BaseCQRS.Commands.{workType}");
             ClassService.ChangeNameSpace(DirectoryServices.GetPath(_commandPath, _commandHandlerClassName).Value, _commandPath);
 
-            string entityNameSpace = ClassService.GetNameSpace(_commandHandlerClassRoot).Value;
-            ClassService.AddUsing(_commandHandlerClassRoot, entityNameSpace);
+            string _entityNamespace = ClassService.GetNameSpace(_paths.EntityPath).Value;
+            ClassService.AddUsing(_commandHandlerClassRoot, _entityNamespace);
         }
     }
 }

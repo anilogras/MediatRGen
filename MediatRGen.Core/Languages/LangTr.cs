@@ -79,9 +79,7 @@ namespace MediatRGen.Core.Languages
         public string NameSpaceChangeException => "Namespace Değiştirilken Hata Oluştu...";
         public string BackSlashClearError => "Backslash Temizlenirhen Sorun Oluştu...";
         public string UsingAdded => "Using Eklendi...";
-
         public string ParameterPropertySetError => "Parametre set edilirken Sorun Oluştur...";
-
         public string NameSpaceFound => "NameSpace Bulundu...";
     }
 }

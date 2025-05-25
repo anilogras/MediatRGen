@@ -82,8 +82,8 @@ namespace MediatRGen.Services.HelperServices
                     var newRoot = root.ReplaceNode(namespaceNode, newNamespaceNode);
 
                     ReWriteClass(classPath, newRoot);
-
-                    return new ServiceResult<bool>(true, true, LangHandler.Definitions().NameSpaceChanged);
+                    return new ServiceResult<bool>(true, true, "");
+                    //return new ServiceResult<bool>(true, true, LangHandler.Definitions().NameSpaceChanged);
                 }
                 else
                 {
@@ -95,7 +95,34 @@ namespace MediatRGen.Services.HelperServices
                 return new ServiceResult<bool>(false, false, LangHandler.Definitions().NameSpaceChangeException, new ClassLibraryException(ex.Message));
             }
         }
+        public static ServiceResult<bool> AddConstructor(string classPath )
+        {
+            try
+            {
+                SyntaxNode root = GetClassRoot(classPath).Value;
 
+                var classNode = root.DescendantNodes().OfType<ClassDeclarationSyntax>().FirstOrDefault();
+                if (classNode == null)
+                    return new ServiceResult<bool>(false, false, LangHandler.Definitions().ClassNotFound);
+
+                var ctor = SyntaxFactory.ConstructorDeclaration(classNode.Identifier.Text)
+                    .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+                    .WithBody(SyntaxFactory.Block());
+                
+                var newClassNode = classNode.AddMembers(ctor);
+
+                var newRoot = root.ReplaceNode(classNode, newClassNode);
+
+                ReWriteClass(classPath, newRoot);
+
+                return new ServiceResult<bool>(false, false, "");
+
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult<bool>(false, false, LangHandler.Definitions().NameSpaceChangeException, new ClassLibraryException(ex.Message));
+            }
+        }
         public static ServiceResult<string> GetNameSpace(string classPath)
         {
             try
@@ -121,15 +148,15 @@ namespace MediatRGen.Services.HelperServices
                 if (string.IsNullOrEmpty(namespaceNode?.Name.ToString()))
                     return new ServiceResult<string>("", false, "", new ClassLibraryException(LangHandler.Definitions().NameSpaceNotFound));
                 else
-                    return new ServiceResult<string>(namespaceNode.Name.ToString(), true, LangHandler.Definitions().NameSpaceFound);
+                    return new ServiceResult<string>(namespaceNode.Name.ToString(), true, "");
+
+                //return new ServiceResult<string>(namespaceNode.Name.ToString(), true, LangHandler.Definitions().NameSpaceFound);
             }
             catch (Exception ex)
             {
-
-                return new ServiceResult<string>("", true, LangHandler.Definitions().NameSpaceFound, new ClassLibraryException(ex.Message));
+                return new ServiceResult<string>("", true, LangHandler.Definitions().NameSpaceNotFound, new ClassLibraryException(ex.Message));
             }
         }
-
         public static ServiceResult<bool> AddUsing(string classPath, string usingName)
         {
             try
@@ -163,8 +190,8 @@ namespace MediatRGen.Services.HelperServices
 
                 ReWriteClass(classPath, newRoot);
 
-                return new ServiceResult<bool>(true, true, usingName + "\n" + LangHandler.Definitions().UsingAdded);
-
+                return new ServiceResult<bool>(true, true, "");
+                //return new ServiceResult<bool>(true, true, usingName + "\n" + LangHandler.Definitions().UsingAdded);
             }
             catch (Exception ex)
             {
@@ -189,7 +216,8 @@ namespace MediatRGen.Services.HelperServices
                 var newRoot = root.ReplaceNode(classNode, newClassNode);
                 ReWriteClass(classPath, newRoot);
 
-                return new ServiceResult<bool>(true, true, LangHandler.Definitions().BaseClassSet);
+                // return new ServiceResult<bool>(true, true, LangHandler.Definitions().BaseClassSet);
+                return new ServiceResult<bool>(true, true, "");
             }
             catch (Exception ex)
             {
@@ -208,7 +236,9 @@ namespace MediatRGen.Services.HelperServices
 
                 var updatedCode = newRoot.NormalizeWhitespace().ToFullString();
                 File.WriteAllText(classPath, updatedCode);
-                return new ServiceResult<bool>(true, true, LangHandler.Definitions().ReWriteClass, null);
+                //return new ServiceResult<bool>(true, true, LangHandler.Definitions().ReWriteClass, null);
+                return new ServiceResult<bool>(true, true, "", null);
+
             }
             catch (Exception ex)
             {

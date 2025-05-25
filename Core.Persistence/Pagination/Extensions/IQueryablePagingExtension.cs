@@ -11,7 +11,7 @@ namespace Core.Persistence.Pagination.Extensions
 {
     public static class IQueryablePagingExtension
     {
-        public static async Task<Paging<TEntity>> ToPaging<TEntity>(
+        public static async Task<Paging<TEntity>> ToPagingAsync<TEntity>(
             this IQueryable<TEntity> values,
             int index,
             int size,

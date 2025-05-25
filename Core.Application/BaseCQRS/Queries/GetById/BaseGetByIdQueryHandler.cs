@@ -34,3 +34,4 @@ namespace Core.Application.BaseCQRS.Queries.GetById
             return _response;
         }
     }
+}

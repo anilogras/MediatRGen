@@ -18,7 +18,7 @@ namespace MediatRGen.Cli.Processes.Nuget
         {
 
             NugetService _nugetService = new NugetService();
-            _nugetService.DeleteNugets();
+            //_nugetService.DeleteNugets();
 
             string _newPath = DirectoryServices.GetPath(DirectoryServices.GetCurrentDirectory().Value, "CoreNugetPackages").Value;
 

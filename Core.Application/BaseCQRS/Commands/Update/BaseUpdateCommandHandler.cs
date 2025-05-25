@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Core.Application.MediatRBase.Commands.Update
+namespace Core.Application.BaseCQRS.Commands.Update
 {
     public class BaseUpdateCommandHandler<TRequest, TResponse, TEntity> : IRequestHandler<TRequest, TResponse>
         where TRequest : IRequest<TResponse>

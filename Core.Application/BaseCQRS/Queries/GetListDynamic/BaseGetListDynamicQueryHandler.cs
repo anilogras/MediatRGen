@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Application.BaseCQRS.Queries.GetByDynamic
+namespace Core.Application.BaseCQRS.Queries.GetListDynamic
 {
-    public class BaseGetByDynamicQueryHandler<TRequest, TResponse, TEntity> : IRequestHandler<TRequest, TResponse>
+    public class BaseGetListDynamicQueryHandler<TRequest, TResponse, TEntity> : IRequestHandler<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
         where TEntity : class, IEntity, new()
     {
@@ -17,7 +17,7 @@ namespace Core.Application.BaseCQRS.Queries.GetByDynamic
         private readonly IRepository<TEntity> _repository;
         private readonly IMapper _mapper;
 
-        public BaseGetByDynamicQueryHandler(IRepository<TEntity> repository, IMapper mapper)
+        public BaseGetListDynamicQueryHandler(IRepository<TEntity> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -34,3 +34,4 @@ namespace Core.Application.BaseCQRS.Queries.GetByDynamic
             return _response;
         }
     }
+}

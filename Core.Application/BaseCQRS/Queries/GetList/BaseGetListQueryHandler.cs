@@ -34,3 +34,4 @@ namespace Core.Application.BaseCQRS.Queries.GetList
             return _response;
         }
     }
+}

@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
+using Core.Application.BaseCQRS;
 using Core.Persistence.Repository;
 using MediatR;
 
-namespace Core.Application.MediatRBase.Commands.Delete
+namespace Core.Application.BaseCQRS.Commands.Delete
 {
     public class BaseDeleteCommandHandler<TRequest, TResponse, TEntity> : IRequestHandler<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
