@@ -1,4 +1,5 @@
-﻿using MediatRGen.Cli.Processes.Base;
+﻿using Humanizer;
+using MediatRGen.Cli.Processes.Base;
 using MediatRGen.Cli.Processes.Parameters.Services;
 using MediatRGen.Cli.States;
 using MediatRGen.Core.Exceptions.FileExceptions;
@@ -29,21 +30,9 @@ namespace MediatRGen.Cli.Processes.Service
 
         private void Execute()
         {
-            _paths.DomainPath = $"{DirectoryServices.GetCurrentDirectory().Value}src\\{_parameter.ModuleName}\\{GlobalState.Instance.SolutionName}.{_parameter.ModuleName}.Domain\\";
-            _paths.EntityPath = FileService.FindFileRecursive(_paths.DomainPath, _parameter.EntityName + ".cs").Value;
-            _paths.EntityLocalDirectory = _paths.EntityPath.Replace(_paths.DomainPath, "");
-            _paths.EntityLocalDirectory = _paths.EntityLocalDirectory.Substring(0, _paths.EntityLocalDirectory.LastIndexOf("\\"));
-            _paths.EntityName = _paths.EntityPath.Substring(_paths.EntityPath.LastIndexOf("\\") + 1);
-            _paths.EntityDirectory = _paths.EntityPath.Substring(0, _paths.EntityPath.LastIndexOf("\\"));
-            _paths.EntityPathNotExt = _paths.EntityPath.Substring(0, _paths.EntityPath.LastIndexOf("."));
-            if (string.IsNullOrEmpty(_paths.EntityPath))
-                throw new FileException($"{LangHandler.Definitions().EntityNotFound} ({_parameter.ModuleName} -> {_parameter.EntityName})");
+            CreatePaths();
 
-            _paths.ApplicationModulePath = $"{DirectoryServices.GetCurrentDirectory().Value}src\\{_parameter.ModuleName}\\{GlobalState.Instance.SolutionName}.{_parameter.ModuleName}.Application\\Features\\";
-            _paths.EntityNameNotExt = _paths.EntityName.Substring(0, _paths.EntityName.IndexOf("."));
-            _paths.EntityPluralName = PluralWord(_paths.EntityNameNotExt);
-
-            DirectoryServices.CreateIsNotExist(_paths.ApplicationModulePath + "\\" + _paths.EntityNameNotExt);
+            DirectoryServices.CreateIsNotExist(_paths.ApplicationDirectory + "\\" + _paths.EntityNameNotExt);
 
             CreateBusinessRules();
             CreateConstants();
@@ -58,8 +47,25 @@ namespace MediatRGen.Cli.Processes.Service
             queryServices.CreateQueries();
 
 
-            DirectoryServices.CreateIsNotExist(_paths.ApplicationModulePath + _paths.EntityPath + _paths.EntityPluralName + "\\DTOs");
+            DirectoryServices.CreateIsNotExist(_paths.ApplicationDirectory + _paths.EntityPath + _paths.EntityPluralName + "\\DTOs");
             Console.WriteLine(LangHandler.Definitions().ServiceCreated);
+        }
+
+        private void CreatePaths()
+        {
+            _paths.DomainPath = $"{DirectoryServices.GetCurrentDirectory().Value}src\\{_parameter.ModuleName}\\{GlobalState.Instance.SolutionName}.{_parameter.ModuleName}.Domain\\";
+            _paths.EntityPath = FileService.FindFileRecursive(_paths.DomainPath, _parameter.EntityName + ".cs").Value;
+            _paths.EntityLocalDirectory = _paths.EntityPath.Replace(_paths.DomainPath, "");
+            _paths.EntityLocalDirectory = _paths.EntityLocalDirectory.Substring(0, _paths.EntityLocalDirectory.LastIndexOf("\\"));
+            _paths.EntityName = _paths.EntityPath.Substring(_paths.EntityPath.LastIndexOf("\\") + 1);
+            _paths.EntityDirectory = _paths.EntityPath.Substring(0, _paths.EntityPath.LastIndexOf("\\"));
+            _paths.EntityPathNotExt = _paths.EntityPath.Substring(0, _paths.EntityPath.LastIndexOf("."));
+            if (string.IsNullOrEmpty(_paths.EntityPath))
+                throw new FileException($"{LangHandler.Definitions().EntityNotFound} ({_parameter.ModuleName} -> {_parameter.EntityName})");
+
+            _paths.ApplicationDirectory = $"{DirectoryServices.GetCurrentDirectory().Value}src\\{_parameter.ModuleName}\\{GlobalState.Instance.SolutionName}.{_parameter.ModuleName}.Application\\Features\\";
+            _paths.EntityNameNotExt = _paths.EntityName.Substring(0, _paths.EntityName.IndexOf("."));
+            _paths.EntityPluralName = _paths.EntityNameNotExt.Pluralize();
         }
 
         private string PluralWord(string word)
@@ -72,7 +78,7 @@ namespace MediatRGen.Cli.Processes.Service
 
         private void CreateBusinessRules()
         {
-            string _applicationRulesDirectoryPath = DirectoryServices.GetPath(_paths.ApplicationModulePath, _paths.EntityLocalDirectory, _paths.EntityPluralName, "Rules").Value;
+            string _applicationRulesDirectoryPath = DirectoryServices.GetPath(_paths.ApplicationDirectory, _paths.EntityLocalDirectory, _paths.EntityPluralName, "Rules").Value;
             DirectoryServices.CreateIsNotExist(_applicationRulesDirectoryPath);
             string _businessRulesClassName = $"{_parameter.EntityName}BusinessRules";
             SystemProcessService.InvokeCommand($"dotnet new class -n {_businessRulesClassName} -o {_applicationRulesDirectoryPath}");
@@ -82,7 +88,7 @@ namespace MediatRGen.Cli.Processes.Service
 
         private void CreateConstants()
         {
-            string _applicationConstantsDirectoryPath = DirectoryServices.GetPath(_paths.ApplicationModulePath,_paths.EntityLocalDirectory, _paths.EntityPluralName, "Constants").Value;
+            string _applicationConstantsDirectoryPath = DirectoryServices.GetPath(_paths.ApplicationDirectory,_paths.EntityLocalDirectory, _paths.EntityPluralName, "Constants").Value;
             DirectoryServices.CreateIsNotExist(_applicationConstantsDirectoryPath);
             string _constantsClassName = $"{_parameter.EntityName}Messages";
             SystemProcessService.InvokeCommand($"dotnet new class -n {_constantsClassName} -o {_applicationConstantsDirectoryPath}");
@@ -91,7 +97,7 @@ namespace MediatRGen.Cli.Processes.Service
 
         private void CreateMapping()
         {
-            string _applicationMappingProfilesDirectoryPath = DirectoryServices.GetPath(_paths.ApplicationModulePath, _paths.EntityLocalDirectory, _paths.EntityPluralName, "Profiles").Value;
+            string _applicationMappingProfilesDirectoryPath = DirectoryServices.GetPath(_paths.ApplicationDirectory, _paths.EntityLocalDirectory, _paths.EntityPluralName, "Profiles").Value;
             DirectoryServices.CreateIsNotExist(_applicationMappingProfilesDirectoryPath);
             string _mappingProfilesClassName = $"{_parameter.EntityName}MappingProfiles";
             SystemProcessService.InvokeCommand($"dotnet new class -n {_mappingProfilesClassName} -o {_applicationMappingProfilesDirectoryPath}");
