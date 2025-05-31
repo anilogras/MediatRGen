@@ -23,7 +23,7 @@ namespace MediatRGen.Cli.Processes.Service
 
         public void CreateCommands()
         {
-            string _applicationCommandsDirectoryPath = DirectoryServices.GetPath(_paths.ApplicationDirectory, _paths.EntityLocalDirectory, _paths.EntityPluralName, "Commands").Value;
+            string _applicationCommandsDirectoryPath = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Commands").Value;
             DirectoryServices.CreateIsNotExist(_applicationCommandsDirectoryPath);
 
             CreateCommand();
@@ -51,7 +51,7 @@ namespace MediatRGen.Cli.Processes.Service
 
         private void CreateBaseCommandClasses(string workType)
         {
-            string _commandPath = DirectoryServices.GetPath(_paths.ApplicationDirectory, _paths.EntityLocalDirectory, _paths.EntityPluralName, "Commands", workType).Value;
+            string _commandPath = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Commands", workType).Value;
             DirectoryServices.CreateIsNotExist(_commandPath);
 
             CommandConfiguration(workType);
@@ -63,7 +63,7 @@ namespace MediatRGen.Cli.Processes.Service
 
         private void ResultConfiguration(string workType)
         {
-            string _resultsPath = DirectoryServices.GetPath(_paths.ApplicationDirectory, _paths.EntityLocalDirectory, _paths.EntityPluralName, "Results").Value;
+            string _resultsPath = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Results").Value;
             DirectoryServices.CreateIsNotExist(_resultsPath);
 
             string _resultClassName = $"{workType}{_paths.EntityNameNotExt}Result";
@@ -79,7 +79,7 @@ namespace MediatRGen.Cli.Processes.Service
         private void CommandConfiguration(string workType)
         {
             string _commandClassName = $"{workType}{_parameter.EntityName}Command";
-            string _commandPath = DirectoryServices.GetPath(_paths.ApplicationDirectory, _paths.EntityLocalDirectory, _paths.EntityPluralName, "Commands", workType).Value;
+            string _commandPath = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Commands", workType).Value;
             SystemProcessService.InvokeCommand($"dotnet new class -n {_commandClassName} -o {_commandPath}");
 
             string _commandClassRoot = DirectoryServices.GetPath(_commandPath, _commandClassName).Value;
@@ -112,7 +112,7 @@ namespace MediatRGen.Cli.Processes.Service
         {
 
             string _commandHandlerClassName = $"{workType}{_parameter.EntityName}CommandHandler";
-            string _commandPath = DirectoryServices.GetPath(_paths.ApplicationDirectory, _paths.EntityLocalDirectory, _paths.EntityPluralName, "Commands", workType).Value;
+            string _commandPath = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Commands", workType).Value;
             SystemProcessService.InvokeCommand($"dotnet new class -n {_commandHandlerClassName} -o {_commandPath}");
 
             string _commandHandlerClassRoot = DirectoryServices.GetPath(_commandPath, _commandHandlerClassName).Value;
