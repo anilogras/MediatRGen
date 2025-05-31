@@ -29,11 +29,11 @@ namespace MediatRGen.Services.HelperServices
                     process.WaitForExit();
                 }
                 var result = output == "" ? error : output;
-                return new ServiceResult<string>(result, true, LangHandler.Definitions().ProcessInvoked);
+                return new ServiceResult<string>(result, true, DirectoryServices.ClearTwiceBackSlash(startInfo.Arguments.ToString()).Value + "\n" + LangHandler.Definitions().ProcessInvoked);
             }
             catch (Exception ex)
             {
-               return new ServiceResult<string>(null, false, LangHandler.Definitions().ProcessInvokeError, new SystemProcessException(ex.Message));
+                return new ServiceResult<string>(null, false, LangHandler.Definitions().ProcessInvokeError, new SystemProcessException(ex.Message));
             }
 
         }
@@ -42,7 +42,7 @@ namespace MediatRGen.Services.HelperServices
             try
             {
                 string res3 = InvokeCommand($"dotnet build {DirectoryServices.GetCurrentDirectory().Value}{projectName}.sln").Value;
-                return new ServiceResult<bool>(true, true, LangHandler.Definitions().ClassLibraryBuild + "\n" + res3 , null);
+                return new ServiceResult<bool>(true, true, LangHandler.Definitions().ClassLibraryBuild + "\n" + res3, null);
             }
             catch (Exception ex)
             {

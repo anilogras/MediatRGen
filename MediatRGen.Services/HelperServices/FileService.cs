@@ -90,7 +90,7 @@ namespace MediatRGen.Services.HelperServices
             }
         }
 
-        public static ServiceResult<bool> UpdateConfig(string configFileName , object stateInstance)
+        public static ServiceResult<bool> UpdateConfig(string configFileName, object stateInstance)
         {
 
             try
@@ -120,25 +120,37 @@ namespace MediatRGen.Services.HelperServices
         {
             try
             {
-                foreach (var file in Directory.GetFiles(directory))
-                {
-                    if (Path.GetFileName(file).Equals(targetFile, StringComparison.OrdinalIgnoreCase))
-                        return new ServiceResult<string>(file, true, "");
-                }
+                string _searchResult = FindFile(directory, targetFile);
 
-                foreach (var dir in Directory.GetDirectories(directory))
-                {
-                    string found = FindFileRecursive(dir, targetFile).Value;
-                    if (found != null)
-                        return new ServiceResult<string>(found, true, "");
-                }
+                if (_searchResult != null)
+                    return new ServiceResult<string>(_searchResult, true, "");
+                // return new ServiceResult<string>(_searchResult, true, LangHandler.Definitions().FileFounded);
+                else
+                    return new ServiceResult<string>(null, false, LangHandler.Definitions().FileNotFound , new FileException(LangHandler.Definitions().FileNotFound));
 
-                return new ServiceResult<string>(string.Empty, false, LangHandler.Definitions().FileNotFound, new FileException(LangHandler.Definitions().FileNotFound));
             }
             catch (Exception ex)
             {
                 return new ServiceResult<string>(string.Empty, false, LangHandler.Definitions().FileNotFound, new FileException(ex.Message));
             }
+        }
+
+        private static string FindFile(string directory, string targetFile)
+        {
+            foreach (var file in Directory.GetFiles(directory))
+            {
+                if (Path.GetFileName(file).Equals(targetFile, StringComparison.OrdinalIgnoreCase))
+                    return file;
+            }
+
+            foreach (var dir in Directory.GetDirectories(directory))
+            {
+                string found = FindFile(dir, targetFile);
+                if (found != null)
+                    return found;
+            }
+
+            return null;
         }
 
         public static ServiceResult<bool> CheckFile(string path, string fileName)
@@ -148,7 +160,8 @@ namespace MediatRGen.Services.HelperServices
                 string _combinedPathWithFile = DirectoryServices.GetPath(path, fileName).Value;
 
                 if (File.Exists(_combinedPathWithFile))
-                    return new ServiceResult<bool>(true, true, LangHandler.Definitions().FileFounded);
+                    return new ServiceResult<bool>(true, true,"");
+                //return new ServiceResult<bool>(true, true, LangHandler.Definitions().FileFounded);
 
                 return new ServiceResult<bool>(false, true, LangHandler.Definitions().FileNotFound);
             }

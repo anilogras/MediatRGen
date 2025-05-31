@@ -82,8 +82,8 @@ namespace MediatRGen.Services.HelperServices
                     var newRoot = root.ReplaceNode(namespaceNode, newNamespaceNode);
 
                     ReWriteClass(classPath, newRoot);
-
-                    return new ServiceResult<bool>(true, true, LangHandler.Definitions().NameSpaceChanged);
+                    return new ServiceResult<bool>(true, true, "");
+                    //return new ServiceResult<bool>(true, true, LangHandler.Definitions().NameSpaceChanged);
                 }
                 else
                 {
@@ -95,10 +95,119 @@ namespace MediatRGen.Services.HelperServices
                 return new ServiceResult<bool>(false, false, LangHandler.Definitions().NameSpaceChangeException, new ClassLibraryException(ex.Message));
             }
         }
+        public static ServiceResult<bool> AddConstructor(string classPath )
+        {
+            try
+            {
+                SyntaxNode root = GetClassRoot(classPath).Value;
+
+                var classNode = root.DescendantNodes().OfType<ClassDeclarationSyntax>().FirstOrDefault();
+                if (classNode == null)
+                    return new ServiceResult<bool>(false, false, LangHandler.Definitions().ClassNotFound);
+
+                var ctor = SyntaxFactory.ConstructorDeclaration(classNode.Identifier.Text)
+                    .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+                    .WithBody(SyntaxFactory.Block());
+                
+                var newClassNode = classNode.AddMembers(ctor);
+
+                var newRoot = root.ReplaceNode(classNode, newClassNode);
+
+                ReWriteClass(classPath, newRoot);
+
+                return new ServiceResult<bool>(false, false, "");
+
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult<bool>(false, false, LangHandler.Definitions().NameSpaceChangeException, new ClassLibraryException(ex.Message));
+            }
+        }
+        public static ServiceResult<string> GetNameSpace(string classPath)
+        {
+            try
+            {
+
+                string? extension = Path.GetExtension(classPath);
+
+                if (string.IsNullOrEmpty(extension))
+                    classPath = classPath + ".cs";
+
+                SyntaxNode root = GetClassRoot(classPath).Value;
+
+                var fileScopedNs = root.DescendantNodes()
+                   .OfType<FileScopedNamespaceDeclarationSyntax>()
+                   .FirstOrDefault();
+
+                var blockNs = root.DescendantNodes()
+                    .OfType<NamespaceDeclarationSyntax>()
+                    .FirstOrDefault();
+
+                var namespaceNode = (BaseNamespaceDeclarationSyntax?)fileScopedNs ?? blockNs;
+
+                if (string.IsNullOrEmpty(namespaceNode?.Name.ToString()))
+                    return new ServiceResult<string>("", false, "", new ClassLibraryException(LangHandler.Definitions().NameSpaceNotFound));
+                else
+                    return new ServiceResult<string>(namespaceNode.Name.ToString(), true, "");
+
+                //return new ServiceResult<string>(namespaceNode.Name.ToString(), true, LangHandler.Definitions().NameSpaceFound);
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult<string>("", true, LangHandler.Definitions().NameSpaceNotFound, new ClassLibraryException(ex.Message));
+            }
+        }
+        public static ServiceResult<bool> AddUsing(string classPath, string usingName)
+        {
+            try
+            {
+                string? extension = Path.GetExtension(classPath);
+
+                if (string.IsNullOrEmpty(extension))
+                    classPath = classPath + ".cs";
+
+                SyntaxNode root = GetClassRoot(classPath).Value;
+                var parsedRoot = root as CompilationUnitSyntax;
+
+                if (parsedRoot.Usings.Any(u => u.Name.ToString() == usingName))
+                    return new ServiceResult<bool>(true, true, "");
+
+
+                if (usingName.IndexOf("\\src\\") != -1)
+                    usingName = usingName.Substring(usingName.IndexOf("\\src\\") + 5);
+
+                if (usingName.IndexOf("\\") != -1)
+                    usingName = usingName.Substring(usingName.IndexOf("\\") + 1);
+
+                usingName = usingName.Replace("\\", ".");
+
+                var newUsing = SyntaxFactory.UsingDirective(SyntaxFactory.ParseName(usingName))
+                                             .WithTrailingTrivia(SyntaxFactory.ElasticCarriageReturnLineFeed);
+
+                var newRoot = parsedRoot.AddUsings(newUsing);
+
+                var convertedRoot = newRoot as SyntaxNode;
+
+                ReWriteClass(classPath, newRoot);
+
+                return new ServiceResult<bool>(true, true, "");
+                //return new ServiceResult<bool>(true, true, usingName + "\n" + LangHandler.Definitions().UsingAdded);
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult<bool>(false, false, LangHandler.Definitions().NameSpaceChangeException, new ClassLibraryException(ex.Message));
+            }
+        }
         public static ServiceResult<bool> SetBaseInheritance(string classPath, string baseClassName)
         {
             try
             {
+                string? extension = Path.GetExtension(classPath);
+
+                if (string.IsNullOrEmpty(extension))
+                    classPath = classPath + ".cs";
+
+
                 SyntaxNode root = GetClassRoot(classPath).Value;
                 var classNode = root.DescendantNodes().OfType<ClassDeclarationSyntax>().First();
                 var baseType = SyntaxFactory.SimpleBaseType(SyntaxFactory.ParseTypeName(baseClassName));
@@ -107,7 +216,8 @@ namespace MediatRGen.Services.HelperServices
                 var newRoot = root.ReplaceNode(classNode, newClassNode);
                 ReWriteClass(classPath, newRoot);
 
-                return new ServiceResult<bool>(true, true, LangHandler.Definitions().BaseClassSet);
+                // return new ServiceResult<bool>(true, true, LangHandler.Definitions().BaseClassSet);
+                return new ServiceResult<bool>(true, true, "");
             }
             catch (Exception ex)
             {
@@ -118,9 +228,17 @@ namespace MediatRGen.Services.HelperServices
         {
             try
             {
+
+                string? extension = Path.GetExtension(classPath);
+
+                if (string.IsNullOrEmpty(extension))
+                    classPath = classPath + ".cs";
+
                 var updatedCode = newRoot.NormalizeWhitespace().ToFullString();
-                File.WriteAllText(classPath + ".cs", updatedCode);
-                return new ServiceResult<bool>(true, true, LangHandler.Definitions().ReWriteClass, null);
+                File.WriteAllText(classPath, updatedCode);
+                //return new ServiceResult<bool>(true, true, LangHandler.Definitions().ReWriteClass, null);
+                return new ServiceResult<bool>(true, true, "", null);
+
             }
             catch (Exception ex)
             {

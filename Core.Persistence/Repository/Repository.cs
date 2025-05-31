@@ -1,9 +1,12 @@
-﻿using Core.Persistence.Pagination;
+﻿using Core.Persistence.Dynamic;
+using Core.Persistence.Pagination;
 using Core.Persistence.Pagination.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -118,7 +121,7 @@ namespace Core.Persistence.Repository
 
         }
 
-        public Task<Paging<TEntity>> GetListAsync(
+        public Task<Paging<TEntity>> GetListPagedAsync(
             Expression<Func<TEntity, bool>>? predicate = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
@@ -148,7 +151,26 @@ namespace Core.Persistence.Repository
             if (include is not null)
                 query = include(query);
 
-            return query.ToPaging(index, size, cancellationToken);
+            return query.ToPagingAsync(index, size, cancellationToken);
+        }
+
+        public async Task<Paging<TEntity>> GetListByDynamic(DynamicQuery dynamic, Expression<Func<TEntity, bool>>? predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null, int index = 0, int size = 10, bool withDeleted = false, bool enableTracking = true, CancellationToken cancellationToken = default)
+        {
+            IQueryable<TEntity> query = Context.Set<TEntity>().ToDynamic(dynamic);
+
+            if (!enableTracking)
+                query = query.AsNoTracking();
+
+            if (include != null)
+                query = include(query);
+
+            if (withDeleted)
+                query = query.IgnoreQueryFilters();
+
+            if (predicate != null)
+                query = query.Where(predicate);
+
+            return await query.ToPagingAsync(index, size, cancellationToken);
         }
 
         public async Task<TEntity> UpdateAsync(TEntity entity)
@@ -171,6 +193,30 @@ namespace Core.Persistence.Repository
             await Context.SaveChangesAsync();
             return entities;
 
+        }
+
+        public Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>>? predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null, bool withDeleted = false, bool enableTracking = true, CancellationToken cancellationToken = default)
+        {
+            IQueryable<TEntity> query = Context.Set<TEntity>();
+
+            if (enableTracking)
+                query = query.AsTracking();
+            else
+                query = query.AsNoTracking();
+
+            if (predicate is not null)
+                query = query.Where(predicate);
+
+            if (orderBy is not null)
+                query = orderBy(query);
+
+            if (withDeleted)
+                query = query.IgnoreQueryFilters();
+
+            if (include is not null)
+                query = include(query);
+
+            return query.ToListAsync();
         }
     }
 }

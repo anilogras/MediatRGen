@@ -8,6 +8,8 @@ namespace MediatRGen.Core.Languages
 {
     public interface ILang
     {
+        public string ParameterPropertySetError { get; }
+
         public string ArgsSplited { get; }
         public string ParameterParseError { get; }
         public string ParameterParsed { get; }
@@ -57,6 +59,8 @@ namespace MediatRGen.Core.Languages
         public string EntityNotFound { get; }
         public string ServiceCreated { get; }
         public string NameSpaceNotFound { get; }
+        public string NameSpaceFound { get; }
+
         public string NugetPackageDeleted { get; }
         public string DirectoryDeleted { get; }
         public string DirectoryDeleteError { get; }
@@ -77,6 +81,9 @@ namespace MediatRGen.Core.Languages
         public string ClassCreateError { get; }
         public string NameSpaceChanged { get; }
         public string NameSpaceChangeException { get; }
+        public string BackSlashClearError { get; }
+        public string UsingAdded { get; }
+
 
     }
 }

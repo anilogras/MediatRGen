@@ -1,5 +1,6 @@
 ﻿using CommandLine;
 using MediatRGen.Services.Base;
+using System;
 
 namespace MediatRGen.Services.HelperServices
 {
@@ -28,28 +29,38 @@ namespace MediatRGen.Services.HelperServices
 
         public static ServiceResult GetParameterFromConsole(object target, string propertyName, string message)
         {
-            var prop = target.GetType().GetProperty(propertyName);
-
-            if (prop == null || !prop.CanWrite) return new ServiceResult(false, LangHandler.Definitions().PropertyNotFountOrWeritable);
-
-            var currentValue = prop.GetValue(target) as string;
-
-            if (string.IsNullOrWhiteSpace(currentValue))
+            try
             {
-                Console.WriteLine(message);
+                var prop = target.GetType().GetProperty(propertyName);
 
-                while (true)
+                if (prop == null || !prop.CanWrite) return new ServiceResult(false, LangHandler.Definitions().PropertyNotFountOrWeritable);
+
+                var currentValue = prop.GetValue(target) as string;
+
+                if (string.IsNullOrWhiteSpace(currentValue))
                 {
-                    string value = Console.ReadLine();
+                    Console.WriteLine(message);
 
-                    if (!string.IsNullOrWhiteSpace(value))
+                    while (true)
                     {
-                        prop.SetValue(target, value);
-                        break;
+                        string value = Console.ReadLine();
+
+                        if (!string.IsNullOrWhiteSpace(value))
+                        {
+                            prop.SetValue(target, value);
+                            break;
+                        }
                     }
                 }
+                return new ServiceResult(false, "");
+                //return new ServiceResult(false, LangHandler.Definitions().PropertySetted);
             }
-            return new ServiceResult(false, LangHandler.Definitions().PropertySetted);
+            catch (Exception ex)
+            {
+
+                return new ServiceResult(false, LangHandler.Definitions().PropertyNotFountOrWeritable, ex);
+
+            }
         }
 
 
