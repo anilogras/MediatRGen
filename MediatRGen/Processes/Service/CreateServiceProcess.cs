@@ -5,6 +5,7 @@ using MediatRGen.Cli.States;
 using MediatRGen.Core.Exceptions.FileExceptions;
 using MediatRGen.Services;
 using MediatRGen.Services.HelperServices;
+using MediatRGen.Services.Models;
 using System.IO;
 
 namespace MediatRGen.Cli.Processes.Service
@@ -20,7 +21,7 @@ namespace MediatRGen.Cli.Processes.Service
             ParameterService.GetParameter<ServiceCreateParameter>(command, ref _parameter);
             ParameterService.GetParameterFromConsole(_parameter, "EntityName", LangHandler.Definitions().EnterEntityName);
             ParameterService.GetParameterFromConsole(_parameter, "ModuleName", LangHandler.Definitions().EnterModuleName);
-            
+
             _paths = new ServicePaths();
 
             Execute();
@@ -70,33 +71,38 @@ namespace MediatRGen.Cli.Processes.Service
 
         private void CreateBusinessRules()
         {
-            string _applicationRulesDirectoryPath = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Rules").Value;
-            DirectoryServices.CreateIsNotExist(_applicationRulesDirectoryPath);
-            string _businessRulesClassName = $"{_parameter.EntityName}BusinessRules";
-            SystemProcessService.InvokeCommand($"dotnet new class -n {_businessRulesClassName} -o {_applicationRulesDirectoryPath}");
-            ClassService.ChangeNameSpace(DirectoryServices.GetPath(_applicationRulesDirectoryPath, _businessRulesClassName).Value, _applicationRulesDirectoryPath);
-            ClassService.SetBaseInheritance(DirectoryServices.GetPath(_applicationRulesDirectoryPath, _businessRulesClassName).Value, "DenemeBaseModel");
+            ClassConfiguration _classConfig = new ClassConfiguration();
+
+            _classConfig.Name = $"{_parameter.EntityName}BusinessRules";
+            _classConfig.Directory = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Rules").Value;
+            _classConfig.BaseInheritance = "DenemeBaseModel";
+
+            ClassService.CreateClass(_classConfig);
         }
 
         private void CreateConstants()
         {
-            string _applicationConstantsDirectoryPath = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Constants").Value;
-            DirectoryServices.CreateIsNotExist(_applicationConstantsDirectoryPath);
-            string _constantsClassName = $"{_parameter.EntityName}Messages";
-            SystemProcessService.InvokeCommand($"dotnet new class -n {_constantsClassName} -o {_applicationConstantsDirectoryPath}");
-            ClassService.ChangeNameSpace(DirectoryServices.GetPath(_applicationConstantsDirectoryPath, _constantsClassName).Value, _applicationConstantsDirectoryPath);
+
+            ClassConfiguration _classConfig = new ClassConfiguration();
+
+            _classConfig.Name = $"{_parameter.EntityName}Messages";
+            _classConfig.Directory = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Constants").Value;
+
+            ClassService.CreateClass(_classConfig);
+
         }
 
         private void CreateMapping()
         {
-            string _applicationMappingProfilesDirectoryPath = DirectoryServices.GetPath(_paths.ApplicationDirectory,  "Profiles").Value;
-            DirectoryServices.CreateIsNotExist(_applicationMappingProfilesDirectoryPath);
-            string _mappingProfilesClassName = $"{_parameter.EntityName}MappingProfiles";
-            SystemProcessService.InvokeCommand($"dotnet new class -n {_mappingProfilesClassName} -o {_applicationMappingProfilesDirectoryPath}");
-            ClassService.ChangeNameSpace(DirectoryServices.GetPath(_applicationMappingProfilesDirectoryPath, _mappingProfilesClassName).Value, _applicationMappingProfilesDirectoryPath);
-            ClassService.SetBaseInheritance(DirectoryServices.GetPath(_applicationMappingProfilesDirectoryPath, _mappingProfilesClassName).Value, "Profile");
-            ClassService.AddUsing(DirectoryServices.GetPath(_applicationMappingProfilesDirectoryPath, _mappingProfilesClassName).Value, "AutoMapper");
+            ClassConfiguration _classConfig = new ClassConfiguration();
 
+            _classConfig.Directory = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Mapping").Value;
+            _classConfig.Name = $"{_parameter.EntityName}MappingProfiles";
+            _classConfig.BaseInheritance = "Profile";
+            _classConfig.Usings = new List<string>  { "AutoMapper" };
+            _classConfig.Constructor = true;
+
+            ClassService.CreateClass(_classConfig);
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using MediatRGen.Core.Exceptions;
 using MediatRGen.Services.Base;
+using MediatRGen.Services.Models;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.IO;
 
 namespace MediatRGen.Services.HelperServices
 {
@@ -60,58 +62,54 @@ namespace MediatRGen.Services.HelperServices
             try
             {
                 SyntaxNode root = GetClassRoot(classPath).Value;
-                newNameSpace = newNameSpace.Substring(newNameSpace.IndexOf("\\src\\") + 5);
-                newNameSpace = newNameSpace.Substring(newNameSpace.IndexOf("\\") + 1);
-                newNameSpace = newNameSpace.Replace("\\", ".");
-
-
-                var fileScopedNs = root.DescendantNodes()
-                    .OfType<FileScopedNamespaceDeclarationSyntax>()
-                    .FirstOrDefault();
-
-                var blockNs = root.DescendantNodes()
-                    .OfType<NamespaceDeclarationSyntax>()
-                    .FirstOrDefault();
-
-                var namespaceNode = (BaseNamespaceDeclarationSyntax?)fileScopedNs ?? blockNs;
-
-                if (namespaceNode != null)
-                {
-                    var newNamespace = SyntaxFactory.ParseName(newNameSpace);
-                    var newNamespaceNode = namespaceNode.WithName(newNamespace);
-                    var newRoot = root.ReplaceNode(namespaceNode, newNamespaceNode);
-
-                    ReWriteClass(classPath, newRoot);
-                    return new ServiceResult<bool>(true, true, "");
-                    //return new ServiceResult<bool>(true, true, LangHandler.Definitions().NameSpaceChanged);
-                }
-                else
-                {
-                    return new ServiceResult<bool>(false, false, LangHandler.Definitions().NameSpaceNotFound);
-                }
+                var newRoot = ChangeNameSpace(root, newNameSpace).Value;
+                ReWriteClass(classPath, newRoot);
+                return new ServiceResult<bool>(true, true, "");
             }
             catch (Exception ex)
             {
                 return new ServiceResult<bool>(false, false, LangHandler.Definitions().NameSpaceChangeException, new ClassLibraryException(ex.Message));
             }
         }
-        public static ServiceResult<bool> AddConstructor(string classPath )
+
+        private static ServiceResult<SyntaxNode> ChangeNameSpace(SyntaxNode root, string newNameSpace)
+        {
+            newNameSpace = newNameSpace.Substring(newNameSpace.IndexOf("\\src\\") + 5);
+            newNameSpace = newNameSpace.Substring(newNameSpace.IndexOf("\\") + 1);
+            newNameSpace = newNameSpace.Replace("\\", ".");
+
+
+            var fileScopedNs = root.DescendantNodes()
+                .OfType<FileScopedNamespaceDeclarationSyntax>()
+                .FirstOrDefault();
+
+            var blockNs = root.DescendantNodes()
+                .OfType<NamespaceDeclarationSyntax>()
+                .FirstOrDefault();
+
+            var namespaceNode = (BaseNamespaceDeclarationSyntax?)fileScopedNs ?? blockNs;
+
+            if (namespaceNode != null)
+            {
+                var newNamespace = SyntaxFactory.ParseName(newNameSpace);
+                var newNamespaceNode = namespaceNode.WithName(newNamespace);
+                var newRoot = root.ReplaceNode(namespaceNode, newNamespaceNode);
+                return new ServiceResult<SyntaxNode>(newRoot, true, "");
+                //return new ServiceResult<bool>(true, true, LangHandler.Definitions().NameSpaceChanged);
+            }
+            else
+            {
+                return new ServiceResult<SyntaxNode>(null, false, LangHandler.Definitions().NameSpaceNotFound, new ClassLibraryException(LangHandler.Definitions().NameSpaceNotFound));
+            }
+        }
+
+        public static ServiceResult<bool> AddConstructor(string classPath)
         {
             try
             {
                 SyntaxNode root = GetClassRoot(classPath).Value;
 
-                var classNode = root.DescendantNodes().OfType<ClassDeclarationSyntax>().FirstOrDefault();
-                if (classNode == null)
-                    return new ServiceResult<bool>(false, false, LangHandler.Definitions().ClassNotFound);
-
-                var ctor = SyntaxFactory.ConstructorDeclaration(classNode.Identifier.Text)
-                    .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
-                    .WithBody(SyntaxFactory.Block());
-                
-                var newClassNode = classNode.AddMembers(ctor);
-
-                var newRoot = root.ReplaceNode(classNode, newClassNode);
+                var newRoot = AddConstructor(root).Value;
 
                 ReWriteClass(classPath, newRoot);
 
@@ -123,6 +121,33 @@ namespace MediatRGen.Services.HelperServices
                 return new ServiceResult<bool>(false, false, LangHandler.Definitions().NameSpaceChangeException, new ClassLibraryException(ex.Message));
             }
         }
+
+        private static ServiceResult<SyntaxNode> AddConstructor(SyntaxNode root)
+        {
+            var classNode = root.DescendantNodes().OfType<ClassDeclarationSyntax>().FirstOrDefault();
+
+            if (classNode == null)
+                return new ServiceResult<SyntaxNode>(null, false, LangHandler.Definitions().ClassNotFound, new ClassLibraryException(LangHandler.Definitions().ClassNotFound));
+
+            bool hasDefaultCtor = classNode.Members.OfType<ConstructorDeclarationSyntax>()
+                              .Any(c => c.ParameterList.Parameters.Count == 0);
+
+
+            if (hasDefaultCtor)
+                return new ServiceResult<SyntaxNode>(root, true, "");
+
+
+            var ctor = SyntaxFactory.ConstructorDeclaration(classNode.Identifier.Text)
+                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+                .WithBody(SyntaxFactory.Block());
+
+            var newClassNode = classNode.AddMembers(ctor);
+
+            var newRoot = root.ReplaceNode(classNode, newClassNode);
+
+            return new ServiceResult<SyntaxNode>(newRoot, true, "");
+        }
+
         public static ServiceResult<string> GetNameSpace(string classPath)
         {
             try
@@ -157,6 +182,7 @@ namespace MediatRGen.Services.HelperServices
                 return new ServiceResult<string>("", true, LangHandler.Definitions().NameSpaceNotFound, new ClassLibraryException(ex.Message));
             }
         }
+
         public static ServiceResult<bool> AddUsing(string classPath, string usingName)
         {
             try
@@ -167,26 +193,8 @@ namespace MediatRGen.Services.HelperServices
                     classPath = classPath + ".cs";
 
                 SyntaxNode root = GetClassRoot(classPath).Value;
-                var parsedRoot = root as CompilationUnitSyntax;
 
-                if (parsedRoot.Usings.Any(u => u.Name.ToString() == usingName))
-                    return new ServiceResult<bool>(true, true, "");
-
-
-                if (usingName.IndexOf("\\src\\") != -1)
-                    usingName = usingName.Substring(usingName.IndexOf("\\src\\") + 5);
-
-                if (usingName.IndexOf("\\") != -1)
-                    usingName = usingName.Substring(usingName.IndexOf("\\") + 1);
-
-                usingName = usingName.Replace("\\", ".");
-
-                var newUsing = SyntaxFactory.UsingDirective(SyntaxFactory.ParseName(usingName))
-                                             .WithTrailingTrivia(SyntaxFactory.ElasticCarriageReturnLineFeed);
-
-                var newRoot = parsedRoot.AddUsings(newUsing);
-
-                var convertedRoot = newRoot as SyntaxNode;
+                SyntaxNode newRoot = AddUsing(root, usingName).Value;
 
                 ReWriteClass(classPath, newRoot);
 
@@ -198,6 +206,34 @@ namespace MediatRGen.Services.HelperServices
                 return new ServiceResult<bool>(false, false, LangHandler.Definitions().NameSpaceChangeException, new ClassLibraryException(ex.Message));
             }
         }
+        private static ServiceResult<SyntaxNode> AddUsing(SyntaxNode root, string usingName)
+        {
+
+            var parsedRoot = root as CompilationUnitSyntax;
+
+            if (parsedRoot.Usings.Any(u => u.Name.ToString() == usingName))
+                return new ServiceResult<SyntaxNode>(root, true, "");
+
+
+            if (usingName.IndexOf("\\src\\") != -1)
+                usingName = usingName.Substring(usingName.IndexOf("\\src\\") + 5);
+
+            if (usingName.IndexOf("\\") != -1)
+                usingName = usingName.Substring(usingName.IndexOf("\\") + 1);
+
+            usingName = usingName.Replace("\\", ".");
+
+            var newUsing = SyntaxFactory.UsingDirective(SyntaxFactory.ParseName(usingName))
+                                         .WithTrailingTrivia(SyntaxFactory.ElasticCarriageReturnLineFeed);
+
+            var newRoot = parsedRoot.AddUsings(newUsing);
+
+            var convertedRoot = newRoot as SyntaxNode;
+
+            return new ServiceResult<SyntaxNode>(convertedRoot, true, "");
+
+        }
+
         public static ServiceResult<bool> SetBaseInheritance(string classPath, string baseClassName)
         {
             try
@@ -207,16 +243,9 @@ namespace MediatRGen.Services.HelperServices
                 if (string.IsNullOrEmpty(extension))
                     classPath = classPath + ".cs";
 
-
                 SyntaxNode root = GetClassRoot(classPath).Value;
-                var classNode = root.DescendantNodes().OfType<ClassDeclarationSyntax>().First();
-                var baseType = SyntaxFactory.SimpleBaseType(SyntaxFactory.ParseTypeName(baseClassName));
-                var baseList = SyntaxFactory.BaseList(SyntaxFactory.SeparatedList<BaseTypeSyntax>().Add(baseType));
-                var newClassNode = classNode.WithBaseList(baseList);
-                var newRoot = root.ReplaceNode(classNode, newClassNode);
+                SyntaxNode newRoot = SetBaseInheritance(root, baseClassName).Value;
                 ReWriteClass(classPath, newRoot);
-
-                // return new ServiceResult<bool>(true, true, LangHandler.Definitions().BaseClassSet);
                 return new ServiceResult<bool>(true, true, "");
             }
             catch (Exception ex)
@@ -224,6 +253,17 @@ namespace MediatRGen.Services.HelperServices
                 return new ServiceResult<bool>(false, false, LangHandler.Definitions().BaseClassSetError, new ClassLibraryException(ex.Message));
             }
         }
+        private static ServiceResult<SyntaxNode> SetBaseInheritance(SyntaxNode root, string baseClassName)
+        {
+            var classNode = root.DescendantNodes().OfType<ClassDeclarationSyntax>().First();
+            var baseType = SyntaxFactory.SimpleBaseType(SyntaxFactory.ParseTypeName(baseClassName));
+            var baseList = SyntaxFactory.BaseList(SyntaxFactory.SeparatedList<BaseTypeSyntax>().Add(baseType));
+            var newClassNode = classNode.WithBaseList(baseList);
+            var newRoot = root.ReplaceNode(classNode, newClassNode);
+            return new ServiceResult<SyntaxNode>(newRoot, true, "");
+        }
+
+
         private static ServiceResult<bool> ReWriteClass(string classPath, SyntaxNode newRoot)
         {
             try
@@ -261,6 +301,37 @@ namespace MediatRGen.Services.HelperServices
             var tree = CSharpSyntaxTree.ParseText(_classText);
             var root = tree.GetRoot();
             return new ServiceResult<SyntaxNode>(root, true, "");
+        }
+
+        public static ServiceResult<bool> CreateClass(ClassConfiguration classSettings)
+        {
+            DirectoryServices.CreateIsNotExist(classSettings.Directory);
+            SystemProcessService.InvokeCommand($"dotnet new class -n {classSettings.Name} -o {classSettings.Directory}");
+
+            var root = GetClassRoot(classSettings.Directory + "\\" + classSettings.Name).Value;
+            SyntaxNode _activeNode = ChangeNameSpace(root, classSettings.Directory).Value;
+
+            if (!string.IsNullOrEmpty(classSettings.BaseInheritance))
+            {
+                _activeNode = SetBaseInheritance(_activeNode, classSettings.BaseInheritance).Value;
+            }
+
+            if (classSettings.Usings.Count > 0)
+            {
+                foreach (var usingText in classSettings.Usings)
+                {
+                    _activeNode = AddUsing(_activeNode, usingText).Value;
+                }
+            }
+
+            if (classSettings.Constructor)
+            {
+                _activeNode = AddConstructor(_activeNode).Value;
+            }
+
+            ReWriteClass(classSettings.Directory + "\\" + classSettings.Name, _activeNode);
+
+            return new ServiceResult<bool>(false, false, LangHandler.Definitions().ClassCreated);
         }
     }
 }
