@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace MediatRGen.Services.HelperServices
 {
-    public  class FileService
+    public class FileService
     {
         public static ServiceResult<bool> Create(string path, string fileName, string content)
         {
@@ -90,7 +90,7 @@ namespace MediatRGen.Services.HelperServices
             }
         }
 
-        public static ServiceResult<bool> UpdateConfig(string configFileName , object stateInstance)
+        public static ServiceResult<bool> UpdateConfig(string configFileName, object stateInstance)
         {
 
             try
@@ -121,7 +121,13 @@ namespace MediatRGen.Services.HelperServices
             try
             {
                 string _searchResult = FindFile(directory, targetFile);
-                return new ServiceResult<string>(_searchResult, false, LangHandler.Definitions().FileFounded);
+
+                if (_searchResult != null)
+                    return new ServiceResult<string>(_searchResult, true, "");
+                // return new ServiceResult<string>(_searchResult, true, LangHandler.Definitions().FileFounded);
+                else
+                    return new ServiceResult<string>(null, false, LangHandler.Definitions().FileNotFound , new FileException(LangHandler.Definitions().FileNotFound));
+
             }
             catch (Exception ex)
             {
@@ -154,7 +160,8 @@ namespace MediatRGen.Services.HelperServices
                 string _combinedPathWithFile = DirectoryServices.GetPath(path, fileName).Value;
 
                 if (File.Exists(_combinedPathWithFile))
-                    return new ServiceResult<bool>(true, true, LangHandler.Definitions().FileFounded);
+                    return new ServiceResult<bool>(true, true,"");
+                //return new ServiceResult<bool>(true, true, LangHandler.Definitions().FileFounded);
 
                 return new ServiceResult<bool>(false, true, LangHandler.Definitions().FileNotFound);
             }

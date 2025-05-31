@@ -74,8 +74,6 @@ namespace MediatRGen.Cli.Processes.Service
             ClassService.SetBaseInheritance(DirectoryServices.GetPath(_resultsPath, _resultClassName).Value, $"IResponse");
             
             ClassService.AddUsing(DirectoryServices.GetPath(_resultsPath, _resultClassName).Value, "Core.Application.BaseCQRS");
-
-
         }
 
         private void CommandConfiguration(string workType)
@@ -105,6 +103,8 @@ namespace MediatRGen.Cli.Processes.Service
             ClassService.ChangeNameSpace(DirectoryServices.GetPath(_commandPath, _validatorClassName).Value, _commandPath);
             ClassService.SetBaseInheritance(DirectoryServices.GetPath(_commandPath, _validatorClassName).Value, $"AbstractValidator<{workType}{_paths.EntityNameNotExt}Command>");
             ClassService.AddConstructor(DirectoryServices.GetPath(_commandPath, _validatorClassName).Value);
+            ClassService.AddUsing(DirectoryServices.GetPath(_commandPath, _validatorClassName).Value, "FluentValidation");
+
         }
 
 

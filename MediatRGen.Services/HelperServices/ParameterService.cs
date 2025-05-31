@@ -52,7 +52,8 @@ namespace MediatRGen.Services.HelperServices
                         }
                     }
                 }
-                return new ServiceResult(false, LangHandler.Definitions().PropertySetted);
+                return new ServiceResult(false, "");
+                //return new ServiceResult(false, LangHandler.Definitions().PropertySetted);
             }
             catch (Exception ex)
             {
