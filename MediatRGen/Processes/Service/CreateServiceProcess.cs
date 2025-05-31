@@ -94,6 +94,9 @@ namespace MediatRGen.Cli.Processes.Service
             string _mappingProfilesClassName = $"{_parameter.EntityName}MappingProfiles";
             SystemProcessService.InvokeCommand($"dotnet new class -n {_mappingProfilesClassName} -o {_applicationMappingProfilesDirectoryPath}");
             ClassService.ChangeNameSpace(DirectoryServices.GetPath(_applicationMappingProfilesDirectoryPath, _mappingProfilesClassName).Value, _applicationMappingProfilesDirectoryPath);
+            ClassService.SetBaseInheritance(DirectoryServices.GetPath(_applicationMappingProfilesDirectoryPath, _mappingProfilesClassName).Value, "Profile");
+            ClassService.AddUsing(DirectoryServices.GetPath(_applicationMappingProfilesDirectoryPath, _mappingProfilesClassName).Value, "AutoMapper");
+
         }
     }
 }
