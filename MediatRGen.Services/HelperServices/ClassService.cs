@@ -130,7 +130,7 @@ namespace MediatRGen.Services.HelperServices
                 return new ServiceResult<SyntaxNode>(null, false, LangHandler.Definitions().ClassNotFound, new ClassLibraryException(LangHandler.Definitions().ClassNotFound));
 
             bool hasDefaultCtor = classNode.Members.OfType<ConstructorDeclarationSyntax>()
-                              .Any(c => c.ParameterList.Parameters.Count == 0);
+                              .Any();
 
             SyntaxNode newRoot = root;
 
@@ -179,9 +179,14 @@ namespace MediatRGen.Services.HelperServices
 
             var ctor = root.DescendantNodes()
                     .OfType<ConstructorDeclarationSyntax>()
-                    .FirstOrDefault(c => c.ParameterList.Parameters.Count == 0);
+                    .FirstOrDefault();
 
             var ctorCode = ctor.ToFullString();
+
+            if (ctorCode.Replace(" ", "").IndexOf(parameters.Replace(" ", "")) != -1) 
+            {
+                return new ServiceResult<SyntaxNode>(root, true, "");
+            }
 
             var insertIndex = ctorCode.IndexOf(')');
 

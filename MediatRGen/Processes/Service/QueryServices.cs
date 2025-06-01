@@ -1,5 +1,6 @@
 ﻿using MediatRGen.Cli.Processes.Parameters.Services;
 using MediatRGen.Services.HelperServices;
+using MediatRGen.Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,12 +20,10 @@ namespace MediatRGen.Cli.Processes.Service
             _paths = paths;
         }
 
-        private string _entityRoot;
-
         public void CreateQueries()
         {
 
-            string _applicationCommandsDirectoryPath = DirectoryServices.GetPath(_paths.ApplicationDirectory , "Queries").Value;
+            string _applicationCommandsDirectoryPath = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Queries").Value;
             DirectoryServices.CreateIsNotExist(_applicationCommandsDirectoryPath);
 
 
@@ -41,36 +40,56 @@ namespace MediatRGen.Cli.Processes.Service
             string _queryPath = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Queries", workType).Value;
             DirectoryServices.CreateIsNotExist(_queryPath);
 
-            QueryConfiguration(workType, _queryPath);
-            QueryHandlerConfiguration(workType, _queryPath);
+            QueryConfiguration(workType);
+            QueryHandlerConfiguration(workType);
+            QueryResponseConfiguration(workType);
+
         }
 
-        private void QueryConfiguration(string workType, string _queryPath)
+        private void QueryConfiguration(string workType)
         {
-            string _queryClassName = $"{workType}{_parameter.EntityName}Query";
-            SystemProcessService.InvokeCommand($"dotnet new class -n {_queryClassName} -o {_queryPath}");
+            ClassConfiguration _config = new ClassConfiguration();
+            _config.Directory = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Queries", workType).Value;
+            _config.Name = $"{workType}{_parameter.EntityName}Query";
+            _config.BaseInheritance = $"Base{workType}Query<{_parameter.EntityName}>";
+            _config.Usings = new List<string>
+            {
+                $"Core.Application.BaseCQRS.Queries.{workType}",
+                _paths.EntityDirectory
+            };
 
-            ClassService.SetBaseInheritance(_queryPath + "\\" + _queryClassName, $"Base{workType}Query<{_parameter.EntityName}>");
-            ClassService.AddUsing(_queryPath + "\\" + _queryClassName, $"Core.Application.BaseCQRS.Queries.{workType}");
-
-            ClassService.ChangeNameSpace(_queryPath + "\\" + _queryClassName, _queryPath);
-            ClassService.AddUsing(_queryPath + "\\" + _queryClassName, _paths.EntityDirectory);
+            ClassService.CreateClass(_config);
         }
 
-        private void QueryHandlerConfiguration(string workType, string _queryPath)
+        private void QueryHandlerConfiguration(string workType)
         {
-            string _queryHandlerHandlerClassName = $"{workType}{_parameter.EntityName}QueryHandler";
-            SystemProcessService.InvokeCommand($"dotnet new class -n {_queryHandlerHandlerClassName} -o {_queryPath}");
 
-            string _queryHandlerClassRoot = DirectoryServices.GetPath(_queryPath, _queryHandlerHandlerClassName).Value;
-
-            ClassService.ChangeNameSpace(DirectoryServices.GetPath(_queryPath, _queryHandlerHandlerClassName).Value, _queryPath);
-            ClassService.SetBaseInheritance(_queryHandlerClassRoot, $"Base{workType}QueryHandler<{_parameter.EntityName}>");
-            ClassService.AddUsing(_queryHandlerClassRoot, $"Core.Application.BaseCQRS.Queries.{workType}");
-
+            ClassConfiguration _config = new ClassConfiguration();
+            _config.Directory = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Queries", workType).Value; ;
+            _config.Name = $"{workType}{_parameter.EntityName}QueryHandler";
+            _config.BaseInheritance = $"Base{workType}QueryHandler<{workType}{_parameter.EntityName}Query, {workType}{_parameter.EntityName}Response, {_parameter.EntityName}>";
+            _config.Constructor = true;
 
             string _entityNamespace = ClassService.GetNameSpace(_paths.EntityPath).Value;
-            ClassService.AddUsing(_queryHandlerClassRoot, _entityNamespace);
+
+            _config.Usings = new List<string>
+            {
+               $"Core.Application.BaseCQRS.Queries.{workType}",
+               _entityNamespace
+            };
+
+            ClassService.CreateClass(_config);
+
+        }
+
+        private void QueryResponseConfiguration(string workType)
+        {
+            ClassConfiguration _config = new ClassConfiguration();
+            _config.Directory = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Queries", workType).Value;
+            _config.BaseInheritance = "IResponse";
+            _config.Usings = new List<string> { "Core.Application.BaseCQRS" };
+            _config.Name = $"{workType}{_parameter.EntityName}Response";
+            ClassService.CreateClass(_config);
         }
     }
 }
