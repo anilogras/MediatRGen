@@ -21,6 +21,7 @@ namespace MediatRGen.Services.Models
         public List<string> Usings { get; set; }
         public bool Constructor { get; set; }
         public string ConstructorParameters { get; set; }
+        public string ConstructorBaseParameters { get; set; }
         public List<string> ConstructorCodes { get; set; }
 
     }

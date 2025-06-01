@@ -122,7 +122,7 @@ namespace MediatRGen.Services.HelperServices
             }
         }
 
-        private static ServiceResult<SyntaxNode> AddConstructor(SyntaxNode root)
+        private static ServiceResult<SyntaxNode> AddConstructor(SyntaxNode root, ClassConfiguration classSettings = null)
         {
             var classNode = root.DescendantNodes().OfType<ClassDeclarationSyntax>().FirstOrDefault();
 
@@ -132,18 +132,26 @@ namespace MediatRGen.Services.HelperServices
             bool hasDefaultCtor = classNode.Members.OfType<ConstructorDeclarationSyntax>()
                               .Any(c => c.ParameterList.Parameters.Count == 0);
 
+            SyntaxNode newRoot = root;
 
-            if (hasDefaultCtor)
-                return new ServiceResult<SyntaxNode>(root, true, "");
+            if (!hasDefaultCtor)
+            {
+                var ctor = SyntaxFactory.ConstructorDeclaration(" " + classNode.Identifier.Text)
+                        .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+                        .WithBody(SyntaxFactory.Block());
 
+                var newClassNode = classNode.AddMembers(ctor);
 
-            var ctor = SyntaxFactory.ConstructorDeclaration(" " + classNode.Identifier.Text)
-                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
-                .WithBody(SyntaxFactory.Block());
+                newRoot = root.ReplaceNode(classNode, newClassNode);
+            }
 
-            var newClassNode = classNode.AddMembers(ctor);
-
-            var newRoot = root.ReplaceNode(classNode, newClassNode);
+            if (classSettings != null)
+            {
+                foreach (var code in classSettings.ConstructorCodes)
+                {
+                    newRoot = AddConstructorCode(newRoot, code).Value;
+                }
+            }
 
             return new ServiceResult<SyntaxNode>(newRoot, true, "");
         }
@@ -251,7 +259,7 @@ namespace MediatRGen.Services.HelperServices
             var newUsing = SyntaxFactory.UsingDirective(SyntaxFactory.ParseName(usingName))
                                          .WithTrailingTrivia(SyntaxFactory.ElasticCarriageReturnLineFeed);
 
-            if(parsedRoot.Usings.ToString().Contains(usingName))
+            if (parsedRoot.Usings.ToString().Contains(usingName))
                 return new ServiceResult<SyntaxNode>(root, true, "");
 
             var newRoot = parsedRoot.AddUsings(newUsing);
@@ -352,14 +360,9 @@ namespace MediatRGen.Services.HelperServices
 
             if (classSettings.Constructor)
             {
-                _activeNode = AddConstructor(_activeNode).Value;
+                _activeNode = AddConstructor(_activeNode, classSettings).Value;
             }
 
-
-            foreach (var code in classSettings.ConstructorCodes)
-            {
-                _activeNode = AddConstructorCode(_activeNode, code).Value;
-            }
 
 
 
