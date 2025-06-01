@@ -100,19 +100,27 @@ namespace MediatRGen.Cli.Processes.Service
             _classConfig.Directory = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Mapping").Value;
             _classConfig.Name = $"{_parameter.EntityName}MappingProfiles";
             _classConfig.BaseInheritance = "Profile";
-            _classConfig.Usings = new List<string> { "AutoMapper" , _paths.EntityDirectory };
+            _classConfig.Usings = new List<string> {
+                "AutoMapper" ,
+                _paths.EntityDirectory ,
+                "Core.Persistence.Pagination" ,
+                _paths.ApplicationDirectory+".Commands.Create",
+                _paths.ApplicationDirectory+".Commands.Delete",
+                _paths.ApplicationDirectory+".Commands.Update",
+            };
+
             _classConfig.Constructor = true;
             _classConfig.ConstructorCodes = new List<string>
             {
                 @$"CreateMap<{_paths.EntityNameNotExt}, Create{_paths.EntityNameNotExt}Command>().ReverseMap();",
                 @$"CreateMap<{_paths.EntityNameNotExt}, Created{_paths.EntityNameNotExt}Response>().ReverseMap();",
                 @$"CreateMap<{_paths.EntityNameNotExt}, GetList{_paths.EntityNameNotExt}ListItemDto>().ReverseMap();",
-                @$"CreateMap<Paginate<{_paths.EntityNameNotExt}>, GetListResponse<GetList{_paths.EntityNameNotExt}ListItemDto>>().ReverseMap();",
+                @$"CreateMap<Paging<{_paths.EntityNameNotExt}>, GetListResponse<GetList{_paths.EntityNameNotExt}ListItemDto>>().ReverseMap();",
                 @$"CreateMap<GetById{_paths.EntityNameNotExt}Response, {_paths.EntityNameNotExt}>().ReverseMap();",
                 @$"CreateMap<Update{_paths.EntityNameNotExt}Command, {_paths.EntityNameNotExt}>().ReverseMap();",
                 @$"CreateMap<Updated{_paths.EntityNameNotExt}Response, {_paths.EntityNameNotExt}>().ReverseMap();",
-                @$"CreateMap<Delete{_paths.EntityNameNotExt}Command, {_paths.EntityNameNotExt}>().ReverseMap();",
-                @$"CreateMap<Delete{_paths.EntityNameNotExt}Response  ,{_paths.EntityNameNotExt}>().ReverseMap();"
+                @$"CreateMap<Delete{_paths.EntityNameNotExt}Response  ,{_paths.EntityNameNotExt}>().ReverseMap();",
+                @$"CreateMap<Delete{_paths.EntityNameNotExt}Command, {_paths.EntityNameNotExt}>().ReverseMap();"
             };
 
             ClassService.CreateClass(_classConfig);
