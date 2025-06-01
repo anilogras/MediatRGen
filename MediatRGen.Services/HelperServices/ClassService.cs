@@ -158,8 +158,9 @@ namespace MediatRGen.Services.HelperServices
 
             var row = SyntaxFactory.ParseStatement(code);
 
+            bool alreadyExists = ctor.Body.Statements.ToString().Replace(" ", "").Contains(row.ToFullString().Trim().Replace(" ", ""));
 
-            if(ctor.Body.Statements.ToString().Contains(code))
+            if (alreadyExists)
                 return new ServiceResult<SyntaxNode>(root, true, "");
 
             var newCtorBody = ctor.Body.AddStatements(row);
@@ -249,6 +250,9 @@ namespace MediatRGen.Services.HelperServices
 
             var newUsing = SyntaxFactory.UsingDirective(SyntaxFactory.ParseName(usingName))
                                          .WithTrailingTrivia(SyntaxFactory.ElasticCarriageReturnLineFeed);
+
+            if(parsedRoot.Usings.ToString().Contains(usingName))
+                return new ServiceResult<SyntaxNode>(root, true, "");
 
             var newRoot = parsedRoot.AddUsings(newUsing);
 
