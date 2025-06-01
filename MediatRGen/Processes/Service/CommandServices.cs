@@ -27,26 +27,8 @@ namespace MediatRGen.Cli.Processes.Service
             string _applicationCommandsDirectoryPath = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Commands").Value;
             DirectoryServices.CreateIsNotExist(_applicationCommandsDirectoryPath);
 
-            CreateCommand();
-            DeleteCommand();
-            UpdateCommand();
-
-        }
-
-
-
-        private void CreateCommand()
-        {
             CreateCommandClass("Create");
-        }
-
-        private void DeleteCommand()
-        {
             CreateCommandClass("Delete");
-        }
-
-        private void UpdateCommand()
-        {
             CreateCommandClass("Update");
         }
 
@@ -59,22 +41,6 @@ namespace MediatRGen.Cli.Processes.Service
             CommandHandlerConfiguration(workType);
             CommandResponseConfiguration(workType);
             //ResultConfiguration(workType);
-        }
-
-
-
-        private void ResultConfiguration(string workType)
-        {
-
-            ClassConfiguration _config = new ClassConfiguration();
-
-            _config.Directory = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Results").Value;
-            _config.Name = $"{workType}{_paths.EntityNameNotExt}Result";
-            _config.BaseInheritance = "IResponse";
-            _config.Usings = new List<string> { "Core.Application.BaseCQRS" };
-
-            ClassService.CreateClass(_config);
-
         }
 
         private void CommandConfiguration(string workType)
@@ -92,14 +58,14 @@ namespace MediatRGen.Cli.Processes.Service
 
             ClassService.CreateClass(_config);
 
-            ValidatiorConfiguration(workType, _config.Directory);
+            ValidatiorConfiguration(workType);
         }
 
-        private void ValidatiorConfiguration(string workType, string _commandPath)
+        private void ValidatiorConfiguration(string workType)
         {
             ClassConfiguration _config = new ClassConfiguration();
 
-            _config.Directory = _commandPath;
+            _config.Directory = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Commands", workType).Value; ;
             _config.Name = $"{workType}{_paths.EntityNameNotExt}CommandValidator";
             _config.BaseInheritance = $"AbstractValidator<{workType}{_paths.EntityNameNotExt}Command>";
             _config.Constructor = true;
@@ -132,7 +98,7 @@ namespace MediatRGen.Cli.Processes.Service
                 "AutoMapper",
                 "Core.Persistence.Repository",
                 $"Core.Application.BaseCQRS.Commands.{workType}" ,
-                _entityNamespace 
+                _entityNamespace
             };
 
             ClassService.CreateClass(_config);
