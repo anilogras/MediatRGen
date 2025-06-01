@@ -12,6 +12,7 @@ namespace MediatRGen.Services.Models
         public ClassConfiguration()
         {
             Usings = new List<string>();
+            ConstructorCodes = new List<string>();
         }
 
         public string Directory { get; set; }
@@ -20,6 +21,7 @@ namespace MediatRGen.Services.Models
         public List<string> Usings { get; set; }
         public bool Constructor { get; set; }
         public string ConstructorParameters { get; set; }
+        public List<string> ConstructorCodes { get; set; }
 
     }
 }

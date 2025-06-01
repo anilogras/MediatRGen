@@ -137,7 +137,7 @@ namespace MediatRGen.Services.HelperServices
                 return new ServiceResult<SyntaxNode>(root, true, "");
 
 
-            var ctor = SyntaxFactory.ConstructorDeclaration(classNode.Identifier.Text)
+            var ctor = SyntaxFactory.ConstructorDeclaration(" " + classNode.Identifier.Text)
                 .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
                 .WithBody(SyntaxFactory.Block());
 
@@ -147,6 +147,30 @@ namespace MediatRGen.Services.HelperServices
 
             return new ServiceResult<SyntaxNode>(newRoot, true, "");
         }
+
+        private static ServiceResult<SyntaxNode> AddConstructorCode(SyntaxNode root, string code)
+        {
+
+            var ctor = root.DescendantNodes()
+                    .OfType<ConstructorDeclarationSyntax>()
+                    .FirstOrDefault(c => c.ParameterList.Parameters.Count == 0);
+
+
+            var row = SyntaxFactory.ParseStatement(code);
+
+
+            if(ctor.Body.Statements.ToString().Contains(code))
+                return new ServiceResult<SyntaxNode>(root, true, "");
+
+            var newCtorBody = ctor.Body.AddStatements(row);
+
+            var newCtor = ctor.WithBody(newCtorBody);
+
+            var newRoot = root.ReplaceNode(ctor, newCtor);
+
+            return new ServiceResult<SyntaxNode>(newRoot, true, "");
+        }
+
 
         public static ServiceResult<string> GetNameSpace(string classPath)
         {
@@ -316,18 +340,24 @@ namespace MediatRGen.Services.HelperServices
                 _activeNode = SetBaseInheritance(_activeNode, classSettings.BaseInheritance).Value;
             }
 
-            if (classSettings.Usings.Count > 0)
+            foreach (var usingText in classSettings.Usings)
             {
-                foreach (var usingText in classSettings.Usings)
-                {
-                    _activeNode = AddUsing(_activeNode, usingText).Value;
-                }
+                _activeNode = AddUsing(_activeNode, usingText).Value;
             }
+
 
             if (classSettings.Constructor)
             {
                 _activeNode = AddConstructor(_activeNode).Value;
             }
+
+
+            foreach (var code in classSettings.ConstructorCodes)
+            {
+                _activeNode = AddConstructorCode(_activeNode, code).Value;
+            }
+
+
 
             ReWriteClass(classSettings.Directory + "\\" + classSettings.Name, _activeNode);
 
