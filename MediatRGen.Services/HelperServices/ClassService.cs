@@ -122,7 +122,7 @@ namespace MediatRGen.Services.HelperServices
             }
         }
 
-        private static ServiceResult<SyntaxNode> AddConstructor(SyntaxNode root, ClassConfiguration classSettings = null)
+        private static ServiceResult<SyntaxNode> AddConstructor(SyntaxNode root)
         {
             var classNode = root.DescendantNodes().OfType<ClassDeclarationSyntax>().FirstOrDefault();
 
@@ -143,14 +143,6 @@ namespace MediatRGen.Services.HelperServices
                 var newClassNode = classNode.AddMembers(ctor);
 
                 newRoot = root.ReplaceNode(classNode, newClassNode);
-            }
-
-            if (classSettings != null)
-            {
-                foreach (var code in classSettings.ConstructorCodes)
-                {
-                    newRoot = AddConstructorCode(newRoot, code).Value;
-                }
             }
 
             return new ServiceResult<SyntaxNode>(newRoot, true, "");
@@ -179,7 +171,32 @@ namespace MediatRGen.Services.HelperServices
 
             return new ServiceResult<SyntaxNode>(newRoot, true, "");
         }
+        private static ServiceResult<SyntaxNode> AddConstructorParameters(SyntaxNode root, string parameters, string baseParameter)
+        {
 
+            var classNode = root.DescendantNodes().OfType<ClassDeclarationSyntax>().FirstOrDefault();
+
+
+            var ctor = root.DescendantNodes()
+                    .OfType<ConstructorDeclarationSyntax>()
+                    .FirstOrDefault(c => c.ParameterList.Parameters.Count == 0);
+
+            var ctorCode = ctor.ToFullString();
+
+            var insertIndex = ctorCode.IndexOf(')');
+
+            if (!string.IsNullOrEmpty(baseParameter))
+                parameters = $"{parameters}):base({baseParameter}";
+
+            ctorCode = ctorCode.Insert(insertIndex, parameters);
+
+            var newCtor = SyntaxFactory.ParseMemberDeclaration(ctorCode) as ConstructorDeclarationSyntax;
+
+
+            var newRoot = root.ReplaceNode(ctor, newCtor);
+
+            return new ServiceResult<SyntaxNode>(newRoot, true, "");
+        }
 
         public static ServiceResult<string> GetNameSpace(string classPath)
         {
@@ -360,7 +377,17 @@ namespace MediatRGen.Services.HelperServices
 
             if (classSettings.Constructor)
             {
-                _activeNode = AddConstructor(_activeNode, classSettings).Value;
+                _activeNode = AddConstructor(_activeNode).Value;
+            }
+
+            if (!string.IsNullOrEmpty(classSettings.ConstructorParameters))
+            {
+                _activeNode = AddConstructorParameters(_activeNode, classSettings.ConstructorParameters, classSettings.ConstructorBaseParameters).Value;
+            }
+
+            foreach (var code in classSettings.ConstructorCodes)
+            {
+                _activeNode = AddConstructorCode(_activeNode, code).Value;
             }
 
 

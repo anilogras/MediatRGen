@@ -57,8 +57,8 @@ namespace MediatRGen.Cli.Processes.Service
 
             CommandConfiguration(workType);
             CommandHandlerConfiguration(workType);
-            CommandResultConfiguration(workType);
-            ResultConfiguration(workType);
+            CommandResponseConfiguration(workType);
+            //ResultConfiguration(workType);
         }
 
 
@@ -120,7 +120,7 @@ namespace MediatRGen.Cli.Processes.Service
 
             _config.Directory = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Commands", workType).Value;
             _config.Name = $"{workType}{_parameter.EntityName}CommandHandler";
-            _config.BaseInheritance = $"Base{workType}CommandHandler<{workType}{_parameter.EntityName}Command, {workType}{_parameter.EntityName}Result, {_parameter.EntityName}>";
+            _config.BaseInheritance = $"Base{workType}CommandHandler<{workType}{_parameter.EntityName}Command, {workType}{_parameter.EntityName}Response, {_parameter.EntityName}>";
             _config.Constructor = true;
             _config.ConstructorParameters = $"IRepository<{_parameter.EntityName}> repository, IMapper mapper";
             _config.ConstructorBaseParameters = "repository, mapper";
@@ -129,16 +129,16 @@ namespace MediatRGen.Cli.Processes.Service
 
             _config.Usings = new List<string>
             {
+                "AutoMapper",
                 "Core.Persistence.Repository",
                 $"Core.Application.BaseCQRS.Commands.{workType}" ,
-                _entityNamespace ,
-                $"{_paths.ApplicationDirectory}.Results"
+                _entityNamespace 
             };
 
             ClassService.CreateClass(_config);
         }
 
-        private void CommandResultConfiguration(string workType)
+        private void CommandResponseConfiguration(string workType)
         {
             ClassConfiguration _config = new ClassConfiguration();
             _config.Directory = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Commands", workType).Value;
