@@ -24,7 +24,7 @@ namespace MediatRGen.Cli.Processes.Service
         public void CreateQueries()
         {
 
-            string _applicationCommandsDirectoryPath = DirectoryServices.GetPath(_paths.ApplicationModulePath, _paths.EntityLocalDirectory, _paths.EntityPluralName, "Queries").Value;
+            string _applicationCommandsDirectoryPath = DirectoryServices.GetPath(_paths.ApplicationDirectory , "Queries").Value;
             DirectoryServices.CreateIsNotExist(_applicationCommandsDirectoryPath);
 
 
@@ -38,7 +38,7 @@ namespace MediatRGen.Cli.Processes.Service
         private void CreateBaseQueryClasses(string workType)
         {
 
-            string _queryPath = DirectoryServices.GetPath(_paths.ApplicationModulePath, _paths.EntityLocalDirectory, _paths.EntityPluralName, "Queries", workType).Value;
+            string _queryPath = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Queries", workType).Value;
             DirectoryServices.CreateIsNotExist(_queryPath);
 
             QueryConfiguration(workType, _queryPath);

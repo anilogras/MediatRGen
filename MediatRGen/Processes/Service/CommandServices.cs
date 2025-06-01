@@ -1,5 +1,6 @@
 ﻿using MediatRGen.Cli.Processes.Parameters.Services;
 using MediatRGen.Services.HelperServices;
+using MediatRGen.Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace MediatRGen.Cli.Processes.Service
 
         public void CreateCommands()
         {
-            string _applicationCommandsDirectoryPath = DirectoryServices.GetPath(_paths.ApplicationModulePath, _paths.EntityLocalDirectory, _paths.EntityPluralName, "Commands").Value;
+            string _applicationCommandsDirectoryPath = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Commands").Value;
             DirectoryServices.CreateIsNotExist(_applicationCommandsDirectoryPath);
 
             CreateCommand();
@@ -36,74 +37,78 @@ namespace MediatRGen.Cli.Processes.Service
 
         private void CreateCommand()
         {
-            CreateBaseCommandClasses("Create");
+            CreateCommandClass("Create");
         }
 
         private void DeleteCommand()
         {
-            CreateBaseCommandClasses("Delete");
+            CreateCommandClass("Delete");
         }
 
         private void UpdateCommand()
         {
-            CreateBaseCommandClasses("Update");
+            CreateCommandClass("Update");
         }
 
-        private void CreateBaseCommandClasses(string workType)
+        private void CreateCommandClass(string workType)
         {
-            string _commandPath = DirectoryServices.GetPath(_paths.ApplicationModulePath, _paths.EntityLocalDirectory, _paths.EntityPluralName, "Commands", workType).Value;
+            string _commandPath = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Commands", workType).Value;
             DirectoryServices.CreateIsNotExist(_commandPath);
 
             CommandConfiguration(workType);
             CommandHandlerConfiguration(workType);
-            ResultConfiguration(workType);
+            CommandResponseConfiguration(workType);
+            //ResultConfiguration(workType);
         }
 
-        
+
 
         private void ResultConfiguration(string workType)
         {
-            string _resultsPath = DirectoryServices.GetPath(_paths.ApplicationModulePath, _paths.EntityLocalDirectory, _paths.EntityPluralName, "Results").Value;
-            DirectoryServices.CreateIsNotExist(_resultsPath);
 
-            string _resultClassName = $"{workType}{_paths.EntityNameNotExt}Result";
+            ClassConfiguration _config = new ClassConfiguration();
 
-            SystemProcessService.InvokeCommand($"dotnet new class -n {_resultClassName} -o {_resultsPath}");
-            
-            ClassService.ChangeNameSpace(DirectoryServices.GetPath(_resultsPath , _resultClassName).Value, _resultsPath);
-            ClassService.SetBaseInheritance(DirectoryServices.GetPath(_resultsPath, _resultClassName).Value, $"IResponse");
-            
-            ClassService.AddUsing(DirectoryServices.GetPath(_resultsPath, _resultClassName).Value, "Core.Application.BaseCQRS");
+            _config.Directory = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Results").Value;
+            _config.Name = $"{workType}{_paths.EntityNameNotExt}Result";
+            _config.BaseInheritance = "IResponse";
+            _config.Usings = new List<string> { "Core.Application.BaseCQRS" };
+
+            ClassService.CreateClass(_config);
+
         }
 
         private void CommandConfiguration(string workType)
         {
-            string _commandClassName = $"{workType}{_parameter.EntityName}Command";
-            string _commandPath = DirectoryServices.GetPath(_paths.ApplicationModulePath, _paths.EntityLocalDirectory, _paths.EntityPluralName, "Commands", workType).Value;
-            SystemProcessService.InvokeCommand($"dotnet new class -n {_commandClassName} -o {_commandPath}");
 
-            string _commandClassRoot = DirectoryServices.GetPath(_commandPath, _commandClassName).Value;
-            ClassService.SetBaseInheritance(_commandClassRoot, $"Base{workType}Command<{_parameter.EntityName}>");
-            ClassService.ChangeNameSpace(DirectoryServices.GetPath(_commandPath, _commandClassName).Value, _commandPath);
+            ClassConfiguration _config = new ClassConfiguration();
 
-            ClassService.AddUsing(_commandClassRoot, $"Core.Application.BaseCQRS.Commands.{workType}");
-
+            _config.Directory = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Commands", workType).Value;
+            _config.Name = $"{workType}{_parameter.EntityName}Command";
+            _config.BaseInheritance = $"Base{workType}Command<{workType}{_parameter.EntityName}Response>";
+            _config.Constructor = true;
 
             string _entityNamespace = ClassService.GetNameSpace(_paths.EntityPath).Value;
-            ClassService.AddUsing(_commandClassRoot, _entityNamespace);
+            _config.Usings = new List<string> { $"Core.Application.BaseCQRS.Commands.{workType}", _entityNamespace };
 
-            ValidatiorConfiguration(workType, _commandPath);
+            ClassService.CreateClass(_config);
 
+            ValidatiorConfiguration(workType, _config.Directory);
         }
 
         private void ValidatiorConfiguration(string workType, string _commandPath)
         {
-            string _validatorClassName = $"{workType}{_paths.EntityNameNotExt}CommandValidator";
-            SystemProcessService.InvokeCommand($"dotnet new class -n {_validatorClassName} -o {_commandPath}");
-            ClassService.ChangeNameSpace(DirectoryServices.GetPath(_commandPath, _validatorClassName).Value, _commandPath);
-            ClassService.SetBaseInheritance(DirectoryServices.GetPath(_commandPath, _validatorClassName).Value, $"AbstractValidator<{workType}{_paths.EntityNameNotExt}Command>");
-            ClassService.AddConstructor(DirectoryServices.GetPath(_commandPath, _validatorClassName).Value);
-            ClassService.AddUsing(DirectoryServices.GetPath(_commandPath, _validatorClassName).Value, "FluentValidation");
+            ClassConfiguration _config = new ClassConfiguration();
+
+            _config.Directory = _commandPath;
+            _config.Name = $"{workType}{_paths.EntityNameNotExt}CommandValidator";
+            _config.BaseInheritance = $"AbstractValidator<{workType}{_paths.EntityNameNotExt}Command>";
+            _config.Constructor = true;
+            _config.Usings = new List<string>
+            {
+                "FluentValidation"
+            };
+
+            ClassService.CreateClass(_config);
 
         }
 
@@ -111,17 +116,36 @@ namespace MediatRGen.Cli.Processes.Service
         private void CommandHandlerConfiguration(string workType)
         {
 
-            string _commandHandlerClassName = $"{workType}{_parameter.EntityName}CommandHandler";
-            string _commandPath = DirectoryServices.GetPath(_paths.ApplicationModulePath, _paths.EntityLocalDirectory, _paths.EntityPluralName, "Commands", workType).Value;
-            SystemProcessService.InvokeCommand($"dotnet new class -n {_commandHandlerClassName} -o {_commandPath}");
+            ClassConfiguration _config = new ClassConfiguration();
 
-            string _commandHandlerClassRoot = DirectoryServices.GetPath(_commandPath, _commandHandlerClassName).Value;
-            ClassService.SetBaseInheritance(_commandHandlerClassRoot, $"Base{workType}CommandHandler<{workType}{_parameter.EntityName}Command, {workType}{_parameter.EntityName}Result, {_parameter.EntityName}>");
-            ClassService.AddUsing(_commandHandlerClassRoot, $"Core.Application.BaseCQRS.Commands.{workType}");
-            ClassService.ChangeNameSpace(DirectoryServices.GetPath(_commandPath, _commandHandlerClassName).Value, _commandPath);
+            _config.Directory = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Commands", workType).Value;
+            _config.Name = $"{workType}{_parameter.EntityName}CommandHandler";
+            _config.BaseInheritance = $"Base{workType}CommandHandler<{workType}{_parameter.EntityName}Command, {workType}{_parameter.EntityName}Response, {_parameter.EntityName}>";
+            _config.Constructor = true;
+            _config.ConstructorParameters = $"IRepository<{_parameter.EntityName}> repository, IMapper mapper";
+            _config.ConstructorBaseParameters = "repository, mapper";
 
             string _entityNamespace = ClassService.GetNameSpace(_paths.EntityPath).Value;
-            ClassService.AddUsing(_commandHandlerClassRoot, _entityNamespace);
+
+            _config.Usings = new List<string>
+            {
+                "AutoMapper",
+                "Core.Persistence.Repository",
+                $"Core.Application.BaseCQRS.Commands.{workType}" ,
+                _entityNamespace 
+            };
+
+            ClassService.CreateClass(_config);
+        }
+
+        private void CommandResponseConfiguration(string workType)
+        {
+            ClassConfiguration _config = new ClassConfiguration();
+            _config.Directory = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Commands", workType).Value;
+            _config.BaseInheritance = "IResponse";
+            _config.Usings = new List<string> { "Core.Application.BaseCQRS" };
+            _config.Name = $"{workType}{_parameter.EntityName}Response";
+            ClassService.CreateClass(_config);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace MediatRGen.Cli.Processes.Service
         public string EntityName { get; set; }
         public string EntityDirectory { get; set; }
         public string EntityLocalDirectory { get; set; }
-        public string ApplicationModulePath { get; set; }
+        public string ApplicationDirectory { get; set; }
         public string EntityNameNotExt { get; set; }
         public string EntityPathNotExt { get; set; }
         public string EntityPluralName { get; set; }
