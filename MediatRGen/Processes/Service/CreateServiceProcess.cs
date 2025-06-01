@@ -113,7 +113,7 @@ namespace MediatRGen.Cli.Processes.Service
             _classConfig.ConstructorCodes = new List<string>
             {
                 @$"CreateMap<{_paths.EntityNameNotExt}, Create{_paths.EntityNameNotExt}Command>().ReverseMap();",
-                @$"CreateMap<{_paths.EntityNameNotExt}, Created{_paths.EntityNameNotExt}Response>().ReverseMap();",
+                @$"CreateMap<{_paths.EntityNameNotExt}, Create{_paths.EntityNameNotExt}Response>().ReverseMap();",
                 @$"CreateMap<{_paths.EntityNameNotExt}, GetList{_paths.EntityNameNotExt}ListItemDto>().ReverseMap();",
                 @$"CreateMap<Paging<{_paths.EntityNameNotExt}>, GetListResponse<GetList{_paths.EntityNameNotExt}ListItemDto>>().ReverseMap();",
                 @$"CreateMap<GetById{_paths.EntityNameNotExt}Response, {_paths.EntityNameNotExt}>().ReverseMap();",
