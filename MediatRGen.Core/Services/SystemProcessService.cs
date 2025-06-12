@@ -1,8 +1,9 @@
-﻿using MediatRGen.Core.Exceptions;
-using MediatRGen.Services.Base;
+﻿using MediatRGen.Core.Base;
+using MediatRGen.Core.Exceptions;
+using MediatRGen.Core.Languages;
 using System.Diagnostics;
 
-namespace MediatRGen.Services.HelperServices
+namespace MediatRGen.Core.Services
 {
     public class SystemProcessService
     {

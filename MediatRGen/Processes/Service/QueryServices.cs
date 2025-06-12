@@ -1,6 +1,6 @@
 ﻿using MediatRGen.Cli.Processes.Parameters.Services;
-using MediatRGen.Services.HelperServices;
-using MediatRGen.Services.Models;
+using MediatRGen.Core.Models;
+using MediatRGen.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,7 +70,7 @@ namespace MediatRGen.Cli.Processes.Service
             _config.BaseInheritance = $"Base{workType}QueryHandler<{workType}{_parameter.EntityName}Query, {workType}{_parameter.EntityName}Response, {_parameter.EntityName}>";
             _config.Constructor = true;
 
-            string _entityNamespace = ClassService.GetNameSpace(_paths.EntityPath).Value;
+            string _entityNamespace = NameSpaceService.GetNameSpace(_paths.EntityPath).Value;
 
             _config.Usings = new List<string>
             {

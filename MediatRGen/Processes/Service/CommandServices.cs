@@ -1,6 +1,6 @@
 ﻿using MediatRGen.Cli.Processes.Parameters.Services;
-using MediatRGen.Services.HelperServices;
-using MediatRGen.Services.Models;
+using MediatRGen.Core.Models;
+using MediatRGen.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,7 +53,7 @@ namespace MediatRGen.Cli.Processes.Service
             _config.BaseInheritance = $"Base{workType}Command<{workType}{_parameter.EntityName}Response>";
             _config.Constructor = true;
 
-            string _entityNamespace = ClassService.GetNameSpace(_paths.EntityPath).Value;
+            string _entityNamespace = NameSpaceService.GetNameSpace(_paths.EntityPath).Value;
             _config.Usings = new List<string> { $"Core.Application.BaseCQRS.Commands.{workType}", _entityNamespace };
 
             ClassService.CreateClass(_config);
@@ -91,7 +91,7 @@ namespace MediatRGen.Cli.Processes.Service
             _config.ConstructorParameters = $"IRepository<{_parameter.EntityName}> repository, IMapper mapper";
             _config.ConstructorBaseParameters = "repository, mapper";
 
-            string _entityNamespace = ClassService.GetNameSpace(_paths.EntityPath).Value;
+            string _entityNamespace = NameSpaceService.GetNameSpace(_paths.EntityPath).Value;
 
             _config.Usings = new List<string>
             {

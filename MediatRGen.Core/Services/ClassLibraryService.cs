@@ -1,7 +1,8 @@
-﻿using MediatRGen.Core.Exceptions;
-using MediatRGen.Services.Base;
+﻿using MediatRGen.Core.Base;
+using MediatRGen.Core.Exceptions;
+using MediatRGen.Core.Languages;
 
-namespace MediatRGen.Services.HelperServices
+namespace MediatRGen.Core.Services
 {
     public static class ClassLibraryService
     {

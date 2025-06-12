@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Services.Base
+namespace MediatRGen.Core.Base
 {
     public class ServiceResult
     {

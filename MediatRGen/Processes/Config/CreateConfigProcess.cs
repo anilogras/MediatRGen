@@ -3,9 +3,8 @@ using MediatRGen.Cli.Processes.Core;
 using MediatRGen.Cli.Processes.Nuget;
 using MediatRGen.Cli.States;
 using MediatRGen.Core.Exceptions.FileExceptions;
-using MediatRGen.Services;
-using MediatRGen.Services.HelperServices;
-
+using MediatRGen.Core.Languages;
+using MediatRGen.Core.Services;
 
 namespace MediatRGen.Cli.Processes.Config
 {

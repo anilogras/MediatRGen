@@ -1,7 +1,8 @@
-﻿using MediatRGen.Core.Exceptions;
-using MediatRGen.Services.Base;
+﻿using MediatRGen.Core.Base;
+using MediatRGen.Core.Exceptions;
+using MediatRGen.Core.Languages;
 
-namespace MediatRGen.Services.HelperServices
+namespace MediatRGen.Core.Services
 {
     public static class DirectoryServices
     {
@@ -43,7 +44,7 @@ namespace MediatRGen.Services.HelperServices
 
             try
             {
-                return new ServiceResult<string>(path.Replace("\\\\", "\\") , true , "");
+                return new ServiceResult<string>(path.Replace("\\\\", "\\"), true, "");
             }
             catch (Exception ex)
             {

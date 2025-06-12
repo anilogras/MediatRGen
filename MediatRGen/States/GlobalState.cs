@@ -1,5 +1,5 @@
 ﻿using MediatRGen.Core.Models;
-using MediatRGen.Services.HelperServices;
+using MediatRGen.Core.Services;
 using System.Text.Json.Serialization;
 
 namespace MediatRGen.Cli.States

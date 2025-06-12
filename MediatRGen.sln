@@ -7,19 +7,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediatRGen.Cli", "MediatRGe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Application", "Core.Application\Core.Application.csproj", "{86434263-96CA-4B94-9FCC-C5EC861F1C3E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Application", "Core.Application\Core.Application.csproj", "{86434263-96CA-4B94-9FCC-C5EC861F1C3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Domain", "Core.Domain\Core.Domain.csproj", "{727A886E-47AA-4315-ACC4-4DC09E63938F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Domain", "Core.Domain\Core.Domain.csproj", "{727A886E-47AA-4315-ACC4-4DC09E63938F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Persistence", "Core.Persistence\Core.Persistence.csproj", "{C9A935A7-6952-4BFB-8192-EE8DAFFDFACB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Persistence", "Core.Persistence\Core.Persistence.csproj", "{C9A935A7-6952-4BFB-8192-EE8DAFFDFACB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.CrossCuttingConcerns", "Core.CrossCuttingConcerns\Core.CrossCuttingConcerns.csproj", "{05734C30-6567-41B7-8BAC-C0C9B9DD68C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.CrossCuttingConcerns", "Core.CrossCuttingConcerns\Core.CrossCuttingConcerns.csproj", "{05734C30-6567-41B7-8BAC-C0C9B9DD68C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediatRGen.Services", "MediatRGen.Services\MediatRGen.Services.csproj", "{52C08F9A-48DC-40E0-8DE8-A2B66EC62D40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediatRGen.Core", "MediatRGen.Core\MediatRGen.Core.csproj", "{E152534C-93B8-4000-84F3-8150BDB2D2C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediatRGen.Core", "MediatRGen.Core\MediatRGen.Core.csproj", "{E152534C-93B8-4000-84F3-8150BDB2D2C8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Deneme", "Core.Deneme\Core.Deneme.csproj", "{1C28D558-5F2D-4FA0-9A55-F2553A9008F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Deneme", "Core.Deneme\Core.Deneme.csproj", "{1C28D558-5F2D-4FA0-9A55-F2553A9008F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,10 +45,6 @@ Global
 		{05734C30-6567-41B7-8BAC-C0C9B9DD68C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05734C30-6567-41B7-8BAC-C0C9B9DD68C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05734C30-6567-41B7-8BAC-C0C9B9DD68C1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{52C08F9A-48DC-40E0-8DE8-A2B66EC62D40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{52C08F9A-48DC-40E0-8DE8-A2B66EC62D40}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{52C08F9A-48DC-40E0-8DE8-A2B66EC62D40}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{52C08F9A-48DC-40E0-8DE8-A2B66EC62D40}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E152534C-93B8-4000-84F3-8150BDB2D2C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E152534C-93B8-4000-84F3-8150BDB2D2C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E152534C-93B8-4000-84F3-8150BDB2D2C8}.Release|Any CPU.ActiveCfg = Release|Any CPU

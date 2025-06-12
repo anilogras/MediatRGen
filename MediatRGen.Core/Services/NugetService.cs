@@ -1,7 +1,7 @@
-﻿using MediatRGen.Services.Base;
-using MediatRGen.Services.HelperServices;
+﻿using MediatRGen.Core.Base;
+using MediatRGen.Core.Languages;
 
-namespace MediatRGen.Services.NugetServices
+namespace MediatRGen.Core.Services
 {
     public class NugetService
     {

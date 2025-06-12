@@ -1,9 +1,10 @@
-﻿using MediatRGen.Core.Exceptions.FileExceptions;
-using MediatRGen.Services.Base;
+﻿using MediatRGen.Core.Base;
+using MediatRGen.Core.Exceptions.FileExceptions;
+using MediatRGen.Core.Languages;
 using System.Text;
 using System.Text.Json;
 
-namespace MediatRGen.Services.HelperServices
+namespace MediatRGen.Core.Services
 {
     public class FileService
     {
@@ -126,7 +127,7 @@ namespace MediatRGen.Services.HelperServices
                     return new ServiceResult<string>(_searchResult, true, "");
                 // return new ServiceResult<string>(_searchResult, true, LangHandler.Definitions().FileFounded);
                 else
-                    return new ServiceResult<string>(null, false, LangHandler.Definitions().FileNotFound , new FileException(LangHandler.Definitions().FileNotFound));
+                    return new ServiceResult<string>(null, false, LangHandler.Definitions().FileNotFound, new FileException(LangHandler.Definitions().FileNotFound));
 
             }
             catch (Exception ex)
@@ -160,7 +161,7 @@ namespace MediatRGen.Services.HelperServices
                 string _combinedPathWithFile = DirectoryServices.GetPath(path, fileName).Value;
 
                 if (File.Exists(_combinedPathWithFile))
-                    return new ServiceResult<bool>(true, true,"");
+                    return new ServiceResult<bool>(true, true, "");
                 //return new ServiceResult<bool>(true, true, LangHandler.Definitions().FileFounded);
 
                 return new ServiceResult<bool>(false, true, LangHandler.Definitions().FileNotFound);

@@ -1,6 +1,6 @@
-﻿using MediatRGen.Services.Base;
+﻿using MediatRGen.Core.Base;
 
-namespace MediatRGen.Services.HelperServices
+namespace MediatRGen.Core.Services
 {
     public class ArgsService
     {

@@ -3,9 +3,9 @@ using MediatRGen.Cli.Processes.Base;
 using MediatRGen.Cli.Processes.Parameters.Services;
 using MediatRGen.Cli.States;
 using MediatRGen.Core.Exceptions.FileExceptions;
-using MediatRGen.Services;
-using MediatRGen.Services.HelperServices;
-using MediatRGen.Services.Models;
+using MediatRGen.Core.Languages;
+using MediatRGen.Core.Models;
+using MediatRGen.Core.Services;
 using System.IO;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 

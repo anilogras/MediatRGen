@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MediatRGen.Core\MediatRGen.Core.csproj" />
-    <ProjectReference Include="..\MediatRGen.Services\MediatRGen.Services.csproj" />
   </ItemGroup>
 
 
