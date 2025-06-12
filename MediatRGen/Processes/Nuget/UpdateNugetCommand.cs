@@ -1,21 +1,19 @@
-﻿using MediatRGen.Cli.Processes.Base;
-using MediatRGen.Core.Concrete;
-using MediatRGen.Core.Languages;
+﻿using MediatRGen.Core.Languages;
+using MediatRGen.Core.Services;
+using Spectre.Console.Cli;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace MediatRGen.Cli.Processes.Nuget
 {
-    public class UpdateNugetPackageProcess : BaseProcess
+    internal class UpdateNugetCommand : Command
     {
-        public UpdateNugetPackageProcess()
+        public override int Execute(CommandContext context)
         {
-            CreateCoreNugetPackages();
-        }
-
-
-        private static void CreateCoreNugetPackages()
-        {
-
             NugetService _nugetService = new NugetService();
             //_nugetService.DeleteNugets();
 
@@ -38,6 +36,8 @@ namespace MediatRGen.Cli.Processes.Nuget
                 Console.WriteLine(_fileName + LangHandler.Definitions().NugetPackageCreated);
                 File.Copy(item, _copyPath, true);
             }
+
+            return 0;
         }
     }
 }

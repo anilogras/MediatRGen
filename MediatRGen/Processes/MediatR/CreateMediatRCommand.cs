@@ -1,57 +1,23 @@
-﻿using Humanizer;
-using MediatRGen.Cli.Processes.Base;
-using MediatRGen.Cli.Processes.Parameters.Services;
+﻿using MediatRGen.Cli.Models;
 using MediatRGen.Cli.States;
 using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Exceptions.FileExceptions;
 using MediatRGen.Core.Languages;
 using MediatRGen.Core.Models;
+using MediatRGen.Core.Services;
+using Spectre.Console.Cli;
+using System;
+using System.Collections.Generic;
 using System.IO;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace MediatRGen.Cli.Processes.Service
+namespace MediatRGen.Cli.Processes.MediatR
 {
-    public class CreateServiceProcess : BaseProcess
+    public class CreateMediatRCommand : Command<CreateServiceSchema>
     {
-
-        private ServiceCreateParameter _parameter;
         private readonly ServicePaths _paths;
-
-        public CreateServiceProcess(string command)
-        {
-            ParameterService.GetParameter<ServiceCreateParameter>(command, ref _parameter);
-            ParameterService.GetParameterFromConsole(_parameter, "EntityName", LangHandler.Definitions().EnterEntityName);
-            ParameterService.GetParameterFromConsole(_parameter, "ModuleName", LangHandler.Definitions().EnterModuleName);
-
-            _paths = new ServicePaths();
-
-            Execute();
-
-        }
-
-
-        private void Execute()
-        {
-            CreatePaths();
-
-            DirectoryServices.CreateIsNotExist(_paths.ApplicationDirectory + "\\" + _paths.EntityNameNotExt);
-
-            CreateBusinessRules();
-            CreateConstants();
-            CreateMapping();
-
-
-            CommandServices commandServices = new CommandServices(_parameter, _paths);
-            commandServices.CreateCommands();
-
-
-            QueryServices queryServices = new QueryServices(_parameter, _paths);
-            queryServices.CreateQueries();
-
-
-            DirectoryServices.CreateIsNotExist(_paths.ApplicationDirectory + "\\DTOs");
-            Console.WriteLine(LangHandler.Definitions().ServiceCreated);
-        }
 
         private void CreatePaths()
         {
@@ -124,6 +90,36 @@ namespace MediatRGen.Cli.Processes.Service
             };
 
             ClassService.CreateClass(_classConfig);
+        }
+
+        public override int Execute(CommandContext context, CreateServiceSchema settings)
+        {
+            ParameterService.GetParameter<CreateServiceSchema>(command, ref _parameter);
+            ParameterService.GetParameterFromConsole(_parameter, "EntityName", LangHandler.Definitions().EnterEntityName);
+            ParameterService.GetParameterFromConsole(_parameter, "ModuleName", LangHandler.Definitions().EnterModuleName);
+
+            _paths = new ServicePaths();
+
+
+            CreatePaths();
+
+            DirectoryServices.CreateIsNotExist(_paths.ApplicationDirectory + "\\" + _paths.EntityNameNotExt);
+
+            CreateBusinessRules();
+            CreateConstants();
+            CreateMapping();
+
+
+            CommandServices commandServices = new CommandServices(_parameter, _paths);
+            commandServices.CreateCommands();
+
+
+            QueryServices queryServices = new QueryServices(_parameter, _paths);
+            queryServices.CreateQueries();
+
+
+            DirectoryServices.CreateIsNotExist(_paths.ApplicationDirectory + "\\DTOs");
+            Console.WriteLine(LangHandler.Definitions().ServiceCreated);
         }
     }
 }

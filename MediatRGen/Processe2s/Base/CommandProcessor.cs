@@ -7,7 +7,7 @@ using MediatRGen.Core.Exceptions;
 using MediatRGen.Core.Languages;
 using MediatRGen.Core.Services;
 
-namespace MediatRGen.Cli.Processes.Base
+namespace MediatRGen.Cli.Processe2s.Base
 {
     public class CommandProcessor
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Cli.Processes.Service
+namespace MediatRGen.Cli.Processes.MediatR
 {
     public class ServicePaths
     {

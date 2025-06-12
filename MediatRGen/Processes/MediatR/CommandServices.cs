@@ -1,4 +1,4 @@
-﻿using MediatRGen.Cli.Processes.Parameters.Services;
+﻿using MediatRGen.Cli.Models;
 using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Models;
 using System;
@@ -7,15 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Cli.Processes.Service
+namespace MediatRGen.Cli.Processes.MediatR
 {
     internal class CommandServices
     {
 
-        private readonly ServiceCreateParameter _parameter;
+        private readonly CreateServiceSchema _parameter;
         private readonly ServicePaths _paths;
 
-        public CommandServices(ServiceCreateParameter parameter, ServicePaths paths)
+        public CommandServices(CreateServiceSchema parameter, ServicePaths paths)
         {
             _parameter = parameter;
             _paths = paths;

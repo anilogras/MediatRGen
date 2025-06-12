@@ -1,16 +1,18 @@
 ﻿using CommandLine;
+using Spectre.Console.Cli;
 
-namespace MediatRGen.Cli.Processes.Parameters.Solutions
+namespace MediatRGen.Cli.Models
 {
-    public class SolutionCreateParameter
+    public class CreateSolutionSchema : CommandSettings
     {
-        [Option('n', "name", Required = false)]
+
+        [CommandArgument(0, "<Name>")]
         public string ProjectName { get; set; }
 
 
         private string _Directory;
 
-        [Option('d', "dir", Required = false)]
+        [CommandArgument(1, "<Directory>")]
         public string Directory
         {
             get { return _Directory; }
