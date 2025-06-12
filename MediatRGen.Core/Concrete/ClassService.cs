@@ -10,6 +10,33 @@ namespace MediatRGen.Core.Concrete
 {
     internal class ClassService : IClassService
     {
+
+        private readonly IFileService _fileService;
+        private readonly INameSpaceService _nameSpaceService;
+        private readonly IDirectoryServices _directoryService;
+        private readonly ISystemProcessService _systemProcessService;
+        private readonly IInheritanceService _inheritanceService;
+        private readonly IUsingService _usingService;
+        private readonly IConstructorService _constructorService;
+
+        public ClassService(
+            IFileService fileService,
+            INameSpaceService nameSpaceService,
+            IDirectoryServices directoryService,
+            ISystemProcessService systemProcessService,
+            IInheritanceService inheritanceService,
+            IUsingService usingService,
+            IConstructorService constructorService)
+        {
+            _fileService = fileService;
+            _nameSpaceService = nameSpaceService;
+            _directoryService = directoryService;
+            _systemProcessService = systemProcessService;
+            _inheritanceService = inheritanceService;
+            _usingService = usingService;
+            _constructorService = constructorService;
+        }
+
         public ServiceResult<bool> ReWriteClass(string classPath, SyntaxNode newRoot)
         {
             try
@@ -39,7 +66,7 @@ namespace MediatRGen.Core.Concrete
             if (string.IsNullOrEmpty(extension))
                 classPath = classPath + ".cs";
 
-            string? _classText = FileService.Get(classPath).Value;
+            string? _classText = _fileService.Get(classPath).Value;
 
             if (string.IsNullOrEmpty(_classText))
                 return new ServiceResult<SyntaxNode>(null, false, LangHandler.Definitions().ClassNotFound);
@@ -50,36 +77,36 @@ namespace MediatRGen.Core.Concrete
         }
         public ServiceResult<bool> CreateClass(ClassConfiguration classSettings)
         {
-            DirectoryServices.CreateIsNotExist(classSettings.Directory);
-            SystemProcessService.InvokeCommand($"dotnet new class -n {classSettings.Name} -o {classSettings.Directory}");
+            _directoryService.CreateIsNotExist(classSettings.Directory);
+            _systemProcessService.InvokeCommand($"dotnet new class -n {classSettings.Name} -o {classSettings.Directory}");
 
             var root = GetClassRoot(classSettings.Directory + "\\" + classSettings.Name).Value;
-            SyntaxNode _activeNode = NameSpaceService.ChangeNameSpace(root, classSettings.Directory).Value;
+            SyntaxNode _activeNode = _nameSpaceService.ChangeNameSpace(root, classSettings.Directory).Value;
 
             if (!string.IsNullOrEmpty(classSettings.BaseInheritance))
             {
-                _activeNode = InheritanceService.SetBaseInheritance(_activeNode, classSettings.BaseInheritance).Value;
+                _activeNode = _inheritanceService.SetBaseInheritance(_activeNode, classSettings.BaseInheritance).Value;
             }
 
             foreach (var usingText in classSettings.Usings)
             {
-                _activeNode = UsingService.AddUsing(_activeNode, usingText).Value;
+                _activeNode = _usingService.AddUsing(_activeNode, usingText).Value;
             }
 
 
             if (classSettings.Constructor)
             {
-                _activeNode = ConstructorService.AddConstructor(_activeNode).Value;
+                _activeNode = _constructorService.AddConstructor(_activeNode).Value;
             }
 
             if (!string.IsNullOrEmpty(classSettings.ConstructorParameters))
             {
-                _activeNode = ConstructorService.AddConstructorParameters(_activeNode, classSettings.ConstructorParameters, classSettings.ConstructorBaseParameters).Value;
+                _activeNode = _constructorService.AddConstructorParameters(_activeNode, classSettings.ConstructorParameters, classSettings.ConstructorBaseParameters).Value;
             }
 
             foreach (var code in classSettings.ConstructorCodes)
             {
-                _activeNode = ConstructorService.AddConstructorCode(_activeNode, code).Value;
+                _activeNode = _constructorService.AddConstructorCode(_activeNode, code).Value;
             }
 
 

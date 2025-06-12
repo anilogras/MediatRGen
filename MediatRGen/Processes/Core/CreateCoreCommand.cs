@@ -18,7 +18,7 @@ namespace MediatRGen.Cli.Processes.Core
         {
             _classLibraryService = classLibraryService;
             _systemProcessService = systemProcessService;
-
+        }
 
 
         public override int Execute(CommandContext context)
