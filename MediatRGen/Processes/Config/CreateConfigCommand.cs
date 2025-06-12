@@ -1,6 +1,4 @@
-﻿using MediatRGen.Cli.Processe2s.Core;
-using MediatRGen.Cli.Processe2s.Nuget;
-using MediatRGen.Cli.States;
+﻿using MediatRGen.Cli.States;
 using MediatRGen.Core.Base;
 using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Exceptions.FileExceptions;

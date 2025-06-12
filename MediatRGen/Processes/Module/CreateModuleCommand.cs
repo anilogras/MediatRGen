@@ -15,23 +15,44 @@ using System.Threading.Tasks;
 
 namespace MediatRGen.Cli.Processes.Module
 {
-    public class CreateModuleCommand : Command<CreateModuleParameter>
+    public class CreateModuleCommand : Command<CreateModuleSchema>
     {
-        public override int Execute(CommandContext context, CreateModuleParameter settings)
+
+        private readonly IParameterService _parameterService;
+        private readonly IDirectoryServices _directoryServices;
+        private readonly ISystemProcessService _systemProcessService;
+        private readonly IWebApiService _webApiService;
+        private readonly IClassLibraryService _classLibraryService;
+
+        public CreateModuleCommand(
+            IParameterService parameterService,
+            IDirectoryServices directoryServices,
+            ISystemProcessService systemProcessService,
+            IWebApiService webApiService,
+            IClassLibraryService classLibraryService)
         {
-            ParameterService.GetParameter<ModuleCreateParameter>(command, ref settings);
-            ParameterService.GetParameterFromConsole(settings, "ModuleName", LangHandler.Definitions().EnterModuleName);
+            _parameterService = parameterService;
+            _directoryServices = directoryServices;
+            _systemProcessService = systemProcessService;
+            _webApiService = webApiService;
+            _classLibraryService = classLibraryService;
+        }
+
+        public override int Execute(CommandContext context, CreateModuleSchema settings)
+        {
+            _parameterService.GetParameter<CreateModuleSchema>(command, ref settings);
+            _parameterService.GetParameterFromConsole(settings, "ModuleName", LangHandler.Definitions().EnterModuleName);
 
 
             CheckModulNameIsExist();
-            DirectoryServices.CreateIsNotExist(DirectoryServices.GetCurrentDirectory().Value + "src\\" + settings.ModuleName);
+            _directoryServices.CreateIsNotExist(_directoryServices.GetCurrentDirectory().Value + "src\\" + settings.ModuleName);
 
-            ClassLibraryService.Create(settings.ModuleName + "." + "Domain", DirectoryServices.GetPath(settings.ModuleName).Value, GlobalState.Instance.ProjectName, GlobalState.Instance.SolutionName);
-            ClassLibraryService.Create(settings.ModuleName + "." + "Application", DirectoryServices.GetPath(settings.ModuleName).Value, GlobalState.Instance.ProjectName, GlobalState.Instance.SolutionName);
-            ClassLibraryService.Create(settings.ModuleName + "." + "Infrastructure", DirectoryServices.GetPath(settings.ModuleName).Value, GlobalState.Instance.ProjectName, GlobalState.Instance.SolutionName);
-            WebApiService.Create(settings.ModuleName + "." + "API", DirectoryServices.GetPath(settings.ModuleName).Value, GlobalState.Instance.ProjectName, GlobalState.Instance.SolutionName);
+            _classLibraryService.Create(settings.ModuleName + "." + "Domain", _directoryServices.GetPath(settings.ModuleName).Value, GlobalState.Instance.ProjectName, GlobalState.Instance.SolutionName);
+            _classLibraryService.Create(settings.ModuleName + "." + "Application", _directoryServices.GetPath(settings.ModuleName).Value, GlobalState.Instance.ProjectName, GlobalState.Instance.SolutionName);
+            _classLibraryService.Create(settings.ModuleName + "." + "Infrastructure", _directoryServices.GetPath(settings.ModuleName).Value, GlobalState.Instance.ProjectName, GlobalState.Instance.SolutionName);
+            _webApiService.Create(settings.ModuleName + "." + "API", _directoryServices.GetPath(settings.ModuleName).Value, GlobalState.Instance.ProjectName, GlobalState.Instance.SolutionName);
 
-            SystemProcessService.BuildProject(GlobalState.Instance.ProjectName);
+            _systemProcessService.BuildProject(GlobalState.Instance.ProjectName);
 
             GlobalState.Instance.Modules.Add(new ProjectModule()
             {
@@ -41,6 +62,8 @@ namespace MediatRGen.Cli.Processes.Module
             FileService.UpdateConfig(GlobalState.ConfigFileName, GlobalState.Instance);
 
             Console.WriteLine(settings.ModuleName + LangHandler.Definitions().ModuleCreated);
+
+            return 0;
         }
 
         private void CheckModulNameIsExist()
