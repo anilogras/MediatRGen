@@ -9,11 +9,19 @@ namespace MediatRGen.Core.Concrete
 {
     public class FileService : IFileService
     {
+
+        private readonly IDirectoryServices _directoryServices;
+
+        public FileService(IDirectoryServices directoryServices)
+        {
+            _directoryServices = directoryServices;
+        }
+
         public ServiceResult<bool> Create(string path, string fileName, string content)
         {
             try
             {
-                string _path = DirectoryServices.GetPath(path, fileName).Value;
+                string _path = _directoryServices.GetPath(path, fileName).Value;
 
                 if (!File.Exists(_path))
                 {
@@ -32,7 +40,7 @@ namespace MediatRGen.Core.Concrete
         {
             try
             {
-                string _path = DirectoryServices.GetPath(path, fileName).Value;
+                string _path = _directoryServices.GetPath(path, fileName).Value;
                 if (!File.Exists(_path))
                 {
                     var options = new JsonSerializerOptions
@@ -56,7 +64,7 @@ namespace MediatRGen.Core.Concrete
         {
             try
             {
-                string _path = DirectoryServices.GetPath(path, fileName).Value;
+                string _path = _directoryServices.GetPath(path, fileName).Value;
 
                 if (!File.Exists(_path))
                 {
@@ -94,7 +102,7 @@ namespace MediatRGen.Core.Concrete
 
             try
             {
-                string _configPath = DirectoryServices.GetPath(DirectoryServices.GetCurrentDirectory().Value, configFileName).Value;
+                string _configPath = _directoryServices.GetPath(_directoryServices.GetCurrentDirectory().Value, configFileName).Value;
 
                 string? _file = Get(_configPath).Value;
 
@@ -105,7 +113,7 @@ namespace MediatRGen.Core.Concrete
 
                 File.Delete(_configPath);
 
-                Create(DirectoryServices.GetCurrentDirectory().Value, configFileName, stateInstance);
+                Create(_directoryServices.GetCurrentDirectory().Value, configFileName, stateInstance);
 
                 return new ServiceResult<bool>(true, true, LangHandler.Definitions().ConfigUpdated, null);
             }
@@ -153,7 +161,7 @@ namespace MediatRGen.Core.Concrete
         {
             try
             {
-                string _combinedPathWithFile = DirectoryServices.GetPath(path, fileName).Value;
+                string _combinedPathWithFile = _directoryServices.GetPath(path, fileName).Value;
 
                 if (File.Exists(_combinedPathWithFile))
                     return new ServiceResult<bool>(true, true, "");

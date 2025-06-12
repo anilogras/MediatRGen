@@ -11,6 +11,13 @@ namespace MediatRGen.Core.Concrete
     internal class UsingService : IUsingService
     {
 
+        private readonly IClassService _classService;
+
+        public UsingService(IClassService classService)
+        {
+            _classService = classService;
+        }
+
         public ServiceResult<bool> AddUsing(string classPath, string usingName)
         {
             try
@@ -20,11 +27,11 @@ namespace MediatRGen.Core.Concrete
                 if (string.IsNullOrEmpty(extension))
                     classPath = classPath + ".cs";
 
-                SyntaxNode root = ClassService.GetClassRoot(classPath).Value;
+                SyntaxNode root = _classService.GetClassRoot(classPath).Value;
 
                 SyntaxNode newRoot = AddUsing(root, usingName).Value;
 
-                ClassService.ReWriteClass(classPath, newRoot);
+                _classService.ReWriteClass(classPath, newRoot);
 
                 return new ServiceResult<bool>(true, true, "");
                 //return new ServiceResult<bool>(true, true, usingName + "\n" + LangHandler.Definitions().UsingAdded);

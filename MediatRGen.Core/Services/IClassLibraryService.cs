@@ -10,6 +10,5 @@ namespace MediatRGen.Core.Services
     public interface IClassLibraryService
     {
         public ServiceResult<bool> Create(string name, string path, string projectName, string solutionName);
-        public ServiceResult<string> CreateClassLibraryName(string moduleName, string solutionName);
     }
 }

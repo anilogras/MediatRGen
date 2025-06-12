@@ -11,6 +11,13 @@ namespace MediatRGen.Core.Concrete
     internal class InheritanceService : IInheritanceService
     {
 
+        private readonly IClassService _classService;
+
+        public InheritanceService(IClassService classService)
+        {
+            _classService = classService;
+        }
+
         public ServiceResult<bool> SetBaseInheritance(string classPath, string baseClassName)
         {
             try
@@ -20,9 +27,9 @@ namespace MediatRGen.Core.Concrete
                 if (string.IsNullOrEmpty(extension))
                     classPath = classPath + ".cs";
 
-                SyntaxNode root = ClassService.GetClassRoot(classPath).Value;
+                SyntaxNode root = _classService.GetClassRoot(classPath).Value;
                 SyntaxNode newRoot = SetBaseInheritance(root, baseClassName).Value;
-                ClassService.ReWriteClass(classPath, newRoot);
+                _classService.ReWriteClass(classPath, newRoot);
                 return new ServiceResult<bool>(true, true, "");
             }
             catch (Exception ex)

@@ -5,6 +5,12 @@ namespace MediatRGen.Core.Concrete
 {
     internal class ArgsService : IArgsService
     {
+
+        public ArgsService()
+        {
+
+        }
+
         public ServiceResult<string[]> SplitArgs(string command)
         {
             List<string> parsedValue = new List<string>();

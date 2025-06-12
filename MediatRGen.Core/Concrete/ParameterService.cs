@@ -8,13 +8,21 @@ namespace MediatRGen.Core.Concrete
 {
     internal class ParameterService : IParameterService
     {
+
+        private readonly IArgsService _argsService;
+
+        public ParameterService(IArgsService argsService)
+        {
+            _argsService = argsService;
+        }
+
         public ServiceResult<T> GetParameter<T>(string command, ref T _parameter)
 
         where T : class, new()
         {
             try
             {
-                ParserResult<T> _parsedOptions = Parser.Default.ParseArguments<T>(ArgsService.SplitArgs(command).Value);
+                ParserResult<T> _parsedOptions = Parser.Default.ParseArguments<T>(_argsService.SplitArgs(command).Value);
                 if (_parsedOptions.Errors.Count() != 0)
                 {
                     return new ServiceResult<T>(null, false, LangHandler.Definitions().ParameterParseError);

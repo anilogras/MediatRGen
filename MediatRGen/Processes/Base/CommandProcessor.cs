@@ -5,15 +5,23 @@ using MediatRGen.Cli.Processes.Service;
 using MediatRGen.Cli.Processes.Solution;
 using MediatRGen.Core.Exceptions;
 using MediatRGen.Core.Languages;
+using MediatRGen.Core.Services;
 
 namespace MediatRGen.Cli.Processes.Base
 {
-    public static class CommandProcessor
+    public class CommandProcessor
     {
+        private readonly IArgsService _argsService;
 
-        public static BaseProcess ProcessHandler(string command)
+        public CommandProcessor(IArgsService argsService)
         {
-            string[] commandArgs = ArgsService.SplitArgs(command).Value;
+            _argsService = argsService;
+        }
+
+
+        public BaseProcess ProcessHandler(string command)
+        {
+            string[] commandArgs = _argsService.SplitArgs(command).Value;
             //Validator.ValidateCommandBeforeProcess(commandArgs);
 
             if (string.IsNullOrWhiteSpace(command))

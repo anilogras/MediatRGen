@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MediatRGen.Core.Services
 {
-    internal interface IDirectoryServices
+    public interface IDirectoryServices
     {
         public ServiceResult<string> GetPath(params string[] paths);
         public ServiceResult<string> ClearTwiceBackSlash(string path);

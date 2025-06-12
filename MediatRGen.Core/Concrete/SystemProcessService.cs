@@ -8,6 +8,14 @@ namespace MediatRGen.Core.Concrete
 {
     internal class SystemProcessService : ISystemProcessService
     {
+
+        private readonly IDirectoryServices _directoryServices;
+
+        public SystemProcessService(IDirectoryServices directoryServices)
+        {
+            _directoryServices = directoryServices;
+        }
+
         public ServiceResult<string> InvokeCommand(string parameters, string command = "dotnet")
         {
             var startInfo = new ProcessStartInfo
@@ -31,7 +39,7 @@ namespace MediatRGen.Core.Concrete
                     process.WaitForExit();
                 }
                 var result = output == "" ? error : output;
-                return new ServiceResult<string>(result, true, DirectoryServices.ClearTwiceBackSlash(startInfo.Arguments.ToString()).Value + "\n" + LangHandler.Definitions().ProcessInvoked);
+                return new ServiceResult<string>(result, true, _directoryServices.ClearTwiceBackSlash(startInfo.Arguments.ToString()).Value + "\n" + LangHandler.Definitions().ProcessInvoked);
             }
             catch (Exception ex)
             {
@@ -43,7 +51,7 @@ namespace MediatRGen.Core.Concrete
         {
             try
             {
-                string res3 = InvokeCommand($"dotnet build {DirectoryServices.GetCurrentDirectory().Value}{projectName}.sln").Value;
+                string res3 = InvokeCommand($"dotnet build {_directoryServices.GetCurrentDirectory().Value}{projectName}.sln").Value;
                 return new ServiceResult<bool>(true, true, LangHandler.Definitions().ClassLibraryBuild + "\n" + res3, null);
             }
             catch (Exception ex)

@@ -10,13 +10,20 @@ namespace MediatRGen.Core.Concrete
 {
     internal class NameSpaceService : INameSpaceService
     {
+        private readonly IClassService _classService;
+
+        public NameSpaceService(IClassService classService)
+        {
+            _classService = classService;
+        }
+
         public ServiceResult<bool> ChangeNameSpace(string classPath, string newNameSpace)
         {
             try
             {
-                SyntaxNode root = ClassService.GetClassRoot(classPath).Value;
+                SyntaxNode root = _classService.GetClassRoot(classPath).Value;
                 var newRoot = ChangeNameSpace(root, newNameSpace).Value;
-                ClassService.ReWriteClass(classPath, newRoot);
+                _classService.ReWriteClass(classPath, newRoot);
                 return new ServiceResult<bool>(true, true, "");
             }
             catch (Exception ex)
@@ -65,7 +72,7 @@ namespace MediatRGen.Core.Concrete
                 if (string.IsNullOrEmpty(extension))
                     classPath = classPath + ".cs";
 
-                SyntaxNode root = ClassService.GetClassRoot(classPath).Value;
+                SyntaxNode root = _classService.GetClassRoot(classPath).Value;
 
                 var fileScopedNs = root.DescendantNodes()
                    .OfType<FileScopedNamespaceDeclarationSyntax>()

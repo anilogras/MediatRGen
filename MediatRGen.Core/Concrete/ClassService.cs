@@ -5,8 +5,6 @@ using MediatRGen.Core.Models;
 using MediatRGen.Core.Services;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.IO;
 
 namespace MediatRGen.Core.Concrete
 {

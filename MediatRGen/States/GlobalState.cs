@@ -1,5 +1,6 @@
 ﻿using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Models;
+using MediatRGen.Core.Services;
 using System.Text.Json.Serialization;
 
 namespace MediatRGen.Cli.States
@@ -7,8 +8,12 @@ namespace MediatRGen.Cli.States
     public class GlobalState
     {
 
-        public GlobalState()
+        private readonly IDirectoryServices _directoryServices;
+
+        public GlobalState(IDirectoryServices directoryServices)
         {
+            _directoryServices = directoryServices;
+
             Lang = "tr";
             Commands = ["create-solution", "create-repository", "create-config", "create-module"];
             ProjectName = "DenemeSolution";
@@ -18,15 +23,15 @@ namespace MediatRGen.Cli.States
 
         private static GlobalState _instance;
 
-        public static GlobalState Instance
+        public  GlobalState Instance
         {
             get
             {
 
                 if (_instance == null)
                 {
-                    string _configPath = DirectoryServices.GetPath(DirectoryServices.GetCurrentDirectory().Value, ConfigFileName).Value;
-                    bool _fileExist = FileService.CheckFile(DirectoryServices.GetCurrentDirectory().Value, ConfigFileName).Value;
+                    string _configPath = _directoryServices.GetPath(_directoryServices.GetCurrentDirectory().Value, ConfigFileName).Value;
+                    bool _fileExist = FileService.CheckFile(_directoryServices.GetCurrentDirectory().Value, ConfigFileName).Value;
 
                     if (_fileExist == false)
                         _instance = new GlobalState();
