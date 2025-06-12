@@ -1,5 +1,4 @@
-﻿using MediatRGen.Cli.Processe2s.Base;
-using MediatRGen.Cli.Processes.Config;
+﻿using MediatRGen.Cli.Processes.Config;
 using MediatRGen.Cli.Processes.MediatR;
 using MediatRGen.Cli.Processes.Module;
 using MediatRGen.Cli.Processes.Nuget;
