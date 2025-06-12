@@ -1,5 +1,5 @@
 ﻿using MediatRGen.Cli.States;
-using MediatRGen.Core.Services;
+using MediatRGen.Core.Concrete;
 
 namespace MediatRGen.Cli.Processes.Core
 {

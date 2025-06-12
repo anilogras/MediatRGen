@@ -1,15 +1,16 @@
 ﻿using MediatRGen.Core.Base;
 using MediatRGen.Core.Exceptions;
 using MediatRGen.Core.Languages;
+using MediatRGen.Core.Services;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace MediatRGen.Core.Services
+namespace MediatRGen.Core.Concrete
 {
-    internal static class PropertyService
+    internal class PropertyService : IPropertyService
     {
-        public static ServiceResult<string> AddNewProperty(string classString, string propertyName, SyntaxKind propertyType, bool getProp = true, bool setProp = true)
+        public ServiceResult<string> AddNewProperty(string classString, string propertyName, SyntaxKind propertyType, bool getProp = true, bool setProp = true)
         {
             try
             {

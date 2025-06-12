@@ -1,15 +1,16 @@
 ﻿using MediatRGen.Core.Base;
 using MediatRGen.Core.Exceptions;
 using MediatRGen.Core.Languages;
+using MediatRGen.Core.Services;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace MediatRGen.Core.Services
+namespace MediatRGen.Core.Concrete
 {
-    public static class NameSpaceService
+    internal class NameSpaceService : INameSpaceService
     {
-        public static ServiceResult<bool> ChangeNameSpace(string classPath, string newNameSpace)
+        public ServiceResult<bool> ChangeNameSpace(string classPath, string newNameSpace)
         {
             try
             {
@@ -23,7 +24,7 @@ namespace MediatRGen.Core.Services
                 return new ServiceResult<bool>(false, false, LangHandler.Definitions().NameSpaceChangeException, new ClassLibraryException(ex.Message));
             }
         }
-        public static ServiceResult<SyntaxNode> ChangeNameSpace(SyntaxNode root, string newNameSpace)
+        public ServiceResult<SyntaxNode> ChangeNameSpace(SyntaxNode root, string newNameSpace)
         {
             newNameSpace = newNameSpace.Substring(newNameSpace.IndexOf("\\src\\") + 5);
             newNameSpace = newNameSpace.Substring(newNameSpace.IndexOf("\\") + 1);
@@ -54,7 +55,7 @@ namespace MediatRGen.Core.Services
             }
         }
 
-        public static ServiceResult<string> GetNameSpace(string classPath)
+        public ServiceResult<string> GetNameSpace(string classPath)
         {
             try
             {

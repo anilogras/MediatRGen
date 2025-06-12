@@ -1,6 +1,6 @@
 ﻿using MediatRGen.Cli.Processes.Base;
+using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Languages;
-using MediatRGen.Core.Services;
 using System.Reflection;
 
 namespace MediatRGen.Cli.Processes.Nuget

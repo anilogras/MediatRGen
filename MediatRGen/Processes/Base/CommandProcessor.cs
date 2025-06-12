@@ -5,7 +5,6 @@ using MediatRGen.Cli.Processes.Service;
 using MediatRGen.Cli.Processes.Solution;
 using MediatRGen.Core.Exceptions;
 using MediatRGen.Core.Languages;
-using MediatRGen.Core.Services;
 
 namespace MediatRGen.Cli.Processes.Base
 {

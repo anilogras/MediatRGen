@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MediatRGen.Core.Concrete;
+using MediatRGen.Core.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +10,8 @@ namespace MediatRGen.Cli.Processes.Base
 {
     public class BaseProcess
     {
+        public BaseProcess()
+        {
+        }
     }
 }

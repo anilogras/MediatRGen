@@ -1,14 +1,15 @@
 ﻿using CommandLine;
 using MediatRGen.Core.Base;
 using MediatRGen.Core.Languages;
+using MediatRGen.Core.Services;
 using System;
 
-namespace MediatRGen.Core.Services
+namespace MediatRGen.Core.Concrete
 {
-    public class ParameterService
+    internal class ParameterService : IParameterService
     {
+        public ServiceResult<T> GetParameter<T>(string command, ref T _parameter)
 
-        public static ServiceResult<T> GetParameter<T>(string command, ref T _parameter)
         where T : class, new()
         {
             try
@@ -27,8 +28,7 @@ namespace MediatRGen.Core.Services
 
             return new ServiceResult<T>(_parameter, true, "");
         }
-
-        public static ServiceResult GetParameterFromConsole(object target, string propertyName, string message)
+        public ServiceResult GetParameterFromConsole(object target, string propertyName, string message)
         {
             try
             {
@@ -63,7 +63,5 @@ namespace MediatRGen.Core.Services
 
             }
         }
-
-
     }
 }

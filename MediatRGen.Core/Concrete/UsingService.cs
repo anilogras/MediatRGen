@@ -1,16 +1,17 @@
 ﻿using MediatRGen.Core.Base;
 using MediatRGen.Core.Exceptions;
 using MediatRGen.Core.Languages;
+using MediatRGen.Core.Services;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace MediatRGen.Core.Services
+namespace MediatRGen.Core.Concrete
 {
-    internal static class UsingService
+    internal class UsingService : IUsingService
     {
 
-        public static ServiceResult<bool> AddUsing(string classPath, string usingName)
+        public ServiceResult<bool> AddUsing(string classPath, string usingName)
         {
             try
             {
@@ -33,7 +34,7 @@ namespace MediatRGen.Core.Services
                 return new ServiceResult<bool>(false, false, LangHandler.Definitions().NameSpaceChangeException, new ClassLibraryException(ex.Message));
             }
         }
-        public static ServiceResult<SyntaxNode> AddUsing(SyntaxNode root, string usingName)
+        public ServiceResult<SyntaxNode> AddUsing(SyntaxNode root, string usingName)
         {
 
             var parsedRoot = root as CompilationUnitSyntax;

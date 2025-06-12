@@ -1,11 +1,12 @@
 ﻿using MediatRGen.Core.Base;
 using MediatRGen.Core.Languages;
+using MediatRGen.Core.Services;
 
-namespace MediatRGen.Core.Services
+namespace MediatRGen.Core.Concrete
 {
-    public class QuestionService
+    internal class QuestionService : IQuestionService
     {
-        public static ServiceResult<bool> YesNoQuestion(string question)
+        public ServiceResult<bool> YesNoQuestion(string question)
         {
 
             bool answer = false;
@@ -33,7 +34,7 @@ namespace MediatRGen.Core.Services
             return new ServiceResult<bool>(answer, true, "");
         }
 
-        public static ServiceResult<string> GetAnswer(string question)
+        public ServiceResult<string> GetAnswer(string question)
         {
             while (true)
             {

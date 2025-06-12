@@ -2,18 +2,17 @@
 using MediatRGen.Core.Exceptions;
 using MediatRGen.Core.Languages;
 using MediatRGen.Core.Models;
+using MediatRGen.Core.Services;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.IO;
 
-namespace MediatRGen.Core.Services
+namespace MediatRGen.Core.Concrete
 {
-    public class ClassService
+    internal class ClassService : IClassService
     {
-
-
-        public static ServiceResult<bool> ReWriteClass(string classPath, SyntaxNode newRoot)
+        public ServiceResult<bool> ReWriteClass(string classPath, SyntaxNode newRoot)
         {
             try
             {
@@ -35,7 +34,7 @@ namespace MediatRGen.Core.Services
             }
 
         }
-        public static ServiceResult<SyntaxNode> GetClassRoot(string classPath)
+        public ServiceResult<SyntaxNode> GetClassRoot(string classPath)
         {
             string? extension = Path.GetExtension(classPath);
 
@@ -51,8 +50,7 @@ namespace MediatRGen.Core.Services
             var root = tree.GetRoot();
             return new ServiceResult<SyntaxNode>(root, true, "");
         }
-
-        public static ServiceResult<bool> CreateClass(ClassConfiguration classSettings)
+        public ServiceResult<bool> CreateClass(ClassConfiguration classSettings)
         {
             DirectoryServices.CreateIsNotExist(classSettings.Directory);
             SystemProcessService.InvokeCommand($"dotnet new class -n {classSettings.Name} -o {classSettings.Directory}");

@@ -1,12 +1,13 @@
 ﻿using MediatRGen.Core.Base;
 using MediatRGen.Core.Exceptions;
 using MediatRGen.Core.Languages;
+using MediatRGen.Core.Services;
 
-namespace MediatRGen.Core.Services
+namespace MediatRGen.Core.Concrete
 {
-    public static class DirectoryServices
+    internal class DirectoryServices : IDirectoryServices
     {
-        public static ServiceResult<string> GetPath(params string[] paths)
+        public ServiceResult<string> GetPath(params string[] paths)
         {
             string _text = "";
 
@@ -38,8 +39,7 @@ namespace MediatRGen.Core.Services
 
             return new ServiceResult<string>(_text, true, "");
         }
-
-        public static ServiceResult<string> ClearTwiceBackSlash(string path)
+        public ServiceResult<string> ClearTwiceBackSlash(string path)
         {
 
             try
@@ -53,13 +53,11 @@ namespace MediatRGen.Core.Services
             }
 
         }
-
-        public static ServiceResult<string> GetCurrentDirectory()
+        public ServiceResult<string> GetCurrentDirectory()
         {
             return new ServiceResult<string>(".\\DENSOL\\", true, "");
         }
-
-        public static ServiceResult<bool> CreateIsNotExist(string path)
+        public ServiceResult<bool> CreateIsNotExist(string path)
         {
             string _combinedPath = Path.Combine(path);
 
@@ -80,8 +78,7 @@ namespace MediatRGen.Core.Services
             return new ServiceResult<bool>(true, true, "");
 
         }
-
-        public static ServiceResult<bool> Delete(string path)
+        public ServiceResult<bool> Delete(string path)
         {
             try
             {

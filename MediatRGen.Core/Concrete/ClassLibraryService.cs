@@ -1,12 +1,13 @@
 ﻿using MediatRGen.Core.Base;
 using MediatRGen.Core.Exceptions;
 using MediatRGen.Core.Languages;
+using MediatRGen.Core.Services;
 
-namespace MediatRGen.Core.Services
+namespace MediatRGen.Core.Concrete
 {
-    public static class ClassLibraryService
+    public class ClassLibraryService : IClassLibraryService
     {
-        public static ServiceResult<bool> Create(string name, string path, string projectName, string solutionName)
+        public ServiceResult<bool> Create(string name, string path, string projectName, string solutionName)
         {
             try
             {
@@ -27,8 +28,7 @@ namespace MediatRGen.Core.Services
                 return new ServiceResult<bool>(false, false, LangHandler.Definitions().ClassLibraryCreateError, new ClassLibraryException(ex.Message));
             }
         }
-
-        private static ServiceResult<string> CreateClassLibraryName(string moduleName, string solutionName)
+        public ServiceResult<string> CreateClassLibraryName(string moduleName, string solutionName)
         {
             return new ServiceResult<string>(solutionName + "." + moduleName, true, LangHandler.Definitions().ClassLibraryNameCreated);
         }

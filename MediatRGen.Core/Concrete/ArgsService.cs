@@ -1,10 +1,11 @@
 ﻿using MediatRGen.Core.Base;
+using MediatRGen.Core.Services;
 
-namespace MediatRGen.Core.Services
+namespace MediatRGen.Core.Concrete
 {
-    public class ArgsService
+    internal class ArgsService : IArgsService
     {
-        public static ServiceResult<string[]> SplitArgs(string command)
+        public ServiceResult<string[]> SplitArgs(string command)
         {
             List<string> parsedValue = new List<string>();
             int index = 0;

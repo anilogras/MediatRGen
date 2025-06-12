@@ -2,9 +2,9 @@
 using MediatRGen.Cli.Processes.Core;
 using MediatRGen.Cli.Processes.Nuget;
 using MediatRGen.Cli.States;
+using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Exceptions.FileExceptions;
 using MediatRGen.Core.Languages;
-using MediatRGen.Core.Services;
 
 namespace MediatRGen.Cli.Processes.Config
 {

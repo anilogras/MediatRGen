@@ -1,16 +1,17 @@
 ﻿using MediatRGen.Core.Base;
 using MediatRGen.Core.Exceptions;
 using MediatRGen.Core.Languages;
+using MediatRGen.Core.Services;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace MediatRGen.Core.Services
+namespace MediatRGen.Core.Concrete
 {
-    public static class InheritanceService
+    internal class InheritanceService : IInheritanceService
     {
 
-        public static ServiceResult<bool> SetBaseInheritance(string classPath, string baseClassName)
+        public ServiceResult<bool> SetBaseInheritance(string classPath, string baseClassName)
         {
             try
             {
@@ -29,7 +30,7 @@ namespace MediatRGen.Core.Services
                 return new ServiceResult<bool>(false, false, LangHandler.Definitions().BaseClassSetError, new ClassLibraryException(ex.Message));
             }
         }
-        public static ServiceResult<SyntaxNode> SetBaseInheritance(SyntaxNode root, string baseClassName)
+        public ServiceResult<SyntaxNode> SetBaseInheritance(SyntaxNode root, string baseClassName)
         {
             var classNode = root.DescendantNodes().OfType<ClassDeclarationSyntax>().First();
             var baseType = SyntaxFactory.SimpleBaseType(SyntaxFactory.ParseTypeName(baseClassName));

@@ -1,11 +1,12 @@
 ﻿using MediatRGen.Core.Base;
 using MediatRGen.Core.Languages;
+using MediatRGen.Core.Services;
 
-namespace MediatRGen.Core.Services
+namespace MediatRGen.Core.Concrete
 {
-    public class WebApiService
+    internal class WebApiService : IWebApiService
     {
-        public static ServiceResult<bool> Create(string name, string path, string projectName, string solutionName)
+        public ServiceResult<bool> Create(string name, string path, string projectName, string solutionName)
         {
 
             try
@@ -29,8 +30,7 @@ namespace MediatRGen.Core.Services
             }
 
         }
-
-        private static ServiceResult<string> CreateClassLibraryName(string moduleName, string solutionName)
+        private ServiceResult<string> CreateClassLibraryName(string moduleName, string solutionName)
         {
             return new ServiceResult<string>(solutionName + "." + moduleName, true, "");
         }

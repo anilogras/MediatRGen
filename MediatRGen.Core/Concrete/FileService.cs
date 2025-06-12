@@ -1,14 +1,15 @@
 ﻿using MediatRGen.Core.Base;
 using MediatRGen.Core.Exceptions.FileExceptions;
 using MediatRGen.Core.Languages;
+using MediatRGen.Core.Services;
 using System.Text;
 using System.Text.Json;
 
-namespace MediatRGen.Core.Services
+namespace MediatRGen.Core.Concrete
 {
-    public class FileService
+    public class FileService : IFileService
     {
-        public static ServiceResult<bool> Create(string path, string fileName, string content)
+        public ServiceResult<bool> Create(string path, string fileName, string content)
         {
             try
             {
@@ -27,7 +28,7 @@ namespace MediatRGen.Core.Services
             return new ServiceResult<bool>(true, true, LangHandler.Definitions().FileCreated + $" ({fileName})", null);
 
         }
-        public static ServiceResult<bool> Create(string path, string fileName, object content)
+        public ServiceResult<bool> Create(string path, string fileName, object content)
         {
             try
             {
@@ -51,8 +52,7 @@ namespace MediatRGen.Core.Services
 
             return new ServiceResult<bool>(true, true, LangHandler.Definitions().FileCreated + $" ({fileName})", null);
         }
-
-        public static ServiceResult<bool> Create(string path, string fileName)
+        public ServiceResult<bool> Create(string path, string fileName)
         {
             try
             {
@@ -71,8 +71,7 @@ namespace MediatRGen.Core.Services
                 return new ServiceResult<bool>(false, false, LangHandler.Definitions().FileCreateError, new FileException(ex.Message));
             }
         }
-
-        public static ServiceResult<string?> Get(string path)
+        public ServiceResult<string?> Get(string path)
         {
             try
             {
@@ -90,8 +89,7 @@ namespace MediatRGen.Core.Services
                 return new ServiceResult<string?>(null, false, LangHandler.Definitions().FileReadError, new FileException(ex.Message));
             }
         }
-
-        public static ServiceResult<bool> UpdateConfig(string configFileName, object stateInstance)
+        public ServiceResult<bool> UpdateConfig(string configFileName, object stateInstance)
         {
 
             try
@@ -116,8 +114,7 @@ namespace MediatRGen.Core.Services
                 return new ServiceResult<bool>(false, false, LangHandler.Definitions().ConfigUpdateError, new FileException(ex.Message));
             }
         }
-
-        public static ServiceResult<string> FindFileRecursive(string directory, string targetFile)
+        public ServiceResult<string> FindFileRecursive(string directory, string targetFile)
         {
             try
             {
@@ -135,8 +132,7 @@ namespace MediatRGen.Core.Services
                 return new ServiceResult<string>(string.Empty, false, LangHandler.Definitions().FileNotFound, new FileException(ex.Message));
             }
         }
-
-        private static string FindFile(string directory, string targetFile)
+        private string FindFile(string directory, string targetFile)
         {
             foreach (var file in Directory.GetFiles(directory))
             {
@@ -153,8 +149,7 @@ namespace MediatRGen.Core.Services
 
             return null;
         }
-
-        public static ServiceResult<bool> CheckFile(string path, string fileName)
+        public ServiceResult<bool> CheckFile(string path, string fileName)
         {
             try
             {

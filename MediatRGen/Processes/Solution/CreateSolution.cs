@@ -1,9 +1,9 @@
 ﻿using MediatRGen.Cli.Processes.Base;
 using MediatRGen.Cli.Processes.Parameters.Solutions;
 using MediatRGen.Cli.States;
+using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Exceptions.FileExceptions;
 using MediatRGen.Core.Languages;
-using MediatRGen.Core.Services;
 
 namespace MediatRGen.Cli.Processes.Solution
 {

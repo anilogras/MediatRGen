@@ -1,10 +1,10 @@
 ﻿using MediatRGen.Cli.Processes.Base;
 using MediatRGen.Cli.Processes.Parameters.Modules;
 using MediatRGen.Cli.States;
+using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Exceptions;
 using MediatRGen.Core.Languages;
 using MediatRGen.Core.Models;
-using MediatRGen.Core.Services;
 
 namespace MediatRGen.Cli.Processes.Module
 {

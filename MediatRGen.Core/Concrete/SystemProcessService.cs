@@ -1,13 +1,14 @@
 ﻿using MediatRGen.Core.Base;
 using MediatRGen.Core.Exceptions;
 using MediatRGen.Core.Languages;
+using MediatRGen.Core.Services;
 using System.Diagnostics;
 
-namespace MediatRGen.Core.Services
+namespace MediatRGen.Core.Concrete
 {
-    public class SystemProcessService
+    internal class SystemProcessService : ISystemProcessService
     {
-        public static ServiceResult<string> InvokeCommand(string parameters, string command = "dotnet")
+        public ServiceResult<string> InvokeCommand(string parameters, string command = "dotnet")
         {
             var startInfo = new ProcessStartInfo
             {
@@ -38,7 +39,7 @@ namespace MediatRGen.Core.Services
             }
 
         }
-        public static ServiceResult<bool> BuildProject(string projectName)
+        public ServiceResult<bool> BuildProject(string projectName)
         {
             try
             {
