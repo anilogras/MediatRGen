@@ -18,9 +18,6 @@ namespace MediatRGen.Cli.Processes.Nuget
 
         public override int Execute(CommandContext context)
         {
-            NugetService _nugetService = new NugetService();
-            //_nugetService.DeleteNugets();
-
             string _newPath = _directoryService.GetPath(_directoryService.GetCurrentDirectory().Value, "CoreNugetPackages").Value;
 
             _directoryService.CreateIsNotExist(_newPath);

@@ -1,5 +1,4 @@
-﻿using MediatRGen.Cli.States;
-using MediatRGen.Core;
+﻿using MediatRGen.Core;
 using MediatRGen.Core.Exceptions;
 using MediatRGen.Core.Languages;
 using System;

@@ -1,5 +1,4 @@
-﻿using MediatRGen.Cli.States;
-using MediatRGen.Core.Services;
+﻿using MediatRGen.Core.Services;
 using Spectre.Console.Cli;
 using System;
 using System.Collections.Generic;

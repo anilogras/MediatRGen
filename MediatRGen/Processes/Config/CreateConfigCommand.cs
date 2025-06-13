@@ -1,6 +1,5 @@
 ﻿using MediatRGen.Cli.Processes.Core;
 using MediatRGen.Cli.Processes.Nuget;
-using MediatRGen.Cli.States;
 using MediatRGen.Core.Base;
 using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Exceptions.FileExceptions;
@@ -10,6 +9,7 @@ using Spectre.Console.Cli;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,22 +17,22 @@ namespace MediatRGen.Cli.Processes.Config
 {
     public class CreateConfigCommand : Command
     {
-        private readonly ISettings _setting;
+        private readonly ISettings _settings;
         private readonly IFileService _fileService;
         private readonly IQuestionService _questionService;
 
-        public CreateConfigCommand(ISettings setting, IFileService fileService, IQuestionService questionService)
+        public CreateConfigCommand(ISettings settings, IFileService fileService, IQuestionService questionService)
         {
-            _setting = setting;
+            _settings = settings;
             _fileService = fileService;
             _questionService = questionService;
         }
 
         public override int Execute(CommandContext context)
         {
-            _setting.UseGateway = false;
+            _settings.UseGateway = false;
 
-            if (_setting == null)
+            if (_settings == null)
             {
                 throw new FileException(LangHandler.Definitions().ConfigNotFound);
             }
@@ -42,12 +42,12 @@ namespace MediatRGen.Cli.Processes.Config
             //    throw new FileException(LangHandler.Definitions().ConfigExist);
             //}
 
-            _setting.Version = System.Reflection.Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString() ?? "";
+            _settings.Version = System.Reflection.Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString() ?? "";
 
             ModuleSystemActive();
             GatewayActive();
 
-            _fileService.UpdateConfig(GlobalState.ConfigFileName, _setting.Get());
+            _fileService.UpdateConfig(_settings.ConfigFileName, _settings.Get());
 
             CreateCoreFiles();
 
@@ -58,15 +58,15 @@ namespace MediatRGen.Cli.Processes.Config
 
         private void ModuleSystemActive()
         {
-            _setting.UseModule = _questionService.YesNoQuestion(LangHandler.Definitions().ModuleActive).Value;
+            _settings.UseModule = _questionService.YesNoQuestion(LangHandler.Definitions().ModuleActive).Value;
         }
 
         private void GatewayActive()
         {
-            if (_setting.UseModule == true)
+            if (_settings.UseModule == true)
             {
                 Console.WriteLine(LangHandler.Definitions().UseOchelot);
-                _setting.UseGateway = _questionService.YesNoQuestion(LangHandler.Definitions().GatewayActive).Value;
+                _settings.UseGateway = _questionService.YesNoQuestion(LangHandler.Definitions().GatewayActive).Value;
             }
         }
 

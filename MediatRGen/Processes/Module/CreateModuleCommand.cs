@@ -1,5 +1,4 @@
 ﻿using MediatRGen.Cli.Models;
-using MediatRGen.Cli.States;
 using MediatRGen.Core.Base;
 using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Exceptions;
@@ -44,11 +43,11 @@ namespace MediatRGen.Cli.Processes.Module
 
         public override int Execute(CommandContext context, CreateModuleSchema settings)
         {
-            _parameterService.GetParameter<CreateModuleSchema>(command, ref settings);
+            //_parameterService.GetParameter<CreateModuleSchema>(command, ref settings);
             _parameterService.GetParameterFromConsole(settings, "ModuleName", LangHandler.Definitions().EnterModuleName);
 
 
-            CheckModulNameIsExist();
+            CheckModulNameIsExist(settings);
             _directoryServices.CreateIsNotExist(_directoryServices.GetCurrentDirectory().Value + "src\\" + settings.ModuleName);
 
             _classLibraryService.Create(settings.ModuleName + "." + "Domain", _directoryServices.GetPath(settings.ModuleName).Value, _settings.ProjectName, _settings.SolutionName);
@@ -70,7 +69,7 @@ namespace MediatRGen.Cli.Processes.Module
             return 0;
         }
 
-        private void CheckModulNameIsExist()
+        private void CheckModulNameIsExist(CreateModuleSchema settings)
         {
             if (_settings.Modules.Where(x => x.Name == settings.ModuleName).Count() != 0)
             {

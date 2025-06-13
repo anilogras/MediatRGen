@@ -1,4 +1,4 @@
-﻿using MediatRGen.Cli.States;
+﻿using MediatRGen.Core.Services;
 using Spectre.Console.Cli;
 using System;
 using System.Collections.Generic;
@@ -10,10 +10,28 @@ namespace MediatRGen.Cli.Processes.Config
 {
     internal class UpdateConfigCommand : Command
     {
+
+        private readonly ISettings _settings;
+
+        public UpdateConfigCommand(ISettings settings)
+        {
+            _settings = settings;
+        }
+
         public override int Execute(CommandContext context)
         {
-            new CreateConfigCommand();
-            GlobalState.UpdateInstance();
+            var app = new CommandApp();
+
+            app.Configure(cnf =>
+            {
+                cnf.AddCommand<CreateConfigCommand>(context.Name);
+            });
+
+            app.Run(context.Arguments);
+
+            _settings.Update();
+
+            return 0;
         }
     }
 }

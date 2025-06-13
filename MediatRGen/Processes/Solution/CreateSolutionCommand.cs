@@ -1,5 +1,4 @@
 ﻿using MediatRGen.Cli.Models;
-using MediatRGen.Cli.States;
 using MediatRGen.Core.Base;
 using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Exceptions.FileExceptions;
@@ -36,7 +35,6 @@ namespace MediatRGen.Cli.Processes.Solution
         {
             _parameter = settings;
 
-            GetParameters();
             GetPathFromCommand();
 
             _directoryService.CreateIsNotExist(_directoryService.GetCurrentDirectory().Value + settings.ProjectName);
@@ -71,7 +69,7 @@ namespace MediatRGen.Cli.Processes.Solution
 
         private void CreateFirstConfigFile(string _combinedPath, object firstConfig)
         {
-            _fileService.Create(_combinedPath, GlobalState.ConfigFileName, firstConfig);
+            _fileService.Create(_combinedPath, _settings.ConfigFileName, firstConfig);
         }
 
         private void GetPathFromCommand()
