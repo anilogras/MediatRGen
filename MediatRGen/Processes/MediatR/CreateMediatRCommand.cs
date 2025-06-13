@@ -1,4 +1,5 @@
-﻿using MediatRGen.Cli.Models;
+﻿using Humanizer;
+using MediatRGen.Cli.Models;
 using MediatRGen.Cli.States;
 using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Exceptions.FileExceptions;
@@ -17,14 +18,15 @@ namespace MediatRGen.Cli.Processes.MediatR
 {
     public class CreateMediatRCommand : Command<CreateServiceSchema>
     {
-        private readonly ServicePaths _paths;
-        private readonly CreateServiceSchema _parameter;
+        private ServicePaths _paths;
+        private CreateServiceSchema _parameter;
 
         private readonly IDirectoryServices _directoryServices;
         private readonly IClassService _classService;
         private readonly INameSpaceService _nameSpaceService;
         private readonly IParameterService _parameterService;
-
+        private readonly ISettings _settings;
+        private readonly IFileService _fileService;
 
 
         public override int Execute(CommandContext context, CreateServiceSchema settings)
@@ -63,8 +65,8 @@ namespace MediatRGen.Cli.Processes.MediatR
 
         private void CreatePaths()
         {
-            _paths.DomainPath = $"{_directoryServices.GetCurrentDirectory().Value}src\\{_parameter.ModuleName}\\{GlobalState.Instance.SolutionName}.{_parameter.ModuleName}.Domain\\";
-            _paths.EntityPath = FileService.FindFileRecursive(_paths.DomainPath, _parameter.EntityName + ".cs").Value;
+            _paths.DomainPath = $"{_directoryServices.GetCurrentDirectory().Value}src\\{_parameter.ModuleName}\\{_settings.SolutionName}.{_parameter.ModuleName}.Domain\\";
+            _paths.EntityPath = _fileService.FindFileRecursive(_paths.DomainPath, _parameter.EntityName + ".cs").Value;
             _paths.EntityLocalDirectory = _paths.EntityPath.Replace(_paths.DomainPath, "");
             _paths.EntityLocalDirectory = _paths.EntityLocalDirectory.Substring(0, _paths.EntityLocalDirectory.LastIndexOf("\\"));
             _paths.EntityName = _paths.EntityPath.Substring(_paths.EntityPath.LastIndexOf("\\") + 1);
@@ -74,7 +76,7 @@ namespace MediatRGen.Cli.Processes.MediatR
                 throw new FileException($"{LangHandler.Definitions().EntityNotFound} ({_parameter.ModuleName} -> {_parameter.EntityName})");
             _paths.EntityNameNotExt = _paths.EntityName.Substring(0, _paths.EntityName.IndexOf("."));
             _paths.EntityPluralName = _paths.EntityNameNotExt.Pluralize();
-            _paths.ApplicationDirectory = $"{_directoryServices.GetCurrentDirectory().Value}src\\{_parameter.ModuleName}\\{GlobalState.Instance.SolutionName}.{_parameter.ModuleName}.Application\\Features\\{_paths.EntityLocalDirectory}\\{_paths.EntityPluralName}";
+            _paths.ApplicationDirectory = $"{_directoryServices.GetCurrentDirectory().Value}src\\{_parameter.ModuleName}\\{_settings.SolutionName}.{_parameter.ModuleName}.Application\\Features\\{_paths.EntityLocalDirectory}\\{_paths.EntityPluralName}";
 
         }
 
