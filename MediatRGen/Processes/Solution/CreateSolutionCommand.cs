@@ -3,51 +3,68 @@ using MediatRGen.Cli.States;
 using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Exceptions.FileExceptions;
 using MediatRGen.Core.Languages;
+using MediatRGen.Core.Services;
 using Spectre.Console.Cli;
 
 namespace MediatRGen.Cli.Processes.Solution
 {
     internal class CreateSolutionCommand : Command<CreateSolutionSchema>
     {
+        private readonly IDirectoryServices _directoryService;
+        private readonly ISettings _settings;
+        private readonly ISystemProcessService _systemProcessService;
+        private readonly IFileService _fileService;
+
+        public CreateSolutionCommand(
+            IDirectoryServices directoryService, 
+            ISettings settings, 
+            ISystemProcessService systemProcessService,
+            IFileService fileService)
+        {
+            _directoryService = directoryService;
+            _settings = settings;
+            _systemProcessService = systemProcessService;
+            _fileService = fileService;
+        }
 
         public override int Execute(CommandContext context, CreateSolutionSchema settings)
         {
             GetParameters();
             GetPathFromCommand();
 
-            DirectoryServices.CreateIsNotExist(DirectoryServices.GetCurrentDirectory().Value + _parameter.ProjectName);
-            string _directory = _parameter.Directory;
+            _directoryService.CreateIsNotExist(_directoryService.GetCurrentDirectory().Value + settings.ProjectName);
+            string _directory = settings.Directory;
 
-            string _combinedPath = DirectoryServices.GetPath(_directory, _parameter.ProjectName).Value;
+            string _combinedPath = _directoryService.GetPath(_directory, settings.ProjectName).Value;
 
 
-            if (FileService.CheckFile(_combinedPath, _parameter.ProjectName + ".sln").Value == true)
+            if (_fileService.CheckFile(_combinedPath, settings.ProjectName + ".sln").Value == true)
             {
                 throw new FileException(LangHandler.Definitions().ProjectExist);
             }
 
-            string commandResult = @$"dotnet new sln -n {_parameter.ProjectName} --output ""{_combinedPath}""";
+            string commandResult = @$"dotnet new sln -n {settings.ProjectName} --output ""{_combinedPath}""";
 
-            string res = SystemProcessService.InvokeCommand(commandResult).Value;
+            string res = _systemProcessService.InvokeCommand(commandResult).Value;
 
             Console.WriteLine(res);
 
-            Console.WriteLine($"cd ./{_parameter.ProjectName}");
+            Console.WriteLine($"cd ./{settings.ProjectName}");
 
             if (res.IndexOf("Error") == -1)
                 Console.WriteLine(LangHandler.Definitions().YouCanWriteCode);
 
-            GlobalState.Instance.ProjectName = _parameter.ProjectName;
-            GlobalState.Instance.SolutionName = _parameter.ProjectName;
+            _settings.ProjectName = settings.ProjectName;
+            _settings.SolutionName = settings.ProjectName;
 
-            CreateFirstConfigFile(_combinedPath, GlobalState.Instance);
-            return 0; throw new NotImplementedException();
+            CreateFirstConfigFile(_combinedPath, _settings.Get());
+            return 0;
         }
 
 
         private static void CreateFirstConfigFile(string _combinedPath, object firstConfig)
         {
-            FileService.Create(_combinedPath, GlobalState.ConfigFileName, firstConfig);
+            _fileService.Create(_combinedPath, GlobalState.ConfigFileName, firstConfig);
         }
 
         private void GetPathFromCommand()
@@ -56,7 +73,7 @@ namespace MediatRGen.Cli.Processes.Solution
 
             if (_parameter.Directory == "." || string.IsNullOrEmpty(_parameter.Directory))
             {
-                _directory = DirectoryServices.GetCurrentDirectory().Value;
+                _directory = _directoryService.GetCurrentDirectory().Value;
             }
             else
                 _directory = _parameter.Directory;

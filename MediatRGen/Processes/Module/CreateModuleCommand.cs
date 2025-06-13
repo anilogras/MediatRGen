@@ -22,19 +22,22 @@ namespace MediatRGen.Cli.Processes.Module
         private readonly ISystemProcessService _systemProcessService;
         private readonly IWebApiService _webApiService;
         private readonly IClassLibraryService _classLibraryService;
+        private readonly ISettings _settings;
 
         public CreateModuleCommand(
             IParameterService parameterService,
             IDirectoryServices directoryServices,
             ISystemProcessService systemProcessService,
             IWebApiService webApiService,
-            IClassLibraryService classLibraryService)
+            IClassLibraryService classLibraryService,
+            ISettings settings)
         {
             _parameterService = parameterService;
             _directoryServices = directoryServices;
             _systemProcessService = systemProcessService;
             _webApiService = webApiService;
             _classLibraryService = classLibraryService;
+            _settings = settings;
         }
 
         public override int Execute(CommandContext context, CreateModuleSchema settings)
@@ -51,7 +54,7 @@ namespace MediatRGen.Cli.Processes.Module
             _classLibraryService.Create(settings.ModuleName + "." + "Infrastructure", _directoryServices.GetPath(settings.ModuleName).Value, GlobalState.Instance.ProjectName, GlobalState.Instance.SolutionName);
             _webApiService.Create(settings.ModuleName + "." + "API", _directoryServices.GetPath(settings.ModuleName).Value, GlobalState.Instance.ProjectName, GlobalState.Instance.SolutionName);
 
-            _systemProcessService.BuildProject(GlobalState.Instance.ProjectName);
+            _systemProcessService.BuildProject(_settings.ProjectName);
 
             GlobalState.Instance.Modules.Add(new ProjectModule()
             {

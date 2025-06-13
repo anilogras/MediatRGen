@@ -1,5 +1,5 @@
-﻿using MediatRGen.Core.Concrete;
-using MediatRGen.Core.Models;
+﻿using MediatRGen.Core.Base;
+using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Services;
 using System.Text.Json.Serialization;
 
@@ -10,15 +10,7 @@ namespace MediatRGen.Cli.States
 
         private readonly IDirectoryServices _directoryServices;
 
-        public GlobalState(IDirectoryServices directoryServices)
-        {
-            _directoryServices = directoryServices;
 
-            Lang = "tr";
-            Commands = ["create-solution", "create-repository", "create-config", "create-module"];
-            ProjectName = "DenemeSolution";
-            Modules = new List<ProjectModule>();
-        }
         public static string ConfigFileName = "mediatr-config.json";
 
         private static GlobalState _instance;
@@ -30,16 +22,7 @@ namespace MediatRGen.Cli.States
 
                 if (_instance == null)
                 {
-                    string _configPath = _directoryServices.GetPath(_directoryServices.GetCurrentDirectory().Value, ConfigFileName).Value;
-                    bool _fileExist = FileService.CheckFile(_directoryServices.GetCurrentDirectory().Value, ConfigFileName).Value;
-
-                    if (_fileExist == false)
-                        _instance = new GlobalState();
-                    else
-                    {
-                        string _file = FileService.Get(_configPath).Value;
-                        _instance = System.Text.Json.JsonSerializer.Deserialize<GlobalState>(_file);
-                    }
+                    
 
                 }
                 return _instance;
@@ -48,9 +31,7 @@ namespace MediatRGen.Cli.States
 
         public static void UpdateInstance()
         {
-            string _configPath = DirectoryServices.GetPath(DirectoryServices.GetCurrentDirectory().Value, ConfigFileName).Value;
-            string _file = FileService.Get(_configPath).Value;
-            _instance = System.Text.Json.JsonSerializer.Deserialize<GlobalState>(_file);
+            
         }
 
         public string ProjectName { get; set; }
@@ -59,7 +40,6 @@ namespace MediatRGen.Cli.States
 
         [JsonIgnore]
         public string[] Commands { get; set; }
-
         public string SolutionName { get; set; }
         public bool? Modul { get; set; }
         public string Version { get; set; }

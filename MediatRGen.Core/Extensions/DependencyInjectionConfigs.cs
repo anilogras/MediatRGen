@@ -1,4 +1,5 @@
-﻿using MediatRGen.Core.Concrete;
+﻿using MediatRGen.Core.Base;
+using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -29,6 +30,7 @@ namespace MediatRGen.Core.Extensions
             services.AddTransient<ISystemProcessService, SystemProcessService>();
             services.AddTransient<IUsingService, UsingService>();
             services.AddTransient<IWebApiService, WebApiService>();
+            services.AddTransient<ISettings, Settings>();
 
             return services;
         }

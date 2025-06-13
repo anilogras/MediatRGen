@@ -19,9 +19,16 @@ namespace MediatRGen.Cli.Processes.MediatR
     {
         private readonly ServicePaths _paths;
 
+
+
+        private readonly IDirectoryServices _directoryServices;
+        private readonly IClassService _classService;
+        private readonly INameSpaceService _nameSpaceService;
+
+
         private void CreatePaths()
         {
-            _paths.DomainPath = $"{DirectoryServices.GetCurrentDirectory().Value}src\\{_parameter.ModuleName}\\{GlobalState.Instance.SolutionName}.{_parameter.ModuleName}.Domain\\";
+            _paths.DomainPath = $"{_directoryServices.GetCurrentDirectory().Value}src\\{_parameter.ModuleName}\\{GlobalState.Instance.SolutionName}.{_parameter.ModuleName}.Domain\\";
             _paths.EntityPath = FileService.FindFileRecursive(_paths.DomainPath, _parameter.EntityName + ".cs").Value;
             _paths.EntityLocalDirectory = _paths.EntityPath.Replace(_paths.DomainPath, "");
             _paths.EntityLocalDirectory = _paths.EntityLocalDirectory.Substring(0, _paths.EntityLocalDirectory.LastIndexOf("\\"));
@@ -32,7 +39,7 @@ namespace MediatRGen.Cli.Processes.MediatR
                 throw new FileException($"{LangHandler.Definitions().EntityNotFound} ({_parameter.ModuleName} -> {_parameter.EntityName})");
             _paths.EntityNameNotExt = _paths.EntityName.Substring(0, _paths.EntityName.IndexOf("."));
             _paths.EntityPluralName = _paths.EntityNameNotExt.Pluralize();
-            _paths.ApplicationDirectory = $"{DirectoryServices.GetCurrentDirectory().Value}src\\{_parameter.ModuleName}\\{GlobalState.Instance.SolutionName}.{_parameter.ModuleName}.Application\\Features\\{_paths.EntityLocalDirectory}\\{_paths.EntityPluralName}";
+            _paths.ApplicationDirectory = $"{_directoryServices.GetCurrentDirectory().Value}src\\{_parameter.ModuleName}\\{GlobalState.Instance.SolutionName}.{_parameter.ModuleName}.Application\\Features\\{_paths.EntityLocalDirectory}\\{_paths.EntityPluralName}";
 
         }
 
@@ -41,7 +48,7 @@ namespace MediatRGen.Cli.Processes.MediatR
             ClassConfiguration _classConfig = new ClassConfiguration();
 
             _classConfig.Name = $"{_parameter.EntityName}BusinessRules";
-            _classConfig.Directory = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Rules").Value;
+            _classConfig.Directory = _directoryServices.GetPath(_paths.ApplicationDirectory, "Rules").Value;
             _classConfig.BaseInheritance = "DenemeBaseModel";
 
             ClassService.CreateClass(_classConfig);
@@ -53,7 +60,7 @@ namespace MediatRGen.Cli.Processes.MediatR
             ClassConfiguration _classConfig = new ClassConfiguration();
 
             _classConfig.Name = $"{_parameter.EntityName}Messages";
-            _classConfig.Directory = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Constants").Value;
+            _classConfig.Directory = _directoryServices.GetPath(_paths.ApplicationDirectory, "Constants").Value;
 
             ClassService.CreateClass(_classConfig);
 
@@ -63,7 +70,7 @@ namespace MediatRGen.Cli.Processes.MediatR
         {
             ClassConfiguration _classConfig = new ClassConfiguration();
 
-            _classConfig.Directory = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Mapping").Value;
+            _classConfig.Directory = _directoryServices.GetPath(_paths.ApplicationDirectory, "Mapping").Value;
             _classConfig.Name = $"{_parameter.EntityName}MappingProfiles";
             _classConfig.BaseInheritance = "Profile";
             _classConfig.Usings = new List<string> {
@@ -103,7 +110,7 @@ namespace MediatRGen.Cli.Processes.MediatR
 
             CreatePaths();
 
-            DirectoryServices.CreateIsNotExist(_paths.ApplicationDirectory + "\\" + _paths.EntityNameNotExt);
+            _directoryServices.CreateIsNotExist(_paths.ApplicationDirectory + "\\" + _paths.EntityNameNotExt);
 
             CreateBusinessRules();
             CreateConstants();
@@ -118,7 +125,7 @@ namespace MediatRGen.Cli.Processes.MediatR
             queryServices.CreateQueries();
 
 
-            DirectoryServices.CreateIsNotExist(_paths.ApplicationDirectory + "\\DTOs");
+            _directoryServices.CreateIsNotExist(_paths.ApplicationDirectory + "\\DTOs");
             Console.WriteLine(LangHandler.Definitions().ServiceCreated);
         }
     }

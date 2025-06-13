@@ -1,6 +1,7 @@
 ﻿using MediatRGen.Cli.Models;
 using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Models;
+using MediatRGen.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,17 +16,29 @@ namespace MediatRGen.Cli.Processes.MediatR
         private readonly CreateServiceSchema _parameter;
         private readonly ServicePaths _paths;
 
-        public CommandServices(CreateServiceSchema parameter, ServicePaths paths)
+        private readonly IDirectoryServices _directoryServices;
+        private readonly IClassService _classService;
+        private readonly INameSpaceService _nameSpaceService;
+
+        public CommandServices(
+            CreateServiceSchema parameter,
+            ServicePaths paths,
+            IDirectoryServices directoryServices,
+            IClassService classService,
+            INameSpaceService nameSpaceService)
         {
             _parameter = parameter;
             _paths = paths;
+            _directoryServices = directoryServices;
+            _classService = classService;
+            _nameSpaceService = nameSpaceService;
         }
 
 
         public void CreateCommands()
         {
-            string _applicationCommandsDirectoryPath = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Commands").Value;
-            DirectoryServices.CreateIsNotExist(_applicationCommandsDirectoryPath);
+            string _applicationCommandsDirectoryPath = _directoryServices.GetPath(_paths.ApplicationDirectory, "Commands").Value;
+            _directoryServices.CreateIsNotExist(_applicationCommandsDirectoryPath);
 
             CreateCommandClass("Create");
             CreateCommandClass("Delete");
@@ -34,8 +47,8 @@ namespace MediatRGen.Cli.Processes.MediatR
 
         private void CreateCommandClass(string workType)
         {
-            string _commandPath = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Commands", workType).Value;
-            DirectoryServices.CreateIsNotExist(_commandPath);
+            string _commandPath = _directoryServices.GetPath(_paths.ApplicationDirectory, "Commands", workType).Value;
+            _directoryServices.CreateIsNotExist(_commandPath);
 
             CommandConfiguration(workType);
             CommandHandlerConfiguration(workType);
@@ -48,15 +61,15 @@ namespace MediatRGen.Cli.Processes.MediatR
 
             ClassConfiguration _config = new ClassConfiguration();
 
-            _config.Directory = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Commands", workType).Value;
+            _config.Directory = _directoryServices.GetPath(_paths.ApplicationDirectory, "Commands", workType).Value;
             _config.Name = $"{workType}{_parameter.EntityName}Command";
             _config.BaseInheritance = $"Base{workType}Command<{workType}{_parameter.EntityName}Response>";
             _config.Constructor = true;
 
-            string _entityNamespace = NameSpaceService.GetNameSpace(_paths.EntityPath).Value;
+            string _entityNamespace = _nameSpaceService.GetNameSpace(_paths.EntityPath).Value;
             _config.Usings = new List<string> { $"Core.Application.BaseCQRS.Commands.{workType}", _entityNamespace };
 
-            ClassService.CreateClass(_config);
+            _classService.CreateClass(_config);
 
             ValidatiorConfiguration(workType);
         }
@@ -65,7 +78,7 @@ namespace MediatRGen.Cli.Processes.MediatR
         {
             ClassConfiguration _config = new ClassConfiguration();
 
-            _config.Directory = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Commands", workType).Value; ;
+            _config.Directory = _directoryServices.GetPath(_paths.ApplicationDirectory, "Commands", workType).Value; ;
             _config.Name = $"{workType}{_paths.EntityNameNotExt}CommandValidator";
             _config.BaseInheritance = $"AbstractValidator<{workType}{_paths.EntityNameNotExt}Command>";
             _config.Constructor = true;
@@ -74,7 +87,7 @@ namespace MediatRGen.Cli.Processes.MediatR
                 "FluentValidation"
             };
 
-            ClassService.CreateClass(_config);
+            _classService.CreateClass(_config);
 
         }
 
@@ -84,14 +97,14 @@ namespace MediatRGen.Cli.Processes.MediatR
 
             ClassConfiguration _config = new ClassConfiguration();
 
-            _config.Directory = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Commands", workType).Value;
+            _config.Directory = _directoryServices.GetPath(_paths.ApplicationDirectory, "Commands", workType).Value;
             _config.Name = $"{workType}{_parameter.EntityName}CommandHandler";
             _config.BaseInheritance = $"Base{workType}CommandHandler<{workType}{_parameter.EntityName}Command, {workType}{_parameter.EntityName}Response, {_parameter.EntityName}>";
             _config.Constructor = true;
             _config.ConstructorParameters = $"IRepository<{_parameter.EntityName}> repository, IMapper mapper";
             _config.ConstructorBaseParameters = "repository, mapper";
 
-            string _entityNamespace = NameSpaceService.GetNameSpace(_paths.EntityPath).Value;
+            string _entityNamespace = _nameSpaceService.GetNameSpace(_paths.EntityPath).Value;
 
             _config.Usings = new List<string>
             {
@@ -101,17 +114,17 @@ namespace MediatRGen.Cli.Processes.MediatR
                 _entityNamespace
             };
 
-            ClassService.CreateClass(_config);
+            _classService.CreateClass(_config);
         }
 
         private void CommandResponseConfiguration(string workType)
         {
             ClassConfiguration _config = new ClassConfiguration();
-            _config.Directory = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Commands", workType).Value;
+            _config.Directory = _directoryServices.GetPath(_paths.ApplicationDirectory, "Commands", workType).Value;
             _config.BaseInheritance = "IResponse";
             _config.Usings = new List<string> { "Core.Application.BaseCQRS" };
             _config.Name = $"{workType}{_parameter.EntityName}Response";
-            ClassService.CreateClass(_config);
+            _classService.CreateClass(_config);
         }
     }
 }

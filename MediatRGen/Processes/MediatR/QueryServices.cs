@@ -1,6 +1,7 @@
 ﻿using MediatRGen.Cli.Models;
 using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Models;
+using MediatRGen.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,17 +15,30 @@ namespace MediatRGen.Cli.Processes.MediatR
         private readonly CreateServiceSchema _parameter;
         private readonly ServicePaths _paths;
 
-        public QueryServices(CreateServiceSchema parameter, ServicePaths paths)
+        private readonly IDirectoryServices _directoryServices;
+        private readonly IClassService _classService;
+        private readonly INameSpaceService _nameSpaceService;
+
+
+        public QueryServices(
+            CreateServiceSchema parameter,
+            ServicePaths paths,
+            IDirectoryServices directoryServices,
+            IClassService classService,
+            INameSpaceService nameSpaceService)
         {
             _parameter = parameter;
             _paths = paths;
+            _directoryServices = directoryServices;
+            _classService = classService;
+            _nameSpaceService = nameSpaceService;
         }
 
         public void CreateQueries()
         {
 
-            string _applicationCommandsDirectoryPath = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Queries").Value;
-            DirectoryServices.CreateIsNotExist(_applicationCommandsDirectoryPath);
+            string _applicationCommandsDirectoryPath = _directoryServices.GetPath(_paths.ApplicationDirectory, "Queries").Value;
+            _directoryServices.CreateIsNotExist(_applicationCommandsDirectoryPath);
 
 
             CreateBaseQueryClasses("GetById");
@@ -37,8 +51,8 @@ namespace MediatRGen.Cli.Processes.MediatR
         private void CreateBaseQueryClasses(string workType)
         {
 
-            string _queryPath = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Queries", workType).Value;
-            DirectoryServices.CreateIsNotExist(_queryPath);
+            string _queryPath = _directoryServices.GetPath(_paths.ApplicationDirectory, "Queries", workType).Value;
+            _directoryServices.CreateIsNotExist(_queryPath);
 
             QueryConfiguration(workType);
             QueryHandlerConfiguration(workType);
@@ -49,7 +63,7 @@ namespace MediatRGen.Cli.Processes.MediatR
         private void QueryConfiguration(string workType)
         {
             ClassConfiguration _config = new ClassConfiguration();
-            _config.Directory = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Queries", workType).Value;
+            _config.Directory = _directoryServices.GetPath(_paths.ApplicationDirectory, "Queries", workType).Value;
             _config.Name = $"{workType}{_parameter.EntityName}Query";
             _config.BaseInheritance = $"Base{workType}Query<{_parameter.EntityName}>";
             _config.Usings = new List<string>
@@ -58,19 +72,19 @@ namespace MediatRGen.Cli.Processes.MediatR
                 _paths.EntityDirectory
             };
 
-            ClassService.CreateClass(_config);
+            _classService.CreateClass(_config);
         }
 
         private void QueryHandlerConfiguration(string workType)
         {
 
             ClassConfiguration _config = new ClassConfiguration();
-            _config.Directory = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Queries", workType).Value; ;
+            _config.Directory = _directoryServices.GetPath(_paths.ApplicationDirectory, "Queries", workType).Value; ;
             _config.Name = $"{workType}{_parameter.EntityName}QueryHandler";
             _config.BaseInheritance = $"Base{workType}QueryHandler<{workType}{_parameter.EntityName}Query, {workType}{_parameter.EntityName}Response, {_parameter.EntityName}>";
             _config.Constructor = true;
 
-            string _entityNamespace = NameSpaceService.GetNameSpace(_paths.EntityPath).Value;
+            string _entityNamespace = _nameSpaceService.GetNameSpace(_paths.EntityPath).Value;
 
             _config.Usings = new List<string>
             {
@@ -78,18 +92,18 @@ namespace MediatRGen.Cli.Processes.MediatR
                _entityNamespace
             };
 
-            ClassService.CreateClass(_config);
+            _classService.CreateClass(_config);
 
         }
 
         private void QueryResponseConfiguration(string workType)
         {
             ClassConfiguration _config = new ClassConfiguration();
-            _config.Directory = DirectoryServices.GetPath(_paths.ApplicationDirectory, "Queries", workType).Value;
+            _config.Directory = _directoryServices.GetPath(_paths.ApplicationDirectory, "Queries", workType).Value;
             _config.BaseInheritance = "IResponse";
             _config.Usings = new List<string> { "Core.Application.BaseCQRS" };
             _config.Name = $"{workType}{_parameter.EntityName}Response";
-            ClassService.CreateClass(_config);
+            _classService.CreateClass(_config);
         }
     }
 }
