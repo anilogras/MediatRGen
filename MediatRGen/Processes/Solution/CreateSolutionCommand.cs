@@ -1,16 +1,9 @@
 ﻿using MediatRGen.Cli.Models;
-using MediatRGen.Cli.Processe2s.Module;
 using MediatRGen.Cli.States;
 using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Exceptions.FileExceptions;
 using MediatRGen.Core.Languages;
-using MediatRGen.Core.Services;
 using Spectre.Console.Cli;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MediatRGen.Cli.Processes.Solution
 {

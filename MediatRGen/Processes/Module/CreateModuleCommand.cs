@@ -1,5 +1,4 @@
 ﻿using MediatRGen.Cli.Models;
-using MediatRGen.Cli.Processe2s.Parameters.Modules;
 using MediatRGen.Cli.States;
 using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Exceptions;
