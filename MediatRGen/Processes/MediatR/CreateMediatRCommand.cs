@@ -18,12 +18,47 @@ namespace MediatRGen.Cli.Processes.MediatR
     public class CreateMediatRCommand : Command<CreateServiceSchema>
     {
         private readonly ServicePaths _paths;
-
-
+        private readonly CreateServiceSchema _parameter;
 
         private readonly IDirectoryServices _directoryServices;
         private readonly IClassService _classService;
         private readonly INameSpaceService _nameSpaceService;
+        private readonly IParameterService _parameterService;
+
+
+
+        public override int Execute(CommandContext context, CreateServiceSchema settings)
+        {
+            _parameterService.GetParameter<CreateServiceSchema>(command, ref settings);
+            _parameterService.GetParameterFromConsole(settings, "EntityName", LangHandler.Definitions().EnterEntityName);
+            _parameterService.GetParameterFromConsole(settings, "ModuleName", LangHandler.Definitions().EnterModuleName);
+
+            _paths = new ServicePaths();
+            _parameter = settings;
+
+            CreatePaths();
+
+            _directoryServices.CreateIsNotExist(_paths.ApplicationDirectory + "\\" + _paths.EntityNameNotExt);
+
+            CreateBusinessRules();
+            CreateConstants();
+            CreateMapping();
+
+
+            CommandServices commandServices = new CommandServices(settings, _paths);
+            commandServices.CreateCommands();
+
+
+            QueryServices queryServices = new QueryServices(settings, _paths);
+            queryServices.CreateQueries();
+
+
+            _directoryServices.CreateIsNotExist(_paths.ApplicationDirectory + "\\DTOs");
+            Console.WriteLine(LangHandler.Definitions().ServiceCreated);
+
+            return 0;
+
+        }
 
 
         private void CreatePaths()
@@ -51,7 +86,7 @@ namespace MediatRGen.Cli.Processes.MediatR
             _classConfig.Directory = _directoryServices.GetPath(_paths.ApplicationDirectory, "Rules").Value;
             _classConfig.BaseInheritance = "DenemeBaseModel";
 
-            ClassService.CreateClass(_classConfig);
+            _classService.CreateClass(_classConfig);
         }
 
         private void CreateConstants()
@@ -62,7 +97,7 @@ namespace MediatRGen.Cli.Processes.MediatR
             _classConfig.Name = $"{_parameter.EntityName}Messages";
             _classConfig.Directory = _directoryServices.GetPath(_paths.ApplicationDirectory, "Constants").Value;
 
-            ClassService.CreateClass(_classConfig);
+            _classService.CreateClass(_classConfig);
 
         }
 
@@ -96,37 +131,9 @@ namespace MediatRGen.Cli.Processes.MediatR
                 @$"CreateMap<Delete{_paths.EntityNameNotExt}Command, {_paths.EntityNameNotExt}>().ReverseMap();"
             };
 
-            ClassService.CreateClass(_classConfig);
+            _classService.CreateClass(_classConfig);
         }
 
-        public override int Execute(CommandContext context, CreateServiceSchema settings)
-        {
-            ParameterService.GetParameter<CreateServiceSchema>(command, ref _parameter);
-            ParameterService.GetParameterFromConsole(_parameter, "EntityName", LangHandler.Definitions().EnterEntityName);
-            ParameterService.GetParameterFromConsole(_parameter, "ModuleName", LangHandler.Definitions().EnterModuleName);
 
-            _paths = new ServicePaths();
-
-
-            CreatePaths();
-
-            _directoryServices.CreateIsNotExist(_paths.ApplicationDirectory + "\\" + _paths.EntityNameNotExt);
-
-            CreateBusinessRules();
-            CreateConstants();
-            CreateMapping();
-
-
-            CommandServices commandServices = new CommandServices(_parameter, _paths);
-            commandServices.CreateCommands();
-
-
-            QueryServices queryServices = new QueryServices(_parameter, _paths);
-            queryServices.CreateQueries();
-
-
-            _directoryServices.CreateIsNotExist(_paths.ApplicationDirectory + "\\DTOs");
-            Console.WriteLine(LangHandler.Definitions().ServiceCreated);
-        }
     }
 }
