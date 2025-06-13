@@ -7,6 +7,7 @@ namespace MediatRGen.Cli.Processes.Nuget
         public override int Execute(CommandContext context)
         {
             new UpdateNugetCommand();
+            return 0;
         }
     }
 }

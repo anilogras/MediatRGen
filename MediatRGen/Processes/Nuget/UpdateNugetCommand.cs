@@ -12,14 +12,18 @@ namespace MediatRGen.Cli.Processes.Nuget
 {
     internal class UpdateNugetCommand : Command
     {
+
+        private readonly IDirectoryServices _directoryService;
+
+
         public override int Execute(CommandContext context)
         {
             NugetService _nugetService = new NugetService();
             //_nugetService.DeleteNugets();
 
-            string _newPath = DirectoryServices.GetPath(DirectoryServices.GetCurrentDirectory().Value, "CoreNugetPackages").Value;
+            string _newPath = _directoryService.GetPath(_directoryService.GetCurrentDirectory().Value, "CoreNugetPackages").Value;
 
-            DirectoryServices.CreateIsNotExist(_newPath);
+            _directoryService.CreateIsNotExist(_newPath);
 
             string _rootpath =
                 Assembly.GetExecutingAssembly().Location.Substring
@@ -27,7 +31,7 @@ namespace MediatRGen.Cli.Processes.Nuget
 
             string[] _nugetPackages = Directory.GetFiles($"{_rootpath}/nugetpackages");
 
-            string _copyDestination = DirectoryServices.GetPath(DirectoryServices.GetCurrentDirectory().Value, "CoreNugetPackages").Value;
+            string _copyDestination = _directoryService.GetPath(_directoryService.GetCurrentDirectory().Value, "CoreNugetPackages").Value;
 
             foreach (var item in _nugetPackages)
             {

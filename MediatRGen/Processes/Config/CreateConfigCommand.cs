@@ -1,4 +1,6 @@
-﻿using MediatRGen.Cli.States;
+﻿using MediatRGen.Cli.Processes.Core;
+using MediatRGen.Cli.Processes.Nuget;
+using MediatRGen.Cli.States;
 using MediatRGen.Core.Base;
 using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Exceptions.FileExceptions;
@@ -15,53 +17,66 @@ namespace MediatRGen.Cli.Processes.Config
 {
     public class CreateConfigCommand : Command
     {
+        private readonly ISettings _setting;
+        private readonly IFileService _fileService;
+        private readonly IQuestionService _questionService;
+
+        public CreateConfigCommand(ISettings setting, IFileService fileService, IQuestionService questionService)
+        {
+            _setting = setting;
+            _fileService = fileService;
+            _questionService = questionService;
+        }
+
         public override int Execute(CommandContext context)
         {
-            GlobalState.Instance.UseGateway = false;
+            _setting.UseGateway = false;
 
-            if (GlobalState.Instance == null)
+            if (_setting == null)
             {
                 throw new FileException(LangHandler.Definitions().ConfigNotFound);
             }
 
-            //if (GlobalState.Instance.Version != null)
+            //if (_setting.Version != null)
             //{
             //    throw new FileException(LangHandler.Definitions().ConfigExist);
             //}
 
-            GlobalState.Instance.Version = System.Reflection.Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString() ?? "";
+            _setting.Version = System.Reflection.Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString() ?? "";
 
             ModuleSystemActive();
             GatewayActive();
 
-            FileService.UpdateConfig(GlobalState.ConfigFileName, GlobalState.Instance);
+            _fileService.UpdateConfig(GlobalState.ConfigFileName, _setting.Get());
 
             CreateCoreFiles();
 
             Console.WriteLine(LangHandler.Definitions().CreatedConfigFile);
+
+            return 0;
         }
 
         private void ModuleSystemActive()
         {
-            GlobalState.Instance.UseModule = QuestionService.YesNoQuestion(LangHandler.Definitions().ModuleActive).Value;
+            _setting.UseModule = _questionService.YesNoQuestion(LangHandler.Definitions().ModuleActive).Value;
         }
 
         private void GatewayActive()
         {
-            if (GlobalState.Instance.UseModule == true)
+            if (_setting.UseModule == true)
             {
                 Console.WriteLine(LangHandler.Definitions().UseOchelot);
-                GlobalState.Instance.UseGateway = QuestionService.YesNoQuestion(LangHandler.Definitions().GatewayActive).Value;
+                _setting.UseGateway = _questionService.YesNoQuestion(LangHandler.Definitions().GatewayActive).Value;
             }
         }
 
         private void CreateCoreFiles()
         {
-            new CoreCreateProcess();
+            new CreateCoreCommand();
             Console.WriteLine(LangHandler.Definitions().CoreFilesCreated);
 
 
-            new CreateNugetPackages();
+            new CreateNugetCommand();
             Console.WriteLine(LangHandler.Definitions().NugetPackagesCreated);
 
         }

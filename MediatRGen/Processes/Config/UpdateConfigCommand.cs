@@ -12,7 +12,7 @@ namespace MediatRGen.Cli.Processes.Config
     {
         public override int Execute(CommandContext context)
         {
-            new CreateConfigProcess();
+            new CreateConfigCommand();
             GlobalState.UpdateInstance();
         }
     }

@@ -1,5 +1,6 @@
 ﻿using MediatRGen.Cli.Models;
 using MediatRGen.Cli.States;
+using MediatRGen.Core.Base;
 using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Exceptions.FileExceptions;
 using MediatRGen.Core.Languages;
@@ -10,14 +11,17 @@ namespace MediatRGen.Cli.Processes.Solution
 {
     internal class CreateSolutionCommand : Command<CreateSolutionSchema>
     {
+        private CreateSolutionSchema _parameter;
+
+
         private readonly IDirectoryServices _directoryService;
         private readonly ISettings _settings;
         private readonly ISystemProcessService _systemProcessService;
         private readonly IFileService _fileService;
 
         public CreateSolutionCommand(
-            IDirectoryServices directoryService, 
-            ISettings settings, 
+            IDirectoryServices directoryService,
+            ISettings settings,
             ISystemProcessService systemProcessService,
             IFileService fileService)
         {
@@ -25,10 +29,13 @@ namespace MediatRGen.Cli.Processes.Solution
             _settings = settings;
             _systemProcessService = systemProcessService;
             _fileService = fileService;
+
         }
 
         public override int Execute(CommandContext context, CreateSolutionSchema settings)
         {
+            _parameter = settings;
+
             GetParameters();
             GetPathFromCommand();
 
@@ -62,7 +69,7 @@ namespace MediatRGen.Cli.Processes.Solution
         }
 
 
-        private static void CreateFirstConfigFile(string _combinedPath, object firstConfig)
+        private void CreateFirstConfigFile(string _combinedPath, object firstConfig)
         {
             _fileService.Create(_combinedPath, GlobalState.ConfigFileName, firstConfig);
         }

@@ -14,6 +14,8 @@ namespace MediatRGen.Core.Services
         public Settings Get();
         public Settings Update();
 
+        public string ConfigFileName => "mediatr-config.json";
+
         public string ProjectName { get; set; }
         public string Lang { get; set; }
         public string SolutionName { get; set; }

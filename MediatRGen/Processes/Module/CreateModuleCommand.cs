@@ -1,5 +1,6 @@
 ﻿using MediatRGen.Cli.Models;
 using MediatRGen.Cli.States;
+using MediatRGen.Core.Base;
 using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Exceptions;
 using MediatRGen.Core.Languages;
@@ -23,6 +24,7 @@ namespace MediatRGen.Cli.Processes.Module
         private readonly IWebApiService _webApiService;
         private readonly IClassLibraryService _classLibraryService;
         private readonly ISettings _settings;
+        private readonly IFileService _fileService;
 
         public CreateModuleCommand(
             IParameterService parameterService,
@@ -49,19 +51,19 @@ namespace MediatRGen.Cli.Processes.Module
             CheckModulNameIsExist();
             _directoryServices.CreateIsNotExist(_directoryServices.GetCurrentDirectory().Value + "src\\" + settings.ModuleName);
 
-            _classLibraryService.Create(settings.ModuleName + "." + "Domain", _directoryServices.GetPath(settings.ModuleName).Value, GlobalState.Instance.ProjectName, GlobalState.Instance.SolutionName);
-            _classLibraryService.Create(settings.ModuleName + "." + "Application", _directoryServices.GetPath(settings.ModuleName).Value, GlobalState.Instance.ProjectName, GlobalState.Instance.SolutionName);
-            _classLibraryService.Create(settings.ModuleName + "." + "Infrastructure", _directoryServices.GetPath(settings.ModuleName).Value, GlobalState.Instance.ProjectName, GlobalState.Instance.SolutionName);
-            _webApiService.Create(settings.ModuleName + "." + "API", _directoryServices.GetPath(settings.ModuleName).Value, GlobalState.Instance.ProjectName, GlobalState.Instance.SolutionName);
+            _classLibraryService.Create(settings.ModuleName + "." + "Domain", _directoryServices.GetPath(settings.ModuleName).Value, _settings.ProjectName, _settings.SolutionName);
+            _classLibraryService.Create(settings.ModuleName + "." + "Application", _directoryServices.GetPath(settings.ModuleName).Value, _settings.ProjectName, _settings.SolutionName);
+            _classLibraryService.Create(settings.ModuleName + "." + "Infrastructure", _directoryServices.GetPath(settings.ModuleName).Value, _settings.ProjectName, _settings.SolutionName);
+            _webApiService.Create(settings.ModuleName + "." + "API", _directoryServices.GetPath(settings.ModuleName).Value, _settings.ProjectName, _settings.SolutionName);
 
             _systemProcessService.BuildProject(_settings.ProjectName);
 
-            GlobalState.Instance.Modules.Add(new ProjectModule()
+            _settings.Modules.Add(new ProjectModule()
             {
                 Name = settings.ModuleName
             });
 
-            FileService.UpdateConfig(GlobalState.ConfigFileName, GlobalState.Instance);
+            _fileService.UpdateConfig(_settings.ConfigFileName, _settings);
 
             Console.WriteLine(settings.ModuleName + LangHandler.Definitions().ModuleCreated);
 
@@ -70,7 +72,7 @@ namespace MediatRGen.Cli.Processes.Module
 
         private void CheckModulNameIsExist()
         {
-            if (GlobalState.Instance.Modules.Where(x => x.Name == settings.ModuleName).Count() != 0)
+            if (_settings.Modules.Where(x => x.Name == settings.ModuleName).Count() != 0)
             {
                 throw new ModuleException(LangHandler.Definitions().ModuleIsDefined);
             }
