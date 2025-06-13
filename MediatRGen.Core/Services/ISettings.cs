@@ -16,6 +16,11 @@ namespace MediatRGen.Core.Services
 
         public string ConfigFileName => "mediatr-config.json";
 
+        public string[] Commands => new string[] {
+            "create-service", "create-module", "update-nuget",
+            "create-solution", "create-config", "update-config",
+            "create-nuget" };
+
         public string ProjectName { get; set; }
         public string Lang { get; set; }
         public string SolutionName { get; set; }
