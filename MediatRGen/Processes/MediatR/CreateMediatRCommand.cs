@@ -1,6 +1,5 @@
 ﻿using Humanizer;
 using MediatRGen.Cli.Models;
-using MediatRGen.Cli.States;
 using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Exceptions.FileExceptions;
 using MediatRGen.Core.Languages;
@@ -31,7 +30,7 @@ namespace MediatRGen.Cli.Processes.MediatR
 
         public override int Execute(CommandContext context, CreateServiceSchema settings)
         {
-            _parameterService.GetParameter<CreateServiceSchema>(command, ref settings);
+            //_parameterService.GetParameter<CreateServiceSchema>(command, ref settings);
             _parameterService.GetParameterFromConsole(settings, "EntityName", LangHandler.Definitions().EnterEntityName);
             _parameterService.GetParameterFromConsole(settings, "ModuleName", LangHandler.Definitions().EnterModuleName);
 
@@ -47,11 +46,11 @@ namespace MediatRGen.Cli.Processes.MediatR
             CreateMapping();
 
 
-            CommandServices commandServices = new CommandServices(settings, _paths);
+            CommandServices commandServices = new CommandServices(settings, _paths, _directoryServices, _classService, _nameSpaceService);
             commandServices.CreateCommands();
 
 
-            QueryServices queryServices = new QueryServices(settings, _paths);
+            QueryServices queryServices = new QueryServices(settings, _paths , _directoryServices , _classService , _nameSpaceService);
             queryServices.CreateQueries();
 
 

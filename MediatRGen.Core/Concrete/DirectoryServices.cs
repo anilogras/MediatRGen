@@ -17,6 +17,9 @@ namespace MediatRGen.Core.Concrete
 
                 foreach (var item in paths)
                 {
+                    if (item == null)
+                        continue;
+
                     string _tempItem = "";
 
                     if (item.EndsWith("\\"))

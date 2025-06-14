@@ -8,7 +8,7 @@ using Spectre.Console.Cli;
 
 namespace MediatRGen.Cli.Processes.Solution
 {
-    internal class CreateSolutionCommand : Command<CreateSolutionSchema>
+    public class CreateSolutionCommand : Command<CreateSolutionSchema>
     {
         private CreateSolutionSchema _parameter;
 

@@ -20,12 +20,16 @@ namespace MediatRGen.Cli.Processes.Config
         private readonly ISettings _settings;
         private readonly IFileService _fileService;
         private readonly IQuestionService _questionService;
+        private readonly IClassLibraryService _classLibraryService;
+        private readonly ISystemProcessService _systemProcessService;
 
-        public CreateConfigCommand(ISettings settings, IFileService fileService, IQuestionService questionService)
+        public CreateConfigCommand(ISettings settings, IFileService fileService, IQuestionService questionService, ISystemProcessService systemProcessService , IClassLibraryService classLibraryService)
         {
             _settings = settings;
             _fileService = fileService;
             _questionService = questionService;
+            _systemProcessService = systemProcessService;
+            _classLibraryService = classLibraryService;
         }
 
         public override int Execute(CommandContext context)
@@ -72,7 +76,7 @@ namespace MediatRGen.Cli.Processes.Config
 
         private void CreateCoreFiles()
         {
-            new CreateCoreCommand();
+            new CreateCoreCommand(_classLibraryService , _systemProcessService);
             Console.WriteLine(LangHandler.Definitions().CoreFilesCreated);
 
 

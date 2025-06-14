@@ -22,7 +22,7 @@ namespace MediatRGen.Cli.Processes.MediatR
 
         public CommandServices()
         {
-            
+
         }
 
         public CommandServices(

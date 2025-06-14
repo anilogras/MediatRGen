@@ -4,8 +4,12 @@ using MediatRGen.Cli.Processes.Module;
 using MediatRGen.Cli.Processes.Nuget;
 using MediatRGen.Cli.Processes.Solution;
 using MediatRGen.Core.Exceptions;
+using MediatRGen.Core.Extensions;
 using MediatRGen.Core.Languages;
+using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console.Cli;
+using Spectre.Console.Cli.Extensions.DependencyInjection;
+
 
 //args = ["create-config", "-n", "DenemeSolution" , "-d" , "\"d:/creator/ddddd\""];
 //dotnet publish -c Release -o C:\MediatRGen\cli
@@ -13,7 +17,14 @@ using Spectre.Console.Cli;
 bool type = true;
 
 
-var app = new CommandApp();
+
+
+var services = new ServiceCollection();
+services.AddServiceDependencies();
+
+var registrar = new TypeRegistrar(services);
+
+var app = new CommandApp(registrar);
 
 app.Configure(config =>
 {
@@ -34,7 +45,7 @@ if (type)
         string? input = Console.ReadLine();
         try
         {
-            await app.RunAsync(args);
+            await app.RunAsync(input.Split(" "));
             args = null;
         }
         catch (Exception ex)

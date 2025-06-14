@@ -6,13 +6,13 @@ namespace MediatRGen.Cli.Models
     public class CreateSolutionSchema : CommandSettings
     {
 
-        [CommandArgument(0, "<Name>")]
+        [CommandOption("-n|--name")]
         public string ProjectName { get; set; }
 
 
         private string _Directory;
 
-        [CommandArgument(1, "<Directory>")]
+        [CommandOption("-d|--dir")]
         public string Directory
         {
             get { return _Directory; }

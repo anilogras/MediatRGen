@@ -1,5 +1,6 @@
 ﻿using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Services;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace MediatRGen.Core.Base
@@ -7,15 +8,19 @@ namespace MediatRGen.Core.Base
     public class Settings : ISettings
     {
 
+        [JsonIgnore]
         private readonly IDirectoryServices _directoryServices;
+
+        [JsonIgnore]
         private readonly IFileService _fileService;
 
         public Settings()
         {
-
+            
         }
 
-        public Settings(IDirectoryServices directoryServices, FileService fileService)
+
+        public Settings(IDirectoryServices directoryServices, IFileService fileService)
         {
             _directoryServices = directoryServices;
             _fileService = fileService;
@@ -42,11 +47,17 @@ namespace MediatRGen.Core.Base
             bool _fileExist = _fileService.CheckFile(_directoryServices.GetCurrentDirectory().Value, ConfigFileName).Value;
 
             if (_fileExist == false)
-                return new Settings();
+                return new Settings(_directoryServices, _fileService);
             else
             {
                 string _file = _fileService.Get(_configPath).Value;
-                return System.Text.Json.JsonSerializer.Deserialize<Settings>(_file);
+
+                var options = new JsonSerializerOptions
+                {
+                    IncludeFields = true
+                };
+
+                return System.Text.Json.JsonSerializer.Deserialize<Settings>(_file , options);
             }
         }
 
