@@ -12,28 +12,31 @@ namespace MediatRGen.Cli.Processes.Solution
     {
         private CreateSolutionSchema _parameter;
 
-
         private readonly IDirectoryServices _directoryService;
         private readonly ISettings _settings;
         private readonly ISystemProcessService _systemProcessService;
         private readonly IFileService _fileService;
+        private readonly IParameterService _parameterService;
 
         public CreateSolutionCommand(
             IDirectoryServices directoryService,
             ISettings settings,
             ISystemProcessService systemProcessService,
-            IFileService fileService)
+            IFileService fileService,
+            IParameterService parameterService)
         {
             _directoryService = directoryService;
             _settings = settings;
             _systemProcessService = systemProcessService;
             _fileService = fileService;
-
+            _parameterService = parameterService;
         }
 
         public override int Execute(CommandContext context, CreateSolutionSchema settings)
         {
             _parameter = settings;
+
+            _parameterService.GetParameterFromConsole(_parameter, "ProjectName", LangHandler.Definitions().EnterProjectName);
 
             GetPathFromCommand();
 

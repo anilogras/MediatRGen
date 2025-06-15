@@ -167,7 +167,7 @@ namespace MediatRGen.Core.Concrete
                     return new ServiceResult<bool>(true, true, "");
                 //return new ServiceResult<bool>(true, true, LangHandler.Definitions().FileFounded);
 
-                return new ServiceResult<bool>(false, true, LangHandler.Definitions().FileNotFound);
+                return new ServiceResult<bool>(false, true, "");
             }
             catch (Exception ex)
             {

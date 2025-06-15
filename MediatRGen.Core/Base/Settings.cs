@@ -47,7 +47,7 @@ namespace MediatRGen.Core.Base
             bool _fileExist = _fileService.CheckFile(_directoryServices.GetCurrentDirectory().Value, ConfigFileName).Value;
 
             if (_fileExist == false)
-                return new Settings(_directoryServices, _fileService);
+                return this;
             else
             {
                 string _file = _fileService.Get(_configPath).Value;
