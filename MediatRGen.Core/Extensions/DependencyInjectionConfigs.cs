@@ -31,6 +31,7 @@ namespace MediatRGen.Core.Extensions
             services.AddTransient<IUsingService, UsingService>();
             services.AddTransient<IWebApiService, WebApiService>();
             services.AddTransient<ISettings, Settings>();
+            services.AddTransient<ICoreServices, CoreServices>();
 
             return services;
         }
