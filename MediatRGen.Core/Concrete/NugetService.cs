@@ -1,6 +1,7 @@
 ﻿using MediatRGen.Core.Base;
 using MediatRGen.Core.Languages;
 using MediatRGen.Core.Services;
+using System.Reflection;
 
 namespace MediatRGen.Core.Concrete
 {
@@ -12,6 +13,40 @@ namespace MediatRGen.Core.Concrete
         public NugetService(IDirectoryServices directoryServices)
         {
             _directoryServices = directoryServices;
+        }
+
+        public ServiceResult<bool> CreateNugets()
+        {
+            try
+            {
+                string _newPath = _directoryServices.GetPath(_directoryServices.GetCurrentDirectory().Value, "CoreNugetPackages").Value;
+
+                _directoryServices.CreateIsNotExist(_newPath);
+
+                string _rootpath =
+                    Assembly.GetExecutingAssembly().Location.Substring
+                        (0, Assembly.GetExecutingAssembly().Location.ToString().LastIndexOf('\\'));
+
+                string[] _nugetPackages = Directory.GetFiles($"{_rootpath}/nugetpackages");
+
+                string _copyDestination = _directoryServices.GetPath(_directoryServices.GetCurrentDirectory().Value, "CoreNugetPackages").Value;
+
+                foreach (var item in _nugetPackages)
+                {
+                    string _fileName = Path.GetFileName(item);
+                    string _copyPath = Path.Combine(_copyDestination, _fileName);
+                    Console.WriteLine(_fileName + LangHandler.Definitions().NugetPackageCreated);
+                    File.Copy(item, _copyPath, true);
+                }
+
+                return new ServiceResult<bool>(true, true, "");
+
+
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult<bool>(false, false, ex.Message);
+            }
         }
 
         public ServiceResult<bool> DeleteNugets()

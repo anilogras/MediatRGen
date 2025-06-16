@@ -10,5 +10,7 @@ namespace MediatRGen.Core.Services
     public interface INugetService
     {
         public ServiceResult<bool> DeleteNugets();
+        public ServiceResult<bool> CreateNugets();
+
     }
 }
