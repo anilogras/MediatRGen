@@ -28,7 +28,11 @@ namespace MediatRGen.Cli.Schemas
             }
         }
 
-        public CreateSolutionBaseSchema OptionsSet() => new(ProjectName, Directory);
+        public CreateSolutionBaseSchema OptionsSet() => new CreateSolutionBaseSchema
+        {
+            Directory = _Directory,
+            ProjectName = ProjectName
+        };
 
 
     }

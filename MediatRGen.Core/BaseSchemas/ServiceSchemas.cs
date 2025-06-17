@@ -7,8 +7,20 @@ using System.Threading.Tasks;
 
 namespace MediatRGen.Core.Schemas
 {
-    public record CreateModuleBaseSchema(string ModuleName);
-    public record CreateServiceBaseSchema(string EntityName, string ModuleName);
-    public record CreateSolutionBaseSchema(string ProjectName , string Directory);
+    public class CreateModuleBaseSchema
+    {
+        public string ModuleName { get; set; }
+    }
+
+    public class CreateServiceBaseSchema
+    {
+        public string EntityName { get; set; }
+        public string ModuleName { get; set; }
+    }
+    public class CreateSolutionBaseSchema
+    {
+        public string ProjectName { get; set; }
+        public string Directory { get; set; }
+    }
 
 }

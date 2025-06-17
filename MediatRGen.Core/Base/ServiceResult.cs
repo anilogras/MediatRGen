@@ -1,4 +1,7 @@
-﻿using MediatRGen.Core.Exceptions;
+﻿using MediatRGen.Core.Concrete;
+using MediatRGen.Core.Exceptions;
+using MediatRGen.Core.Services;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,17 +33,22 @@ namespace MediatRGen.Core.Base
 
         private void InvokeResult()
         {
-            if (Error != null)
-            {
-                if (Message is not "")
-                    Console.WriteLine(Message);
+            var outputService = GlobalServices.Provider?.GetService<IOutputService>();
 
-                throw Error;
-            }
-            else
+            if (outputService != null)
             {
-                if (Message is not "")
-                    Console.WriteLine(Message);
+                if (Error != null)
+                {
+                    if (Message is not "")
+                        outputService.Error(Message);
+
+                    throw Error;
+                }
+                else
+                {
+                    if (Message is not "")
+                        outputService.Info(Message);
+                }
             }
         }
     }
@@ -72,20 +80,24 @@ namespace MediatRGen.Core.Base
 
         private void InvokeResult()
         {
-            if (Error != null)
-            {
-                if (Message is not "")
-                    Console.WriteLine(Message);
+            var outputService = GlobalServices.Provider?.GetService<IOutputService>();
 
-                throw Error;
-            }
-            else
+            if (outputService != null)
             {
-                if (Message is not "")
-                    Console.WriteLine(Message);
+                if (Error != null)
+                {
+                    if (Message is not "")
+                        outputService.Error(Message);
+
+                    throw Error;
+                }
+                else
+                {
+                    if (Message is not "")
+                        outputService.Info(Message);
+                }
             }
         }
-
     }
 
 }

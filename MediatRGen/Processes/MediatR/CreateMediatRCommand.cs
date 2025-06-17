@@ -1,4 +1,5 @@
 ﻿using Humanizer;
+using MediatRGen.Cli.Schemas;
 using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Exceptions.FileExceptions;
 using MediatRGen.Core.Languages;
@@ -15,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace MediatRGen.Cli.Processes.MediatR
 {
-    public class CreateMediatRCommand : Command<CreateServiceBaseSchema>
+    public class CreateMediatRCommand : Command<CreateServiceSchema>
     {
         private ServicePaths _paths;
         private CreateServiceBaseSchema _parameter;
@@ -28,14 +29,14 @@ namespace MediatRGen.Cli.Processes.MediatR
         private readonly IFileService _fileService;
 
 
-        public override int Execute(CommandContext context, CreateServiceBaseSchema settings)
+        public override int Execute(CommandContext context, CreateServiceSchema settings)
         {
             //_parameterService.GetParameter<CreateServiceSchema>(command, ref settings);
             _parameterService.GetParameterFromConsole(settings, "EntityName", LangHandler.Definitions().EnterEntityName);
             _parameterService.GetParameterFromConsole(settings, "ModuleName", LangHandler.Definitions().EnterModuleName);
 
             _paths = new ServicePaths();
-            _parameter = settings;
+            _parameter = settings.OptionsSet();
 
             CreatePaths();
 
@@ -45,14 +46,11 @@ namespace MediatRGen.Cli.Processes.MediatR
             CreateConstants();
             CreateMapping();
 
-
-            CommandServices commandServices = new CommandServices(settings, _paths, _directoryServices, _classService, _nameSpaceService);
+            CommandServices commandServices = new CommandServices(settings.OptionsSet(), _paths, _directoryServices, _classService, _nameSpaceService);
             commandServices.CreateCommands();
 
-
-            QueryServices queryServices = new QueryServices(settings, _paths , _directoryServices , _classService , _nameSpaceService);
+            QueryServices queryServices = new QueryServices(settings.OptionsSet(), _paths, _directoryServices, _classService, _nameSpaceService);
             queryServices.CreateQueries();
-
 
             _directoryServices.CreateIsNotExist(_paths.ApplicationDirectory + "\\DTOs");
             Console.WriteLine(LangHandler.Definitions().ServiceCreated);

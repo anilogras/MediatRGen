@@ -13,7 +13,11 @@ namespace MediatRGen.Cli.Schemas
         [CommandArgument(1, "<Module>")]
         public string ModuleName { get; set; }
 
-        public CreateServiceBaseSchema OptionsSet() => new(EntityName, ModuleName);
+        public CreateServiceBaseSchema OptionsSet() => new CreateServiceBaseSchema
+        {
+            ModuleName = ModuleName,
+            EntityName = EntityName
+        };
 
 
     }

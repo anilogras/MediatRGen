@@ -27,6 +27,9 @@ services.AddServiceDependencies();
 services.AddTransient<IOutputService, OutputService>();
 services.AddTransient<IQuestionService, QuestionService>();
 
+GlobalServices.Provider = services.BuildServiceProvider();
+
+
 var registrar = new TypeRegistrar(services);
 
 var app = new CommandApp(registrar);

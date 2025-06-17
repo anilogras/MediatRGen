@@ -15,7 +15,10 @@ namespace MediatRGen.Cli.Schemas
         public string ModuleName { get; set; }
 
 
-        public CreateModuleBaseSchema OptionsSet() => new(ModuleName);
+        public CreateModuleBaseSchema OptionsSet() => new CreateModuleBaseSchema
+        {
+            ModuleName = ModuleName,
+        };
 
     }
 }
