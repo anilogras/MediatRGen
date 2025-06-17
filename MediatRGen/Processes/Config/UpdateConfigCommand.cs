@@ -12,25 +12,18 @@ namespace MediatRGen.Cli.Processes.Config
     {
 
         private readonly ISettings _settings;
+        private readonly IConfigService _configService;
 
-        public UpdateConfigCommand(ISettings settings)
+        public UpdateConfigCommand(ISettings settings, IConfigService configService)
         {
             _settings = settings;
+            _configService = configService;
         }
 
         public override int Execute(CommandContext context)
         {
-            var app = new CommandApp();
-
-            app.Configure(cnf =>
-            {
-                cnf.AddCommand<CreateConfigCommand>(context.Name);
-            });
-
-            app.Run(context.Arguments);
-
+            _configService.Update();
             _settings.Update();
-
             return 0;
         }
     }

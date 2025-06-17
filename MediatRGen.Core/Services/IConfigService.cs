@@ -8,6 +8,7 @@ namespace MediatRGen.Core.Services
 {
     public interface IConfigService
     {
-
+        public void Create();
+        public void Update();
     }
 }
