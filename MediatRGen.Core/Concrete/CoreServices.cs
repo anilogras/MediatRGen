@@ -27,7 +27,7 @@ namespace MediatRGen.Core.Concrete
         {
             _classLibraryService.Create("Core.Persistence", "Core", _settings.ProjectName, _settings.SolutionName);
             _systemProcessService.BuildProject(_settings.ProjectName);
-            return 0;
+            return new ServiceResult<bool>(true, true, "");
         }
     }
 }

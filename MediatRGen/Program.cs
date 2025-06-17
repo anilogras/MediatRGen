@@ -1,4 +1,5 @@
-﻿using MediatRGen.Cli.Processes.Config;
+﻿using MediatRGen.Cli;
+using MediatRGen.Cli.Processes.Config;
 using MediatRGen.Cli.Processes.MediatR;
 using MediatRGen.Cli.Processes.Module;
 using MediatRGen.Cli.Processes.Nuget;
@@ -6,6 +7,7 @@ using MediatRGen.Cli.Processes.Solution;
 using MediatRGen.Core.Exceptions;
 using MediatRGen.Core.Extensions;
 using MediatRGen.Core.Languages;
+using MediatRGen.Core.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console.Cli;
 using Spectre.Console.Cli.Extensions.DependencyInjection;
@@ -21,6 +23,7 @@ bool type = true;
 
 var services = new ServiceCollection();
 services.AddServiceDependencies();
+services.AddTransient<IOutputService, OutputService>();
 
 var registrar = new TypeRegistrar(services);
 
