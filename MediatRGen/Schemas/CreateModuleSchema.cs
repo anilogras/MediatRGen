@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using MediatRGen.Core.Schemas;
 using Spectre.Console.Cli;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,9 @@ namespace MediatRGen.Cli.Models
     {
         [CommandArgument(0, "<Name>")]
         public string ModuleName { get; set; }
+
+
+        public CreateModuleBaseSchema OptionsSet() => new(ModuleName);
 
     }
 }

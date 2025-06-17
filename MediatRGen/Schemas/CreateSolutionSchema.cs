@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using MediatRGen.Core.Schemas;
 using Spectre.Console.Cli;
 
 namespace MediatRGen.Cli.Models
@@ -26,6 +27,9 @@ namespace MediatRGen.Cli.Models
                 _Directory = value;
             }
         }
+
+        public CreateSolutionBaseSchema OptionsSet() => new(ProjectName, Directory);
+
 
     }
 }
