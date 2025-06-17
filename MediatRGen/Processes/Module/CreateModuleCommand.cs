@@ -30,7 +30,5 @@ namespace MediatRGen.Cli.Processes.Module
             _moduleService.Create(option);
             return 0;
         }
-
-
     }
 }
