@@ -11,21 +11,16 @@ namespace MediatRGen.Cli.Processes.Core
     public class CreateCoreCommand : Command
     {
 
-        private readonly IClassLibraryService _classLibraryService;
-        private readonly ISystemProcessService _systemProcessService;
-        private readonly ISettings _settings;
+        private readonly ICoreServices _coreServices;
 
-        public CreateCoreCommand(IClassLibraryService classLibraryService, ISystemProcessService systemProcessService)
+        public CreateCoreCommand(ICoreServices coreServices)
         {
-            _classLibraryService = classLibraryService;
-            _systemProcessService = systemProcessService;
+            _coreServices = coreServices;
         }
-
 
         public override int Execute(CommandContext context)
         {
-            _classLibraryService.Create("Core.Persistence", "Core", _settings.ProjectName, _settings.SolutionName);
-            _systemProcessService.BuildProject(_settings.ProjectName);
+            _coreServices.Create();
             return 0;
         }
     }
