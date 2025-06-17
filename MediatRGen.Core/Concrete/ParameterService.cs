@@ -40,6 +40,9 @@ namespace MediatRGen.Core.Concrete
         }
         public ServiceResult GetParameterFromConsole(object target, string propertyName, string message)
         {
+
+            //todo readline ile data alıyor , bunu düzelt 
+
             try
             {
                 var prop = target.GetType().GetProperty(propertyName);
