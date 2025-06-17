@@ -2,7 +2,7 @@
 using MediatRGen.Core.Schemas;
 using Spectre.Console.Cli;
 
-namespace MediatRGen.Cli.Models
+namespace MediatRGen.Cli.Schemas
 {
     public class CreateServiceSchema : CommandSettings
     {

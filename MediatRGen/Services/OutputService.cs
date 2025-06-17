@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Cli
+namespace MediatRGen.Cli.Services
 {
     internal class OutputService : IOutputService
     {

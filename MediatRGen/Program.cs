@@ -1,9 +1,9 @@
-﻿using MediatRGen.Cli;
-using MediatRGen.Cli.Processes.Config;
+﻿using MediatRGen.Cli.Processes.Config;
 using MediatRGen.Cli.Processes.MediatR;
 using MediatRGen.Cli.Processes.Module;
 using MediatRGen.Cli.Processes.Nuget;
 using MediatRGen.Cli.Processes.Solution;
+using MediatRGen.Cli.Services;
 using MediatRGen.Core.Exceptions;
 using MediatRGen.Core.Extensions;
 using MediatRGen.Core.Languages;
