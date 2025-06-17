@@ -52,7 +52,7 @@ namespace MediatRGen.Core.Concrete
         {
             string _nugetFoldersDirectory = _directoryServices.GetPath(_directoryServices.GetCurrentDirectory().Value, "CoreNugetPackages").Value;
             ServiceResult<bool> deleteRes = _directoryServices.Delete(_nugetFoldersDirectory);
-            return new ServiceResult<bool>(true, true, LangHandler.Definitions().NugetPackageDeleted);
+            return deleteRes;
         }
     }
 }
