@@ -20,11 +20,6 @@ namespace MediatRGen.Cli.Processes.MediatR
         private readonly IClassService _classService;
         private readonly INameSpaceService _nameSpaceService;
 
-        public CommandServices()
-        {
-
-        }
-
         public CommandServices(
             CreateServiceBaseSchema parameter,
             ServicePaths paths,
