@@ -6,6 +6,13 @@ namespace MediatRGen.Core.Concrete
 {
     internal class QuestionService : IQuestionService
     {
+        private readonly IOutputService _OutputService;
+
+        public QuestionService(IOutputService outputService)
+        {
+            _OutputService = outputService;
+        }
+
         public ServiceResult<bool> YesNoQuestion(string question)
         {
 
@@ -13,7 +20,7 @@ namespace MediatRGen.Core.Concrete
 
             while (true)
             {
-                Console.WriteLine(question + " (y / n)");
+                _OutputService.Info(question + " (y / n)");
                 string? response = Console.ReadLine();
 
                 if (response?.ToLower() != "y" && response?.ToLower() != "n")
@@ -38,12 +45,12 @@ namespace MediatRGen.Core.Concrete
             while (true)
             {
 
-                Console.WriteLine(question);
+                _OutputService.Info(question);
                 string answer = Console.ReadLine();
 
                 if (string.IsNullOrEmpty(answer))
                 {
-                    Console.WriteLine(LangHandler.Definitions().Required);
+                    _OutputService.Info(LangHandler.Definitions().Required);
                     continue;
                 }
 
