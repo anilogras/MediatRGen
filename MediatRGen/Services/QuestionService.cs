@@ -33,7 +33,6 @@ namespace MediatRGen.Core.Concrete
 
             return new ServiceResult<bool>(answer, true, "");
         }
-
         public ServiceResult<string> GetAnswer(string question)
         {
             while (true)

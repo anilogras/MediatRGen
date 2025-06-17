@@ -4,6 +4,7 @@ using MediatRGen.Cli.Processes.Module;
 using MediatRGen.Cli.Processes.Nuget;
 using MediatRGen.Cli.Processes.Solution;
 using MediatRGen.Cli.Services;
+using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Exceptions;
 using MediatRGen.Core.Extensions;
 using MediatRGen.Core.Languages;
@@ -24,6 +25,7 @@ bool type = true;
 var services = new ServiceCollection();
 services.AddServiceDependencies();
 services.AddTransient<IOutputService, OutputService>();
+services.AddTransient<IQuestionService, QuestionService>();
 
 var registrar = new TypeRegistrar(services);
 
