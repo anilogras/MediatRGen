@@ -9,10 +9,11 @@ namespace MediatRGen.Core.Concrete
     {
 
         private readonly IDirectoryServices _directoryServices;
-
-        public NugetService(IDirectoryServices directoryServices)
+        private readonly IOutputService _outputService;
+        public NugetService(IDirectoryServices directoryServices, IOutputService outputService)
         {
             _directoryServices = directoryServices;
+            _outputService = outputService;
         }
 
         public ServiceResult<bool> CreateNugets()
@@ -35,7 +36,7 @@ namespace MediatRGen.Core.Concrete
                 {
                     string _fileName = Path.GetFileName(item);
                     string _copyPath = Path.Combine(_copyDestination, _fileName);
-                    Console.WriteLine(_fileName + LangHandler.Definitions().NugetPackageCreated);
+                    _outputService.Info(_fileName + LangHandler.Definitions().NugetPackageCreated);
                     File.Copy(item, _copyPath, true);
                 }
 

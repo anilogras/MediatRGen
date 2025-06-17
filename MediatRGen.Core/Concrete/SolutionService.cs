@@ -20,19 +20,21 @@ namespace MediatRGen.Core.Concrete
         private readonly ISystemProcessService _systemProcessService;
         private readonly IFileService _fileService;
         private readonly IParameterService _parameterService;
-
+        private readonly IOutputService _outputService;
         public SolutionService(
             IDirectoryServices directoryService,
             ISettings settings,
             ISystemProcessService systemProcessService,
             IFileService fileService,
-            IParameterService parameterService)
+            IParameterService parameterService,
+            IOutputService outputService)
         {
             _directoryService = directoryService;
             _settings = settings;
             _systemProcessService = systemProcessService;
             _fileService = fileService;
             _parameterService = parameterService;
+            _outputService = outputService;
         }
 
         public void Create(CreateSolutionBaseSchema settings)
@@ -57,12 +59,12 @@ namespace MediatRGen.Core.Concrete
 
             string res = _systemProcessService.InvokeCommand(commandResult).Value;
 
-            Console.WriteLine(res);
+            _outputService.Info(res);
 
-            Console.WriteLine($"cd ./{settings.ProjectName}");
+            _outputService.Info($"cd ./{settings.ProjectName}");
 
             if (res.IndexOf("Error") == -1)
-                Console.WriteLine(LangHandler.Definitions().YouCanWriteCode);
+                _outputService.Error(LangHandler.Definitions().YouCanWriteCode);
 
             _settings.ProjectName = settings.ProjectName;
             _settings.SolutionName = settings.ProjectName;

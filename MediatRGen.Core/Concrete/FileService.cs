@@ -11,10 +11,12 @@ namespace MediatRGen.Core.Concrete
     {
 
         private readonly IDirectoryServices _directoryServices;
+        private readonly IOutputService _outputService;
 
-        public FileService(IDirectoryServices directoryServices)
+        public FileService(IDirectoryServices directoryServices, IOutputService outputService)
         {
             _directoryServices = directoryServices;
+            _outputService = outputService;
         }
 
         public ServiceResult<bool> Create(string path, string fileName, string content)
@@ -69,7 +71,7 @@ namespace MediatRGen.Core.Concrete
                 if (!File.Exists(_path))
                 {
                     File.Create(_path).Close();
-                    Console.WriteLine(LangHandler.Definitions().FileCreated + $" ({fileName})");
+                    _outputService.Info(LangHandler.Definitions().FileCreated + $" ({fileName})");
                 }
 
                 return new ServiceResult<bool>(true, true, "", null);

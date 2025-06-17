@@ -10,10 +10,12 @@ namespace MediatRGen.Core.Concrete
     {
 
         private readonly IArgsService _argsService;
+        private readonly IOutputService _outputService;
 
-        public ParameterService(IArgsService argsService)
+        public ParameterService(IArgsService argsService, IOutputService outputService)
         {
             _argsService = argsService;
+            _outputService = outputService;
         }
 
         public ServiceResult<T> GetParameter<T>(string command, ref T _parameter)
@@ -48,7 +50,7 @@ namespace MediatRGen.Core.Concrete
 
                 if (string.IsNullOrWhiteSpace(currentValue))
                 {
-                    Console.WriteLine(message);
+                    _outputService.Info(message);
 
                     while (true)
                     {

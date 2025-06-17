@@ -14,6 +14,7 @@ namespace MediatRGen.Core.Concrete
         private readonly ISystemProcessService _systemProcessService;
         private readonly INugetService _nugetServices;
         private readonly ICoreServices _coreServices;
+        private readonly IOutputService _outputService;
 
         public ConfigService(
             ISettings settings,
@@ -22,7 +23,8 @@ namespace MediatRGen.Core.Concrete
             IClassLibraryService classLibraryService,
             ISystemProcessService systemProcessService,
             INugetService nugetServices,
-            ICoreServices coreServices)
+            ICoreServices coreServices,
+            IOutputService outputService)
         {
             _settings = settings;
             _fileService = fileService;
@@ -31,6 +33,7 @@ namespace MediatRGen.Core.Concrete
             _systemProcessService = systemProcessService;
             _nugetServices = nugetServices;
             _coreServices = coreServices;
+            _outputService = outputService;
         }
 
         public void Create()
@@ -56,7 +59,7 @@ namespace MediatRGen.Core.Concrete
 
             CreateCoreFiles();
 
-            Console.WriteLine(LangHandler.Definitions().CreatedConfigFile);
+            _outputService.Info(LangHandler.Definitions().CreatedConfigFile);
         }
 
         private void ModuleSystemActive()
@@ -68,18 +71,26 @@ namespace MediatRGen.Core.Concrete
         {
             if (_settings.UseModule == true)
             {
-                Console.WriteLine(LangHandler.Definitions().UseOchelot);
-                _settings.UseGateway = _questionService.YesNoQuestion(LangHandler.Definitions().GatewayActive).Value;
+                bool res = _questionService.YesNoQuestion(LangHandler.Definitions().UseOchelot).Value;
+
+                if (res == true)
+                {
+                    _settings.UseGateway = _questionService.YesNoQuestion(LangHandler.Definitions().GatewayActive).Value;
+                }
+                else
+                {
+                    _outputService.Info(LangHandler.Definitions().GatewayNotActive);
+                }
             }
         }
 
         private void CreateCoreFiles()
         {
             _coreServices.Create();
-            Console.WriteLine(LangHandler.Definitions().CoreFilesCreated);
+            _outputService.Info(LangHandler.Definitions().CoreFilesCreated);
 
             _nugetServices.CreateNugets();
-            Console.WriteLine(LangHandler.Definitions().NugetPackagesCreated);
+            _outputService.Info(LangHandler.Definitions().NugetPackagesCreated);
         }
 
         public void Update()
