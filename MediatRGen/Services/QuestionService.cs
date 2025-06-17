@@ -16,11 +16,13 @@ namespace MediatRGen.Core.Concrete
         public ServiceResult<bool> YesNoQuestion(string question)
         {
 
+            //todo readline düzelt
+
             bool answer = false;
 
             while (true)
             {
-                _OutputService.Info(question + " (y / n)");
+                _OutputService.Question(question + " (y / n)");
                 string? response = Console.ReadLine();
 
                 if (response?.ToLower() != "y" && response?.ToLower() != "n")

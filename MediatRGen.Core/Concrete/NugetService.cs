@@ -40,6 +40,9 @@ namespace MediatRGen.Core.Concrete
                     File.Copy(item, _copyPath, true);
                 }
 
+                _outputService.Info(LangHandler.Definitions().NugetPackagesCreated);
+
+
                 return new ServiceResult<bool>(true, true, "");
             }
             catch (Exception ex)

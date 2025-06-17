@@ -58,7 +58,7 @@ namespace MediatRGen.Core.Concrete
         }
         public ServiceResult<string> GetCurrentDirectory()
         {
-            return new ServiceResult<string>(".\\", true, "");
+            return new ServiceResult<string>(".\\DENSOL\\", true, "");
         }
         public ServiceResult<bool> CreateIsNotExist(string path)
         {

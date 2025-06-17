@@ -69,7 +69,7 @@ namespace MediatRGen.Core.Concrete
             _settings.ProjectName = settings.ProjectName;
             _settings.SolutionName = settings.ProjectName;
 
-            CreateFirstConfigFile(_combinedPath, _settings.Get());
+            CreateFirstConfigFile(_combinedPath, _settings);
         }
 
         private void CreateFirstConfigFile(string _combinedPath, object firstConfig)

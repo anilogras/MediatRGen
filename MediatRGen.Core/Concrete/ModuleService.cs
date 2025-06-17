@@ -31,7 +31,9 @@ namespace MediatRGen.Core.Concrete
             IWebApiService webApiService,
             IClassLibraryService classLibraryService,
             ISettings settings,
-            IOutputService outputService)
+            IOutputService outputService ,
+            IFileService fileService
+            )
         {
             _parameterService = parameterService;
             _directoryServices = directoryServices;
@@ -40,6 +42,7 @@ namespace MediatRGen.Core.Concrete
             _classLibraryService = classLibraryService;
             _settings = settings;
             _outputService = outputService;
+            _fileService = fileService;
         }
 
         public void Create(CreateModuleBaseSchema settings)
