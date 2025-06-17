@@ -91,7 +91,6 @@ namespace MediatRGen.Core.Concrete.MediatR
 
             _classConfig.Name = $"{_parameter.EntityName}BusinessRules";
             _classConfig.Directory = _directoryServices.GetPath(_paths.ApplicationDirectory, "Rules").Value;
-            _classConfig.BaseInheritance = "DenemeBaseModel";
 
             _classService.CreateClass(_classConfig);
         }
