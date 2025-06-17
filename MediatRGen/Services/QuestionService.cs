@@ -42,6 +42,8 @@ namespace MediatRGen.Core.Concrete
         }
         public ServiceResult<string> GetAnswer(string question)
         {
+            //todo readline var düzelt
+
             while (true)
             {
 
