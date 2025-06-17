@@ -64,7 +64,7 @@ namespace MediatRGen.Core.Concrete
             _outputService.Info($"cd ./{settings.ProjectName}");
 
             if (res.IndexOf("Error") == -1)
-                _outputService.Error(LangHandler.Definitions().YouCanWriteCode);
+                _outputService.Info(LangHandler.Definitions().YouCanWriteCode);
 
             _settings.ProjectName = settings.ProjectName;
             _settings.SolutionName = settings.ProjectName;

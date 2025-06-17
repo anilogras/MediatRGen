@@ -22,7 +22,7 @@ namespace MediatRGen.Cli.Services
 
         public void Question(string message)
         {
-            AnsiConsole.MarkupLine($"{message}");
+            AnsiConsole.MarkupLine($"[red][[QUESTION]][/] {message}");
 
         }
 

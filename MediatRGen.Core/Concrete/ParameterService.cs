@@ -53,7 +53,7 @@ namespace MediatRGen.Core.Concrete
 
                 if (string.IsNullOrWhiteSpace(currentValue))
                 {
-                    _outputService.Info(message);
+                    _outputService.Question(message);
 
                     while (true)
                     {
