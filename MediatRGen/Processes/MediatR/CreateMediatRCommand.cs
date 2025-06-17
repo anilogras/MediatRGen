@@ -1,9 +1,9 @@
 ﻿using Humanizer;
-using MediatRGen.Cli.Models;
 using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Exceptions.FileExceptions;
 using MediatRGen.Core.Languages;
 using MediatRGen.Core.Models;
+using MediatRGen.Core.Schemas;
 using MediatRGen.Core.Services;
 using Spectre.Console.Cli;
 using System;
@@ -15,10 +15,10 @@ using System.Threading.Tasks;
 
 namespace MediatRGen.Cli.Processes.MediatR
 {
-    public class CreateMediatRCommand : Command<CreateServiceSchema>
+    public class CreateMediatRCommand : Command<CreateServiceBaseSchema>
     {
         private ServicePaths _paths;
-        private CreateServiceSchema _parameter;
+        private CreateServiceBaseSchema _parameter;
 
         private readonly IDirectoryServices _directoryServices;
         private readonly IClassService _classService;
@@ -28,7 +28,7 @@ namespace MediatRGen.Cli.Processes.MediatR
         private readonly IFileService _fileService;
 
 
-        public override int Execute(CommandContext context, CreateServiceSchema settings)
+        public override int Execute(CommandContext context, CreateServiceBaseSchema settings)
         {
             //_parameterService.GetParameter<CreateServiceSchema>(command, ref settings);
             _parameterService.GetParameterFromConsole(settings, "EntityName", LangHandler.Definitions().EnterEntityName);

@@ -1,6 +1,6 @@
-﻿using MediatRGen.Cli.Models;
-using MediatRGen.Core.Concrete;
+﻿using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Models;
+using MediatRGen.Core.Schemas;
 using MediatRGen.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ namespace MediatRGen.Cli.Processes.MediatR
 {
     internal class QueryServices
     {
-        private readonly CreateServiceSchema _parameter;
+        private readonly CreateServiceBaseSchema _parameter;
         private readonly ServicePaths _paths;
 
         private readonly IDirectoryServices _directoryServices;
@@ -21,7 +21,7 @@ namespace MediatRGen.Cli.Processes.MediatR
 
 
         public QueryServices(
-            CreateServiceSchema parameter,
+            CreateServiceBaseSchema parameter,
             ServicePaths paths,
             IDirectoryServices directoryServices,
             IClassService classService,

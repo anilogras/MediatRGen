@@ -1,16 +1,16 @@
-﻿using MediatRGen.Cli.Models;
-using MediatRGen.Core.Base;
+﻿using MediatRGen.Core.Base;
 using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Exceptions.FileExceptions;
 using MediatRGen.Core.Languages;
+using MediatRGen.Core.Schemas;
 using MediatRGen.Core.Services;
 using Spectre.Console.Cli;
 
 namespace MediatRGen.Cli.Processes.Solution
 {
-    public class CreateSolutionCommand : Command<CreateSolutionSchema>
+    public class CreateSolutionCommand : Command<CreateSolutionBaseSchema>
     {
-        private CreateSolutionSchema _parameter;
+        private CreateSolutionBaseSchema _parameter;
 
         private readonly IDirectoryServices _directoryService;
         private readonly ISettings _settings;
@@ -32,7 +32,7 @@ namespace MediatRGen.Cli.Processes.Solution
             _parameterService = parameterService;
         }
 
-        public override int Execute(CommandContext context, CreateSolutionSchema settings)
+        public override int Execute(CommandContext context, CreateSolutionBaseSchema settings)
         {
             _parameter = settings;
 
