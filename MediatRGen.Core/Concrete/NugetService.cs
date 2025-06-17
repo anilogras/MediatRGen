@@ -41,8 +41,6 @@ namespace MediatRGen.Core.Concrete
                 }
 
                 return new ServiceResult<bool>(true, true, "");
-
-
             }
             catch (Exception ex)
             {
