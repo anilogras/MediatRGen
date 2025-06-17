@@ -10,14 +10,21 @@ namespace MediatRGen.Cli.Services
 {
     internal class OutputService : IOutputService
     {
-        public void Error(string message)
+        public void Info(string message)
         {
             AnsiConsole.MarkupLine($"[green][[INFO]][/] {message}");
         }
 
-        public void Info(string message)
+        public void Error(string message)
         {
             AnsiConsole.MarkupLine($"[red][[ERROR]][/] {message}");
         }
+
+        public void Question(string message)
+        {
+            AnsiConsole.MarkupLine($"{message}");
+
+        }
+
     }
 }
