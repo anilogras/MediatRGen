@@ -1,4 +1,5 @@
-﻿using MediatRGen.Core.Base;
+﻿using MediatRGen.Cli.Schemas;
+using MediatRGen.Core.Base;
 using MediatRGen.Core.Concrete;
 using MediatRGen.Core.Exceptions;
 using MediatRGen.Core.Languages;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace MediatRGen.Cli.Processes.Module
 {
-    public class CreateModuleCommand : Command<ServiceSchemas>
+    public class CreateModuleCommand : Command<CreateModuleSchema>
     {
         private readonly IModuleService _moduleService;
 
@@ -23,9 +24,10 @@ namespace MediatRGen.Cli.Processes.Module
             _moduleService = moduleService;
         }
 
-        public override int Execute(CommandContext context, ServiceSchemas settings)
+        public override int Execute(CommandContext context, CreateModuleSchema settings)
         {
-            _moduleService.Create(settings);
+            var option = settings.OptionsSet();
+            _moduleService.Create(option);
             return 0;
         }
 
