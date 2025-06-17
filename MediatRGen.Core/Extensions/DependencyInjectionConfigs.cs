@@ -19,6 +19,7 @@ namespace MediatRGen.Core.Extensions
             services.AddTransient<IClassService, ClassService>();
             services.AddTransient<IConfigService, ConfigService>();
             services.AddTransient<IConstructorService, ConstructorService>();
+            services.AddTransient<ICoreServices, CoreServices>();
             services.AddTransient<IDirectoryServices, DirectoryServices>();
             services.AddTransient<IFileService, FileService>();
             services.AddTransient<IInheritanceService, InheritanceService>();
@@ -26,8 +27,8 @@ namespace MediatRGen.Core.Extensions
             services.AddTransient<INugetService, NugetService>();
             services.AddTransient<IParameterService, ParameterService>();
             services.AddTransient<IPropertyService, PropertyService>();
-            services.AddTransient<IQuestionService, QuestionService>();
             services.AddTransient<ISystemProcessService, SystemProcessService>();
+            services.AddTransient<ISolutionService, SolutionService>();
             services.AddTransient<IUsingService, UsingService>();
             services.AddTransient<IWebApiService, WebApiService>();
             services.AddTransient<ISettings, Settings>();
