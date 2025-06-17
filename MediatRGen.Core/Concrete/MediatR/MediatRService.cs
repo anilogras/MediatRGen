@@ -57,8 +57,10 @@ namespace MediatRGen.Core.Concrete.MediatR
             CreateBusinessRules();
             CreateConstants();
             CreateMapping();
+
             CommandServices commandServices = new CommandServices(settings, _paths, _directoryServices, _classService, _nameSpaceService);
             commandServices.CreateCommands();
+
             QueryServices queryServices = new QueryServices(settings, _paths, _directoryServices, _classService, _nameSpaceService);
             queryServices.CreateQueries();
 
