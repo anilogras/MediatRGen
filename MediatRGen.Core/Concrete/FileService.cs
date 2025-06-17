@@ -38,12 +38,12 @@ namespace MediatRGen.Core.Concrete
             return new ServiceResult<bool>(true, true, LangHandler.Definitions().FileCreated + $" ({fileName})", null);
 
         }
-        public ServiceResult<bool> Create(string path, string fileName, object content)
+        public ServiceResult<bool> Create(string path, string fileName, object content , bool force = false)
         {
             try
             {
                 string _path = _directoryServices.GetPath(path, fileName).Value;
-                if (!File.Exists(_path))
+                if (force == true || !File.Exists(_path))
                 {
                     var options = new JsonSerializerOptions
                     {

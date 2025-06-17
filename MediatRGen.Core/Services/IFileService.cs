@@ -10,7 +10,7 @@ namespace MediatRGen.Core.Services
     public interface IFileService
     {
         public ServiceResult<bool> Create(string path, string fileName, string content);
-        public ServiceResult<bool> Create(string path, string fileName, object content);
+        public ServiceResult<bool> Create(string path, string fileName, object content, bool force = false);
         public ServiceResult<bool> Create(string path, string fileName);
         public ServiceResult<string?> Get(string path);
         public ServiceResult<bool> UpdateConfig(string configFileName, object stateInstance);

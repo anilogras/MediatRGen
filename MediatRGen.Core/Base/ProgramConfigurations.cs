@@ -1,23 +1,18 @@
-﻿using MediatRGen.Core.Base;
-using MediatRGen.Core.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace MediatRGen.Core.Services
+namespace MediatRGen.Core.Base
 {
-    public interface ISettings
+    internal class ProgramConfigurations
     {
-        public Settings Update();
-        public string ConfigFileName => "mediatr-config.json";
-
-        public string[] Commands => new string[] {
-            "create-service", "create-module", "update-nuget",
-            "create-solution", "create-config", "update-config",
-            "create-nuget" };
+        public ProgramConfigurations()
+        {
+            Modules = new List<ProjectModule>();
+            Lang = "tr";
+        }
 
         public string ProjectName { get; set; }
         public string Lang { get; set; }

@@ -55,7 +55,7 @@ namespace MediatRGen.Core.Concrete
             ModuleSystemActive();
             GatewayActive();
 
-            _fileService.UpdateConfig(_settings.ConfigFileName, _settings.Get());
+            _settings.Update();
 
             CreateCoreFiles();
 
