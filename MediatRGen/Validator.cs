@@ -1,7 +1,7 @@
-﻿using MediatRGen.Cli.States;
-using MediatRGen.Core;
+﻿using MediatRGen.Core;
 using MediatRGen.Core.Exceptions;
-using MediatRGen.Services;
+using MediatRGen.Core.Languages;
+using MediatRGen.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,15 +10,23 @@ using System.Threading.Tasks;
 
 namespace MediatRGen.Cli
 {
-    public static class Validator 
+    public class Validator : IValidateService
     {
-        public static void ValidateCommandBeforeProcess(string[] commandArgs)
+
+        private readonly ISettings _settings;
+
+        public Validator(ISettings settings)
+        {
+            _settings = settings;
+        }
+
+        public void ValidateCommandBeforeProcess(string[] commandArgs)
         {
             CheckCommand(commandArgs[0]);
             CheckParams(commandArgs);
         }
 
-        private static void CheckParams(string[] commandArgs)
+        private void CheckParams(string[] commandArgs)
         {
             if (commandArgs.Length != 1 && commandArgs.Length == 0 && !commandArgs[0].StartsWith("-"))
             {
@@ -26,9 +34,9 @@ namespace MediatRGen.Cli
             }
         }
 
-        private static void CheckCommand(string command)
+        private void CheckCommand(string command)
         {
-            string[] activeCommand = GlobalState.Instance.Commands;
+            string[] activeCommand = _settings.Commands;
 
             if (!activeCommand.Contains(command))
             {

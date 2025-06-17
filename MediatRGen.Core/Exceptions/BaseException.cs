@@ -1,4 +1,7 @@
-﻿using MediatRGen.Core.Exceptions.FileExceptions;
+﻿using MediatRGen.Core.Concrete;
+using MediatRGen.Core.Exceptions.FileExceptions;
+using MediatRGen.Core.Services;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,40 +52,80 @@ namespace MediatRGen.Core.Exceptions
         }
         private static void HandleException(ModuleException ex)
         {
-            Console.WriteLine(ex.Message);
+            var outputService = GlobalServices.Provider?.GetService<IOutputService>();
+
+            if (outputService != null)
+            {
+                outputService.Error(ex.Message);
+            }
         }
 
         private static void HandleException(InvalidCommandException ex)
         {
-            Console.WriteLine(ex.Message);
+            var outputService = GlobalServices.Provider?.GetService<IOutputService>();
+
+            if (outputService != null)
+            {
+                outputService.Error(ex.Message);
+            }
         }
 
         private static void HandleException(FileException ex)
         {
-            Console.WriteLine(ex.Message);
+            var outputService = GlobalServices.Provider?.GetService<IOutputService>();
+
+            if (outputService != null)
+            {
+                outputService.Error(ex.Message);
+            }
         }
         private static void HandleException(DirectoryException ex)
         {
-            Console.WriteLine(ex.Message);
+            var outputService = GlobalServices.Provider?.GetService<IOutputService>();
+
+            if (outputService != null)
+            {
+                outputService.Error(ex.Message);
+            }
         }
         private static void HandleException(LanguageNotFoundException ex)
         {
-            Console.WriteLine(ex.Message);
+            var outputService = GlobalServices.Provider?.GetService<IOutputService>();
+
+            if (outputService != null)
+            {
+                outputService.Error(ex.Message);
+            }
         }
 
         private static void HandleException(InvalidParameterException ex)
         {
-            Console.WriteLine(ex.Message);
+            var outputService = GlobalServices.Provider?.GetService<IOutputService>();
+
+            if (outputService != null)
+            {
+                outputService.Error(ex.Message);
+            }
         }
 
         private static void HandleException(ParameterParseException ex)
         {
-            Console.WriteLine(ex.Message);
+            var outputService = GlobalServices.Provider?.GetService<IOutputService>();
+
+            if (outputService != null)
+            {
+                outputService.Error(ex.Message);
+            }
         }
 
         private static void HandleException(Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            var outputService = GlobalServices.Provider?.GetService<IOutputService>();
+
+            if (outputService != null)
+            {
+                outputService.Error(ex.Message);
+            }
         }
 
     }

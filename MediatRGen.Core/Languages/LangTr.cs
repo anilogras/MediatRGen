@@ -21,6 +21,8 @@ namespace MediatRGen.Core.Languages
         public string ConfigNotFound => "Config Dosyasında Bulunamadı...";
         public string ModuleActive => "Modül Sistemi Kullanılacak Mı ?";
         public string GatewayActive => "Gateway Yapılandırılsın Mı ?";
+        public string GatewayNotActive => "Gateway Yapılandırılması Yapılmadı...";
+
         public string ModuleName => "Modül Adı Girin ...";
         public string ModuleNameIsRequired => "Modül Adı Boş Geçilemez";
         public string UseOchelot => "Api Gateway Olarak Ochelot Aktifleştirilsin Mi?";

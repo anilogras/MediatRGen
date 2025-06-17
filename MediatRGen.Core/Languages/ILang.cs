@@ -9,7 +9,7 @@ namespace MediatRGen.Core.Languages
     public interface ILang
     {
         public string ParameterPropertySetError { get; }
-
+        public string GatewayNotActive { get; }
         public string ArgsSplited { get; }
         public string ParameterParseError { get; }
         public string ParameterParsed { get; }
