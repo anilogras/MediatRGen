@@ -6,11 +6,11 @@ namespace MediatRGen.Cli.Schemas
 {
     public class CreateServiceSchema : CommandSettings
     {
-        [CommandArgument(0, "<Entity>")]
+        [CommandOption("-e|--entity")]
         public string EntityName { get; set; }
 
 
-        [CommandArgument(1, "<Module>")]
+        [CommandOption("-m|--module")]
         public string ModuleName { get; set; }
 
         public CreateServiceBaseSchema OptionsSet() => new CreateServiceBaseSchema
