@@ -10,7 +10,6 @@ namespace MediatRGen.Core.Services
 {
     public interface IInheritanceService
     {
-        public ServiceResult<bool> SetBaseInheritance(string classPath, string baseClassName);
         public ServiceResult<SyntaxNode> SetBaseInheritance(SyntaxNode root, string baseClassName);
     }
 }
