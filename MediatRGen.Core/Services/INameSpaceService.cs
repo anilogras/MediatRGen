@@ -10,9 +10,9 @@ namespace MediatRGen.Core.Services
 {
     public interface INameSpaceService
     {
-        public ServiceResult<bool> ChangeNameSpace(string classPath, string newNameSpace);
+        //public ServiceResult<bool> ChangeNameSpace(string classPath, string newNameSpace);
         public ServiceResult<SyntaxNode> ChangeNameSpace(SyntaxNode root, string newNameSpace);
-        public ServiceResult<string> GetNameSpace(string classPath);
+        public ServiceResult<string> GetNameSpace(SyntaxNode root);
 
     }
 }

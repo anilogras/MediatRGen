@@ -10,27 +10,10 @@ namespace MediatRGen.Core.Concrete
 {
     internal class NameSpaceService : INameSpaceService
     {
-        private readonly IClassService _classService;
-
-        public NameSpaceService(IClassService classService)
+        public NameSpaceService()
         {
-            _classService = classService;
         }
 
-        public ServiceResult<bool> ChangeNameSpace(string classPath, string newNameSpace)
-        {
-            try
-            {
-                SyntaxNode root = _classService.GetClassRoot(classPath).Value;
-                var newRoot = ChangeNameSpace(root, newNameSpace).Value;
-                _classService.ReWriteClass(classPath, newRoot);
-                return new ServiceResult<bool>(true, true, "");
-            }
-            catch (Exception ex)
-            {
-                return new ServiceResult<bool>(false, false, LangHandler.Definitions().NameSpaceChangeException, new ClassLibraryException(ex.Message));
-            }
-        }
         public ServiceResult<SyntaxNode> ChangeNameSpace(SyntaxNode root, string newNameSpace)
         {
             newNameSpace = newNameSpace.Substring(newNameSpace.IndexOf("\\src\\") + 5);
@@ -62,18 +45,10 @@ namespace MediatRGen.Core.Concrete
             }
         }
 
-        public ServiceResult<string> GetNameSpace(string classPath)
+        public ServiceResult<string> GetNameSpace(SyntaxNode root)
         {
             try
             {
-
-                string? extension = Path.GetExtension(classPath);
-
-                if (string.IsNullOrEmpty(extension))
-                    classPath = classPath + ".cs";
-
-                SyntaxNode root = _classService.GetClassRoot(classPath).Value;
-
                 var fileScopedNs = root.DescendantNodes()
                    .OfType<FileScopedNamespaceDeclarationSyntax>()
                    .FirstOrDefault();
@@ -88,8 +63,6 @@ namespace MediatRGen.Core.Concrete
                     return new ServiceResult<string>("", false, "", new ClassLibraryException(LangHandler.Definitions().NameSpaceNotFound));
                 else
                     return new ServiceResult<string>(namespaceNode.Name.ToString(), true, "");
-
-                //return new ServiceResult<string>(namespaceNode.Name.ToString(), true, LangHandler.Definitions().NameSpaceFound);
             }
             catch (Exception ex)
             {

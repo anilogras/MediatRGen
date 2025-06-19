@@ -66,7 +66,8 @@ namespace MediatRGen.Cli.Processes.MediatR
             _config.BaseInheritance = $"Base{workType}Command<{workType}{_parameter.EntityName}Response>";
             _config.Constructor = true;
 
-            string _entityNamespace = _nameSpaceService.GetNameSpace(_paths.EntityPath).Value;
+            string _entityNamespace = _nameSpaceService.GetNameSpace(_classService.GetClassRoot(_paths.EntityPath).Value).Value;
+
             _config.Usings = new List<string> { $"Core.Application.BaseCQRS.Commands.{workType}", _entityNamespace };
 
             _classService.CreateClass(_config);
@@ -104,7 +105,7 @@ namespace MediatRGen.Cli.Processes.MediatR
             _config.ConstructorParameters = $"IRepository<{_parameter.EntityName}> repository, IMapper mapper";
             _config.ConstructorBaseParameters = "repository, mapper";
 
-            string _entityNamespace = _nameSpaceService.GetNameSpace(_paths.EntityPath).Value;
+            string _entityNamespace = _nameSpaceService.GetNameSpace(_classService.GetClassRoot(_paths.EntityPath).Value).Value;
 
             _config.Usings = new List<string>
             {

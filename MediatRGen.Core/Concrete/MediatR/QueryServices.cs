@@ -84,7 +84,7 @@ namespace MediatRGen.Cli.Processes.MediatR
             _config.BaseInheritance = $"Base{workType}QueryHandler<{workType}{_parameter.EntityName}Query, {workType}{_parameter.EntityName}Response, {_parameter.EntityName}>";
             _config.Constructor = true;
 
-            string _entityNamespace = _nameSpaceService.GetNameSpace(_paths.EntityPath).Value;
+            string _entityNamespace = _nameSpaceService.GetNameSpace(_classService.GetClassRoot(_paths.EntityPath).Value).Value;
 
             _config.Usings = new List<string>
             {
