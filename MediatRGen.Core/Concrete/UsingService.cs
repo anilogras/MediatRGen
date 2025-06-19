@@ -11,36 +11,11 @@ namespace MediatRGen.Core.Concrete
     internal class UsingService : IUsingService
     {
 
-        private readonly IClassService _classService;
 
-        public UsingService(IClassService classService)
+        public UsingService()
         {
-            _classService = classService;
         }
 
-        public ServiceResult<bool> AddUsing(string classPath, string usingName)
-        {
-            try
-            {
-                string? extension = Path.GetExtension(classPath);
-
-                if (string.IsNullOrEmpty(extension))
-                    classPath = classPath + ".cs";
-
-                SyntaxNode root = _classService.GetClassRoot(classPath).Value;
-
-                SyntaxNode newRoot = AddUsing(root, usingName).Value;
-
-                _classService.ReWriteClass(classPath, newRoot);
-
-                return new ServiceResult<bool>(true, true, "");
-                //return new ServiceResult<bool>(true, true, usingName + "\n" + LangHandler.Definitions().UsingAdded);
-            }
-            catch (Exception ex)
-            {
-                return new ServiceResult<bool>(false, false, LangHandler.Definitions().NameSpaceChangeException, new ClassLibraryException(ex.Message));
-            }
-        }
         public ServiceResult<SyntaxNode> AddUsing(SyntaxNode root, string usingName)
         {
 
