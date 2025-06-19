@@ -11,31 +11,11 @@ namespace MediatRGen.Core.Concrete
     internal class ConstructorService : IConstructorService
     {
 
-        private readonly IClassService _classService;
 
-        public ConstructorService(IClassService classService)
+        public ConstructorService()
         {
-            _classService = classService;
         }
 
-        public ServiceResult<bool> AddConstructor(string classPath)
-        {
-            try
-            {
-                SyntaxNode root = _classService.GetClassRoot(classPath).Value;
-
-                var newRoot = AddConstructor(root).Value;
-
-                _classService.ReWriteClass(classPath, newRoot);
-
-                return new ServiceResult<bool>(false, false, "");
-
-            }
-            catch (Exception ex)
-            {
-                return new ServiceResult<bool>(false, false, LangHandler.Definitions().NameSpaceChangeException, new ClassLibraryException(ex.Message));
-            }
-        }
         public ServiceResult<SyntaxNode> AddConstructor(SyntaxNode root)
         {
             var classNode = root.DescendantNodes().OfType<ClassDeclarationSyntax>().FirstOrDefault();

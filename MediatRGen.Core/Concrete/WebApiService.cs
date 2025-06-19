@@ -9,27 +9,33 @@ namespace MediatRGen.Core.Concrete
 
         private readonly IDirectoryServices _directoryServices;
         private readonly ISystemProcessService _systemProcessService;
+        private readonly ISettings _settings;
 
-        public WebApiService(IDirectoryServices directoryServices , ISystemProcessService systemProcessService)
+        public WebApiService(IDirectoryServices directoryServices, ISystemProcessService systemProcessService, ISettings settings)
         {
             _directoryServices = directoryServices;
             _systemProcessService = systemProcessService;
+            _settings = settings;
         }
 
-        public ServiceResult<bool> Create(string name, string path, string projectName, string solutionName)
+        public ServiceResult<bool> AddController(string name, string path)
         {
+            throw new NotImplementedException();
+        }
 
+        public ServiceResult<bool> Create(string name, string path)
+        {
             try
             {
                 string _directory = _directoryServices.GetPath(_directoryServices.GetCurrentDirectory().Value, "src").Value;
                 _directoryServices.CreateIsNotExist(_directory);
 
-                name = CreateClassLibraryName(name, solutionName).Value;
+                name = CreateClassLibraryName(name, _settings.SolutionName);
                 path = _directoryServices.GetCurrentDirectory().Value + "src/" + path;
 
                 _systemProcessService.InvokeCommand($"dotnet new webapi -n {name} -o {path}/{name}");
 
-                _systemProcessService.InvokeCommand($"dotnet sln {_directoryServices.GetCurrentDirectory().Value}{projectName}.sln add {path}/{name}/{name}.csproj");
+                _systemProcessService.InvokeCommand($"dotnet sln {_directoryServices.GetCurrentDirectory().Value}{_settings.ProjectName}.sln add {path}/{name}/{name}.csproj");
 
                 return new ServiceResult<bool>(true, true, LangHandler.Definitions().WebApiCreated + $" {name}");
             }
@@ -40,9 +46,9 @@ namespace MediatRGen.Core.Concrete
             }
 
         }
-        private ServiceResult<string> CreateClassLibraryName(string moduleName, string solutionName)
+        private string CreateClassLibraryName(string moduleName, string solutionName)
         {
-            return new ServiceResult<string>(solutionName + "." + moduleName, true, "");
+            return solutionName + "." + moduleName;
         }
     }
 }

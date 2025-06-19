@@ -65,11 +65,11 @@ namespace MediatRGen.Cli.Processes.MediatR
             ClassConfiguration _config = new ClassConfiguration();
             _config.Directory = _directoryServices.GetPath(_paths.ApplicationDirectory, "Queries", workType).Value;
             _config.Name = $"{workType}{_parameter.EntityName}Query";
-            _config.BaseInheritance = $"Base{workType}Query<{_parameter.EntityName}>";
+            _config.BaseInheritance = $"Base{workType}Query<{workType}{_parameter.EntityName}Response>";
+
             _config.Usings = new List<string>
             {
-                $"Core.Application.BaseCQRS.Queries.{workType}",
-                _paths.EntityDirectory
+                $"Core.Application.BaseCQRS.Queries.{workType}"
             };
 
             _classService.CreateClass(_config);
@@ -82,12 +82,17 @@ namespace MediatRGen.Cli.Processes.MediatR
             _config.Directory = _directoryServices.GetPath(_paths.ApplicationDirectory, "Queries", workType).Value; ;
             _config.Name = $"{workType}{_parameter.EntityName}QueryHandler";
             _config.BaseInheritance = $"Base{workType}QueryHandler<{workType}{_parameter.EntityName}Query, {workType}{_parameter.EntityName}Response, {_parameter.EntityName}>";
+            
             _config.Constructor = true;
+            _config.ConstructorParameters = $"IRepository<{_parameter.EntityName}> repository, IMapper mapper";
+            _config.ConstructorBaseParameters = "repository, mapper";
 
             string _entityNamespace = _nameSpaceService.GetNameSpace(_classService.GetClassRoot(_paths.EntityPath).Value).Value;
 
             _config.Usings = new List<string>
             {
+               "AutoMapper",
+               "Core.Persistence.Repository",
                $"Core.Application.BaseCQRS.Queries.{workType}",
                _entityNamespace
             };

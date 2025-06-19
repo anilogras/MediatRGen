@@ -81,7 +81,7 @@ namespace MediatRGen.Core.Concrete.MediatR
                 throw new FileException($"{LangHandler.Definitions().EntityNotFound} ({_parameter.ModuleName} -> {_parameter.EntityName})");
             _paths.EntityNameNotExt = _paths.EntityName.Substring(0, _paths.EntityName.IndexOf("."));
             _paths.EntityPluralName = PluralizationProvider.Pluralize(_paths.EntityNameNotExt);
-            _paths.ApplicationDirectory = $"{_directoryServices.GetCurrentDirectory().Value}src\\{_parameter.ModuleName}\\{_settings.SolutionName}.{_parameter.ModuleName}.Application\\Features\\{_paths.EntityLocalDirectory}\\{_paths.EntityPluralName}";
+            _paths.ApplicationDirectory = $"{_directoryServices.GetCurrentDirectory().Value}src\\{_parameter.ModuleName}\\{_settings.SolutionName}.{_parameter.ModuleName}.Application\\Features\\{_paths.EntityLocalDirectory}\\{_paths.EntityPluralName}CQRS";
 
         }
 
@@ -118,6 +118,10 @@ namespace MediatRGen.Core.Concrete.MediatR
                 "AutoMapper" ,
                 _paths.EntityDirectory ,
                 "Core.Persistence.Pagination" ,
+                _paths.ApplicationDirectory+".Queries.GetById",
+                _paths.ApplicationDirectory+".Queries.GetList",
+                _paths.ApplicationDirectory+".Queries.GetListDynamic",
+                _paths.ApplicationDirectory+".Queries.GetListPaged",
                 _paths.ApplicationDirectory+".Commands.Create",
                 _paths.ApplicationDirectory+".Commands.Delete",
                 _paths.ApplicationDirectory+".Commands.Update",
@@ -132,7 +136,7 @@ namespace MediatRGen.Core.Concrete.MediatR
                 @$"CreateMap<Paging<{_paths.EntityNameNotExt}>, GetListResponse<GetList{_paths.EntityNameNotExt}ListItemDto>>().ReverseMap();",
                 @$"CreateMap<GetById{_paths.EntityNameNotExt}Response, {_paths.EntityNameNotExt}>().ReverseMap();",
                 @$"CreateMap<Update{_paths.EntityNameNotExt}Command, {_paths.EntityNameNotExt}>().ReverseMap();",
-                @$"CreateMap<Updated{_paths.EntityNameNotExt}Response, {_paths.EntityNameNotExt}>().ReverseMap();",
+                @$"CreateMap<Update{_paths.EntityNameNotExt}Response, {_paths.EntityNameNotExt}>().ReverseMap();",
                 @$"CreateMap<Delete{_paths.EntityNameNotExt}Response  ,{_paths.EntityNameNotExt}>().ReverseMap();",
                 @$"CreateMap<Delete{_paths.EntityNameNotExt}Command, {_paths.EntityNameNotExt}>().ReverseMap();"
             };

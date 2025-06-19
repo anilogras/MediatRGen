@@ -56,7 +56,7 @@ namespace MediatRGen.Core.Concrete
             _classLibraryService.Create(settings.ModuleName + "." + "Domain", _directoryServices.GetPath(settings.ModuleName).Value, _settings.ProjectName, _settings.SolutionName);
             _classLibraryService.Create(settings.ModuleName + "." + "Application", _directoryServices.GetPath(settings.ModuleName).Value, _settings.ProjectName, _settings.SolutionName);
             _classLibraryService.Create(settings.ModuleName + "." + "Infrastructure", _directoryServices.GetPath(settings.ModuleName).Value, _settings.ProjectName, _settings.SolutionName);
-            _webApiService.Create(settings.ModuleName + "." + "API", _directoryServices.GetPath(settings.ModuleName).Value, _settings.ProjectName, _settings.SolutionName);
+            _webApiService.Create(settings.ModuleName + "." + "API", _directoryServices.GetPath(settings.ModuleName).Value);
             _systemProcessService.BuildProject(_settings.ProjectName);
 
             _settings.Modules.Add(new ProjectModule()

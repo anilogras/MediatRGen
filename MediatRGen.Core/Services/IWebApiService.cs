@@ -9,6 +9,7 @@ namespace MediatRGen.Core.Services
 {
     public interface IWebApiService
     {
-        public ServiceResult<bool> Create(string name, string path, string projectName, string solutionName);
+        public ServiceResult<bool> Create(string name, string path);
+        public ServiceResult<bool> AddController(string name, string path);
     }
 }
