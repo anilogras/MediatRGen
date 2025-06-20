@@ -54,15 +54,15 @@ namespace MediatRGen.Core.Concrete.MediatR
             CreatePaths();
             _directoryServices.CreateIsNotExist(_paths.ApplicationDirectory + "\\" + _paths.EntityNameNotExt);
 
-            //CreateBusinessRules();
-            //CreateConstants();
-            //CreateMapping();
+            CreateBusinessRules();
+            CreateConstants();
+            CreateMapping();
 
-            //CommandServices commandServices = new CommandServices(settings, _paths, _directoryServices, _classService, _nameSpaceService);
-            //commandServices.CreateCommands();
+            CommandServices commandServices = new CommandServices(settings, _paths, _directoryServices, _classService, _nameSpaceService);
+            commandServices.CreateCommands();
 
-            //QueryServices queryServices = new QueryServices(settings, _paths, _directoryServices, _classService, _nameSpaceService);
-            //queryServices.CreateQueries();
+            QueryServices queryServices = new QueryServices(settings, _paths, _directoryServices, _classService, _nameSpaceService);
+            queryServices.CreateQueries();
 
             ControllerService controllerService = new ControllerService(settings, _paths, _directoryServices, _classService, _nameSpaceService);
             controllerService.CreateController();
