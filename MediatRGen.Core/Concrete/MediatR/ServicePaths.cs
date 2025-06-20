@@ -8,7 +8,7 @@ namespace MediatRGen.Cli.Processes.MediatR
 {
     public class ServicePaths
     {
-        public string DomainPath { get; set; } 
+        public string DomainPath { get; set; }
         public string EntityPath { get; set; }
         public string EntityName { get; set; }
         public string EntityDirectory { get; set; }
@@ -17,5 +17,8 @@ namespace MediatRGen.Cli.Processes.MediatR
         public string EntityNameNotExt { get; set; }
         public string EntityPathNotExt { get; set; }
         public string EntityPluralName { get; set; }
+        public string ControllerPath { get; set; }
+        public string ControllerDirectory { get; set; }
+
     }
 }

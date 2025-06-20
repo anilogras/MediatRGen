@@ -54,15 +54,18 @@ namespace MediatRGen.Core.Concrete.MediatR
             CreatePaths();
             _directoryServices.CreateIsNotExist(_paths.ApplicationDirectory + "\\" + _paths.EntityNameNotExt);
 
-            CreateBusinessRules();
-            CreateConstants();
-            CreateMapping();
+            //CreateBusinessRules();
+            //CreateConstants();
+            //CreateMapping();
 
-            CommandServices commandServices = new CommandServices(settings, _paths, _directoryServices, _classService, _nameSpaceService);
-            commandServices.CreateCommands();
+            //CommandServices commandServices = new CommandServices(settings, _paths, _directoryServices, _classService, _nameSpaceService);
+            //commandServices.CreateCommands();
 
-            QueryServices queryServices = new QueryServices(settings, _paths, _directoryServices, _classService, _nameSpaceService);
-            queryServices.CreateQueries();
+            //QueryServices queryServices = new QueryServices(settings, _paths, _directoryServices, _classService, _nameSpaceService);
+            //queryServices.CreateQueries();
+
+            ControllerService controllerService = new ControllerService(settings, _paths, _directoryServices, _classService, _nameSpaceService);
+            controllerService.CreateController();
 
             _directoryServices.CreateIsNotExist(_paths.ApplicationDirectory + "\\DTOs");
             Console.WriteLine(LangHandler.Definitions().ServiceCreated);
@@ -82,7 +85,8 @@ namespace MediatRGen.Core.Concrete.MediatR
             _paths.EntityNameNotExt = _paths.EntityName.Substring(0, _paths.EntityName.IndexOf("."));
             _paths.EntityPluralName = PluralizationProvider.Pluralize(_paths.EntityNameNotExt);
             _paths.ApplicationDirectory = $"{_directoryServices.GetCurrentDirectory().Value}src\\{_parameter.ModuleName}\\{_settings.SolutionName}.{_parameter.ModuleName}.Application\\Features\\{_paths.EntityLocalDirectory}\\{_paths.EntityPluralName}CQRS";
-
+            _paths.ControllerDirectory = $"{_directoryServices.GetCurrentDirectory().Value}src\\{_parameter.ModuleName}\\{_settings.SolutionName}.{_parameter.ModuleName}.API\\Controllers\\{_paths.EntityLocalDirectory}";
+            _paths.ControllerPath = $"{_directoryServices.GetCurrentDirectory().Value}src\\{_parameter.ModuleName}\\{_settings.SolutionName}.{_parameter.ModuleName}.API\\Controllers\\{_paths.EntityLocalDirectory}\\{_paths.EntityNameNotExt}Controller";
         }
 
         private void CreateBusinessRules()

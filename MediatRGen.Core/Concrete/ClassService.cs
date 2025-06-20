@@ -109,9 +109,6 @@ namespace MediatRGen.Core.Concrete
                 _activeNode = _constructorService.AddConstructorCode(_activeNode, code).Value;
             }
 
-
-
-
             ReWriteClass(classSettings.Directory + "\\" + classSettings.Name, _activeNode);
 
             return new ServiceResult<bool>(false, false, LangHandler.Definitions().ClassCreated);
