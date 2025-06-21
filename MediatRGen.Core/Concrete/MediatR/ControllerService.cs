@@ -63,9 +63,27 @@ namespace MediatRGen.Core.Concrete.MediatR
                 $"{_paths.ApplicationFeaturesWithEntityNameSpace}.Queries.GetListDynamic",
                 $"{_paths.ApplicationFeaturesWithEntityNameSpace}.Queries.GetListPaged",
             };
+            _classConfig.ClassAttr = new List<ClassAttributeConfiguration> {
+                
+                new ClassAttributeConfiguration {
+                   Name =   "ApiController"
+                } ,
+
+                new ClassAttributeConfiguration {
+                    Name = @"Route(""api/[controller]"")"
+                }
+
+            };
 
             _classConfig.Constructor = true;
             _classConfig.ConstructorParameters = $"IMediator mediator";
+            _classConfig.ConstructorCodes = new List<string> { "_mediator = mediator;" };
+            _classConfig.ConstructorPrivateFields.Add(new PropertyConfiguration
+            {
+                Accessibility = Microsoft.CodeAnalysis.CSharp.SyntaxKind.PrivateKeyword,
+                FieldName = "_mediator",
+                FieldType = "IMediator"
+            });
 
             List<string> _methods = new List<string>();
 

@@ -15,11 +15,20 @@ namespace MediatRGen.Core.Concrete
     {
         public ServiceResult<SyntaxNode> AddMethod(SyntaxNode root, string code)
         {
-            var method = SyntaxFactory.ParseMemberDeclaration(code);
             var classNode = root.DescendantNodes().OfType<ClassDeclarationSyntax>().First();
-            var newClass = classNode.AddMembers(method);
-            var newRoot = root.ReplaceNode(classNode, newClass);
-            return new ServiceResult<SyntaxNode>(newRoot, true, "");
+            var existingMethodNames = classNode.Members
+                .OfType<MethodDeclarationSyntax>()
+                .Select(m => m.Identifier.Text);
+
+            var method = SyntaxFactory.ParseMemberDeclaration(code);
+
+            if (method is MethodDeclarationSyntax methodSyntax &&
+                !existingMethodNames.Contains(methodSyntax.Identifier.Text))
+            {
+                var newClass = classNode.AddMembers(method);
+                root = root.ReplaceNode(classNode, newClass);
+            }
+            return new ServiceResult<SyntaxNode>(root, true, "");
         }
     }
 }

@@ -14,5 +14,6 @@ namespace MediatRGen.Core.Services
         public ServiceResult<bool> ReWriteClass(string classPath, SyntaxNode newRoot);
         public ServiceResult<SyntaxNode> GetClassRoot(string classPath);
         public Task<ServiceResult<bool>> CreateClass(List<ClassConfiguration> classSettings);
+        public ServiceResult<SyntaxNode> AddClassAttribute(SyntaxNode root, string attributeName, params string[] arguments);
     }
 }

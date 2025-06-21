@@ -71,6 +71,7 @@ namespace MediatRGen.Cli.Processes.MediatR
             _classConfig.Directory = _directoryServices.GetPath(_paths.ApplicationDirectory, "Queries", workType).Value;
             _classConfig.Name = $"{workType}{_parameter.EntityName}Query";
             _classConfig.BaseInheritance = $"Base{workType}Query<{workType}{_parameter.EntityName}Response>";
+            _classConfig.Constructor = true;
 
             _classConfig.Usings = new List<string>
             {

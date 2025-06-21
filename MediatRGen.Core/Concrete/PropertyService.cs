@@ -63,22 +63,30 @@ namespace MediatRGen.Core.Concrete
         {
             var classDeclaration = root.DescendantNodes().OfType<ClassDeclarationSyntax>().First();
 
-            var variable = SyntaxFactory.VariableDeclaration(
-                SyntaxFactory.ParseTypeName(fieldType)
-            ).AddVariables(SyntaxFactory.VariableDeclarator(fieldName));
+            // Aynı isimde field var mı kontrol et
+            var existingFieldNames = classDeclaration.Members
+                .OfType<FieldDeclarationSyntax>()
+                .SelectMany(f => f.Declaration.Variables)
+                .Select(v => v.Identifier.Text);
 
-            var field = SyntaxFactory.FieldDeclaration(variable)
-                .AddModifiers(
-                    SyntaxFactory.Token(accessibility),
-                    SyntaxFactory.Token(SyntaxKind.ReadOnlyKeyword)
-                )
-                .NormalizeWhitespace();
+            if (!existingFieldNames.Contains(fieldName))
+            {
+                var variable = SyntaxFactory.VariableDeclaration(
+                    SyntaxFactory.ParseTypeName(fieldType)
+                ).AddVariables(SyntaxFactory.VariableDeclarator(fieldName));
 
-            var updatedClass = classDeclaration.AddMembers(field);
+                var field = SyntaxFactory.FieldDeclaration(variable)
+                    .AddModifiers(
+                        SyntaxFactory.Token(accessibility),
+                        SyntaxFactory.Token(SyntaxKind.ReadOnlyKeyword)
+                    )
+                    .NormalizeWhitespace();
 
-            var newRoot = root.ReplaceNode(classDeclaration, updatedClass);
+                var updatedClass = classDeclaration.AddMembers(field);
+                root = root.ReplaceNode(classDeclaration, updatedClass);
+            }
 
-            return new ServiceResult<SyntaxNode>(newRoot, true, "");
+            return new ServiceResult<SyntaxNode>(root, true, "");
         }
 
 

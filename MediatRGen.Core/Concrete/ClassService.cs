@@ -5,6 +5,7 @@ using MediatRGen.Core.Models;
 using MediatRGen.Core.Services;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace MediatRGen.Core.Concrete
 {
@@ -19,6 +20,7 @@ namespace MediatRGen.Core.Concrete
         private readonly IUsingService _usingService;
         private readonly IConstructorService _constructorService;
         private readonly IMethodService _methodService;
+        private readonly IPropertyService _propertyService;
 
         public ClassService(
             IFileService fileService,
@@ -28,7 +30,8 @@ namespace MediatRGen.Core.Concrete
             IInheritanceService inheritanceService,
             IUsingService usingService,
             IConstructorService constructorService,
-            IMethodService methodService
+            IMethodService methodService,
+            IPropertyService propertyService
             )
         {
             _fileService = fileService;
@@ -39,6 +42,7 @@ namespace MediatRGen.Core.Concrete
             _usingService = usingService;
             _constructorService = constructorService;
             _methodService = methodService;
+            _propertyService = propertyService;
         }
 
         public ServiceResult<bool> ReWriteClass(string classPath, SyntaxNode newRoot)
@@ -86,6 +90,16 @@ namespace MediatRGen.Core.Concrete
 
             var root = GetClassRoot(classSettings.Directory + "\\" + classSettings.Name).Value;
             SyntaxNode _activeNode = _nameSpaceService.ChangeNameSpace(root, classSettings.Directory).Value;
+
+            foreach (var privateField in classSettings.ConstructorPrivateFields)
+            {
+                _activeNode = _propertyService.AddReadOnlyField(_activeNode, privateField.FieldType, privateField.FieldName, privateField.Accessibility).Value;
+            }
+
+            foreach (var attr in classSettings.ClassAttr)
+            {
+                _activeNode = AddClassAttribute(_activeNode, attr.Name, attr.Value).Value;
+            }
 
             if (!string.IsNullOrEmpty(classSettings.BaseInheritance))
             {
@@ -136,6 +150,45 @@ namespace MediatRGen.Core.Concrete
             await Task.WhenAll(tasks);
 
             return new ServiceResult<bool>(false, false, "");
+        }
+
+        public ServiceResult<SyntaxNode> AddClassAttribute(SyntaxNode root, string attributeName, params string[] arguments)
+        {
+            var classDeclaration = root.DescendantNodes().OfType<ClassDeclarationSyntax>().First();
+            var attribute = SyntaxFactory.Attribute(SyntaxFactory.IdentifierName(attributeName));
+
+            var hasAttribute = classDeclaration.AttributeLists.Select(x => x.ToString()).Any(x => x == $"[{attribute.Name.ToString()}]");
+            
+            if (hasAttribute)
+                return new ServiceResult<SyntaxNode>(root, false, "");
+
+
+            if (arguments != null)
+            {
+
+                var argumentList = SyntaxFactory.SeparatedList<AttributeArgumentSyntax>(
+                    arguments.Select(arg =>
+                        SyntaxFactory.AttributeArgument(
+                            SyntaxFactory.LiteralExpression(
+                                SyntaxKind.StringLiteralExpression,
+                                SyntaxFactory.Literal(arg)
+                            )
+                        )
+                    )
+                );
+
+                attribute = attribute.WithArgumentList(SyntaxFactory.AttributeArgumentList(argumentList));
+            }
+
+
+
+            var attributeList = SyntaxFactory.AttributeList(SyntaxFactory.SingletonSeparatedList(attribute));
+
+            var newClass = classDeclaration.AddAttributeLists(attributeList);
+
+            var newRoot = root.ReplaceNode(classDeclaration, newClass);
+
+            return new ServiceResult<SyntaxNode>(newRoot, false, "");
         }
     }
 }
