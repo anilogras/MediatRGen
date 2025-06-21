@@ -22,6 +22,7 @@ namespace MediatRGen.Core.Concrete
 
                 var newProperty = SyntaxFactory.PropertyDeclaration(SyntaxFactory.PredefinedType(SyntaxFactory.Token(propertyType)), propertyName)
                     .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+
                     .NormalizeWhitespace();
 
                 if (getProp == true)
@@ -57,5 +58,29 @@ namespace MediatRGen.Core.Concrete
                 return new ServiceResult<string>(null, false, LangHandler.Definitions().ClassCreateError, new ClassLibraryException(ex.Message));
             }
         }
+
+        public ServiceResult<SyntaxNode> AddReadOnlyField(SyntaxNode root, string fieldType, string fieldName, SyntaxKind accessibility = SyntaxKind.PrivateKeyword)
+        {
+            var classDeclaration = root.DescendantNodes().OfType<ClassDeclarationSyntax>().First();
+
+            var variable = SyntaxFactory.VariableDeclaration(
+                SyntaxFactory.ParseTypeName(fieldType)
+            ).AddVariables(SyntaxFactory.VariableDeclarator(fieldName));
+
+            var field = SyntaxFactory.FieldDeclaration(variable)
+                .AddModifiers(
+                    SyntaxFactory.Token(accessibility),
+                    SyntaxFactory.Token(SyntaxKind.ReadOnlyKeyword)
+                )
+                .NormalizeWhitespace();
+
+            var updatedClass = classDeclaration.AddMembers(field);
+
+            var newRoot = root.ReplaceNode(classDeclaration, updatedClass);
+
+            return new ServiceResult<SyntaxNode>(newRoot, true, "");
+        }
+
+
     }
 }
