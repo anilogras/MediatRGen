@@ -14,6 +14,8 @@ namespace MediatRGen.Cli.Processes.MediatR
     {
         private readonly CreateServiceBaseSchema _parameter;
         private readonly ServicePaths _paths;
+        IList<ClassConfiguration> _classConfigs;
+
 
         private readonly IDirectoryServices _directoryServices;
         private readonly IClassService _classService;
@@ -23,6 +25,7 @@ namespace MediatRGen.Cli.Processes.MediatR
         public QueryServices(
             CreateServiceBaseSchema parameter,
             ServicePaths paths,
+            IList<ClassConfiguration> classConfigs,
             IDirectoryServices directoryServices,
             IClassService classService,
             INameSpaceService nameSpaceService)
@@ -32,6 +35,8 @@ namespace MediatRGen.Cli.Processes.MediatR
             _directoryServices = directoryServices;
             _classService = classService;
             _nameSpaceService = nameSpaceService;
+            _classConfigs = classConfigs;
+
         }
 
         public void CreateQueries()
@@ -62,34 +67,34 @@ namespace MediatRGen.Cli.Processes.MediatR
 
         private void QueryConfiguration(string workType)
         {
-            ClassConfiguration _config = new ClassConfiguration();
-            _config.Directory = _directoryServices.GetPath(_paths.ApplicationDirectory, "Queries", workType).Value;
-            _config.Name = $"{workType}{_parameter.EntityName}Query";
-            _config.BaseInheritance = $"Base{workType}Query<{workType}{_parameter.EntityName}Response>";
+            ClassConfiguration _classConfig = new ClassConfiguration();
+            _classConfig.Directory = _directoryServices.GetPath(_paths.ApplicationDirectory, "Queries", workType).Value;
+            _classConfig.Name = $"{workType}{_parameter.EntityName}Query";
+            _classConfig.BaseInheritance = $"Base{workType}Query<{workType}{_parameter.EntityName}Response>";
 
-            _config.Usings = new List<string>
+            _classConfig.Usings = new List<string>
             {
                 $"Core.Application.BaseCQRS.Queries.{workType}"
             };
 
-            _classService.CreateClass(_config);
+            _classConfigs.Add(_classConfig);
         }
 
         private void QueryHandlerConfiguration(string workType)
         {
 
-            ClassConfiguration _config = new ClassConfiguration();
-            _config.Directory = _directoryServices.GetPath(_paths.ApplicationDirectory, "Queries", workType).Value; ;
-            _config.Name = $"{workType}{_parameter.EntityName}QueryHandler";
-            _config.BaseInheritance = $"Base{workType}QueryHandler<{workType}{_parameter.EntityName}Query, {workType}{_parameter.EntityName}Response, {_parameter.EntityName}>";
-            
-            _config.Constructor = true;
-            _config.ConstructorParameters = $"IRepository<{_parameter.EntityName}> repository, IMapper mapper";
-            _config.ConstructorBaseParameters = "repository, mapper";
+            ClassConfiguration _classConfig = new ClassConfiguration();
+            _classConfig.Directory = _directoryServices.GetPath(_paths.ApplicationDirectory, "Queries", workType).Value; ;
+            _classConfig.Name = $"{workType}{_parameter.EntityName}QueryHandler";
+            _classConfig.BaseInheritance = $"Base{workType}QueryHandler<{workType}{_parameter.EntityName}Query, {workType}{_parameter.EntityName}Response, {_parameter.EntityName}>";
+
+            _classConfig.Constructor = true;
+            _classConfig.ConstructorParameters = $"IRepository<{_parameter.EntityName}> repository, IMapper mapper";
+            _classConfig.ConstructorBaseParameters = "repository, mapper";
 
             string _entityNamespace = _nameSpaceService.GetNameSpace(_classService.GetClassRoot(_paths.EntityPath).Value).Value;
 
-            _config.Usings = new List<string>
+            _classConfig.Usings = new List<string>
             {
                "AutoMapper",
                "Core.Persistence.Repository",
@@ -97,18 +102,18 @@ namespace MediatRGen.Cli.Processes.MediatR
                _entityNamespace
             };
 
-            _classService.CreateClass(_config);
+            _classConfigs.Add(_classConfig);
 
         }
 
         private void QueryResponseConfiguration(string workType)
         {
-            ClassConfiguration _config = new ClassConfiguration();
-            _config.Directory = _directoryServices.GetPath(_paths.ApplicationDirectory, "Queries", workType).Value;
-            _config.BaseInheritance = "IResponse";
-            _config.Usings = new List<string> { "Core.Application.BaseCQRS" };
-            _config.Name = $"{workType}{_parameter.EntityName}Response";
-            _classService.CreateClass(_config);
+            ClassConfiguration _classConfig = new ClassConfiguration();
+            _classConfig.Directory = _directoryServices.GetPath(_paths.ApplicationDirectory, "Queries", workType).Value;
+            _classConfig.BaseInheritance = "IResponse";
+            _classConfig.Usings = new List<string> { "Core.Application.BaseCQRS" };
+            _classConfig.Name = $"{workType}{_parameter.EntityName}Response";
+            _classConfigs.Add(_classConfig);
         }
     }
 }

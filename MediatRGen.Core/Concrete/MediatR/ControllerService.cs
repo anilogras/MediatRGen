@@ -14,6 +14,7 @@ namespace MediatRGen.Core.Concrete.MediatR
     {
         private readonly CreateServiceBaseSchema _parameter;
         private readonly ServicePaths _paths;
+        IList<ClassConfiguration> _classConfigs;
 
         private readonly IDirectoryServices _directoryServices;
         private readonly IClassService _classService;
@@ -22,6 +23,7 @@ namespace MediatRGen.Core.Concrete.MediatR
         public ControllerService(
             CreateServiceBaseSchema parameter,
             ServicePaths paths,
+            IList<ClassConfiguration> classConfigs,
             IDirectoryServices directoryServices,
             IClassService classService,
             INameSpaceService nameSpaceService)
@@ -31,6 +33,8 @@ namespace MediatRGen.Core.Concrete.MediatR
             _directoryServices = directoryServices;
             _classService = classService;
             _nameSpaceService = nameSpaceService;
+            _classConfigs = classConfigs;
+
         }
 
 
@@ -42,17 +46,17 @@ namespace MediatRGen.Core.Concrete.MediatR
 
         private void ControllerConfiguration()
         {
-            ClassConfiguration _config = new ClassConfiguration();
-            _config.Directory = _paths.ControllerDirectory;
-            _config.Name = $"{_paths.EntityNameNotExt}Controller";
-            _config.BaseInheritance = $"Controller";
+            ClassConfiguration _classConfig = new ClassConfiguration();
+            _classConfig.Directory = _paths.ControllerDirectory;
+            _classConfig.Name = $"{_paths.EntityNameNotExt}Controller";
+            _classConfig.BaseInheritance = $"Controller";
 
-            _config.Usings = new List<string>
+            _classConfig.Usings = new List<string>
             {
                 $"Microsoft.AspNetCore.Mvc"
             };
 
-            _classService.CreateClass(_config);
+            _classConfigs.Add(_classConfig);
         }
     }
 }

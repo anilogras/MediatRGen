@@ -13,6 +13,6 @@ namespace MediatRGen.Core.Services
     {
         public ServiceResult<bool> ReWriteClass(string classPath, SyntaxNode newRoot);
         public ServiceResult<SyntaxNode> GetClassRoot(string classPath);
-        public ServiceResult<bool> CreateClass(ClassConfiguration classSettings);
+        public Task<ServiceResult<bool>> CreateClass(List<ClassConfiguration> classSettings);
     }
 }

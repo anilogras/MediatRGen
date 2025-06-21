@@ -75,7 +75,7 @@ namespace MediatRGen.Core.Concrete
             var root = tree.GetRoot();
             return new ServiceResult<SyntaxNode>(root, true, "");
         }
-        public ServiceResult<bool> CreateClass(ClassConfiguration classSettings)
+        private async Task<ServiceResult<bool>> CreateClass(ClassConfiguration classSettings)
         {
             _directoryService.CreateIsNotExist(classSettings.Directory);
             _systemProcessService.InvokeCommand($"dotnet new class -n {classSettings.Name} -o {classSettings.Directory}");
@@ -112,6 +112,21 @@ namespace MediatRGen.Core.Concrete
             ReWriteClass(classSettings.Directory + "\\" + classSettings.Name, _activeNode);
 
             return new ServiceResult<bool>(false, false, LangHandler.Definitions().ClassCreated);
+        }
+
+        public async Task<ServiceResult<bool>> CreateClass(List<ClassConfiguration> classSettings)
+        {
+
+            var tasks = new List<Task>();
+
+            foreach (var _setting in classSettings)
+            {
+                tasks.Add(Task.Run(() => CreateClass(_setting)));
+            }
+
+            await Task.WhenAll(tasks);
+
+            return new ServiceResult<bool>(false, false, "");
         }
     }
 }
