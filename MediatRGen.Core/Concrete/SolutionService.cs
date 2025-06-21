@@ -74,7 +74,7 @@ namespace MediatRGen.Core.Concrete
 
         private void CreateFirstConfigFile(string _combinedPath, object firstConfig)
         {
-            _fileService.Create(_combinedPath, _settings.ConfigFileName, firstConfig);
+            _fileService.Create(_combinedPath, _settings.ConfigFileName, firstConfig , true);
         }
 
         private void GetPathFromCommand()

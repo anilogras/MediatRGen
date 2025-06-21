@@ -19,6 +19,7 @@ namespace MediatRGen.Core.Concrete.MediatR
     {
         private ServicePaths _paths;
         private CreateServiceBaseSchema _parameter;
+        private IList<ClassConfiguration> _classConfigs;
 
         private readonly IDirectoryServices _directoryServices;
         private readonly IClassService _classService;
@@ -41,49 +42,40 @@ namespace MediatRGen.Core.Concrete.MediatR
             _parameterService = parameterService;
             _settings = settings;
             _fileService = fileService;
+            _classConfigs = new List<ClassConfiguration>();
         }
 
-        public void Create(CreateServiceBaseSchema settings)
+        public async void Create(CreateServiceBaseSchema settings)
         {
             //_parameterService.GetParameter<CreateServiceSchema>(command, ref settings);
             _parameterService.GetParameterFromConsole(settings, "EntityName", LangHandler.Definitions().EnterEntityName);
             _parameterService.GetParameterFromConsole(settings, "ModuleName", LangHandler.Definitions().EnterModuleName);
 
-            _paths = new ServicePaths();
+            _paths = new ServicePaths(settings.ModuleName, settings.EntityName);
             _parameter = settings;
-            CreatePaths();
-            _directoryServices.CreateIsNotExist(_paths.ApplicationDirectory + "\\" + _paths.EntityNameNotExt);
+
+            _directoryServices.CreateIsNotExist(_paths.ApplicationDirectory + "\\" + _paths.EntityName);
 
             CreateBusinessRules();
             CreateConstants();
             CreateMapping();
 
-            CommandServices commandServices = new CommandServices(settings, _paths, _directoryServices, _classService, _nameSpaceService);
+            CommandServices commandServices = new CommandServices(settings, _paths, _classConfigs, _directoryServices, _classService, _nameSpaceService);
             commandServices.CreateCommands();
 
-            QueryServices queryServices = new QueryServices(settings, _paths, _directoryServices, _classService, _nameSpaceService);
+            QueryServices queryServices = new QueryServices(settings, _paths, _classConfigs, _directoryServices, _classService, _nameSpaceService);
             queryServices.CreateQueries();
 
+            ControllerService controllerService = new ControllerService(settings, _paths, _classConfigs, _directoryServices, _classService, _nameSpaceService);
+            controllerService.CreateController();
+
             _directoryServices.CreateIsNotExist(_paths.ApplicationDirectory + "\\DTOs");
+
+            await _classService.CreateClass(_classConfigs.ToList());
+
             Console.WriteLine(LangHandler.Definitions().ServiceCreated);
         }
 
-        private void CreatePaths()
-        {
-            _paths.DomainPath = $"{_directoryServices.GetCurrentDirectory().Value}src\\{_parameter.ModuleName}\\{_settings.SolutionName}.{_parameter.ModuleName}.Domain\\";
-            _paths.EntityPath = _fileService.FindFileRecursive(_paths.DomainPath, _parameter.EntityName + ".cs").Value;
-            _paths.EntityLocalDirectory = _paths.EntityPath.Replace(_paths.DomainPath, "");
-            _paths.EntityLocalDirectory = _paths.EntityLocalDirectory.Substring(0, _paths.EntityLocalDirectory.LastIndexOf("\\"));
-            _paths.EntityName = _paths.EntityPath.Substring(_paths.EntityPath.LastIndexOf("\\") + 1);
-            _paths.EntityDirectory = _paths.EntityPath.Substring(0, _paths.EntityPath.LastIndexOf("\\"));
-            _paths.EntityPathNotExt = _paths.EntityPath.Substring(0, _paths.EntityPath.LastIndexOf("."));
-            if (string.IsNullOrEmpty(_paths.EntityPath))
-                throw new FileException($"{LangHandler.Definitions().EntityNotFound} ({_parameter.ModuleName} -> {_parameter.EntityName})");
-            _paths.EntityNameNotExt = _paths.EntityName.Substring(0, _paths.EntityName.IndexOf("."));
-            _paths.EntityPluralName = PluralizationProvider.Pluralize(_paths.EntityNameNotExt);
-            _paths.ApplicationDirectory = $"{_directoryServices.GetCurrentDirectory().Value}src\\{_parameter.ModuleName}\\{_settings.SolutionName}.{_parameter.ModuleName}.Application\\Features\\{_paths.EntityLocalDirectory}\\{_paths.EntityPluralName}";
-
-        }
 
         private void CreateBusinessRules()
         {
@@ -92,7 +84,7 @@ namespace MediatRGen.Core.Concrete.MediatR
             _classConfig.Name = $"{_parameter.EntityName}BusinessRules";
             _classConfig.Directory = _directoryServices.GetPath(_paths.ApplicationDirectory, "Rules").Value;
 
-            _classService.CreateClass(_classConfig);
+            _classConfigs.Add(_classConfig);
         }
 
         private void CreateConstants()
@@ -103,8 +95,7 @@ namespace MediatRGen.Core.Concrete.MediatR
             _classConfig.Name = $"{_parameter.EntityName}Messages";
             _classConfig.Directory = _directoryServices.GetPath(_paths.ApplicationDirectory, "Constants").Value;
 
-            _classService.CreateClass(_classConfig);
-
+            _classConfigs.Add(_classConfig);
         }
 
         private void CreateMapping()
@@ -116,8 +107,12 @@ namespace MediatRGen.Core.Concrete.MediatR
             _classConfig.BaseInheritance = "Profile";
             _classConfig.Usings = new List<string> {
                 "AutoMapper" ,
-                _paths.EntityDirectory ,
+                _paths.EntityFolder ,
                 "Core.Persistence.Pagination" ,
+                _paths.ApplicationDirectory+".Queries.GetById",
+                _paths.ApplicationDirectory+".Queries.GetList",
+                _paths.ApplicationDirectory+".Queries.GetListDynamic",
+                _paths.ApplicationDirectory+".Queries.GetListPaged",
                 _paths.ApplicationDirectory+".Commands.Create",
                 _paths.ApplicationDirectory+".Commands.Delete",
                 _paths.ApplicationDirectory+".Commands.Update",
@@ -126,18 +121,18 @@ namespace MediatRGen.Core.Concrete.MediatR
             _classConfig.Constructor = true;
             _classConfig.ConstructorCodes = new List<string>
             {
-                @$"CreateMap<{_paths.EntityNameNotExt}, Create{_paths.EntityNameNotExt}Command>().ReverseMap();",
-                @$"CreateMap<{_paths.EntityNameNotExt}, Create{_paths.EntityNameNotExt}Response>().ReverseMap();",
-                @$"CreateMap<{_paths.EntityNameNotExt}, GetList{_paths.EntityNameNotExt}ListItemDto>().ReverseMap();",
-                @$"CreateMap<Paging<{_paths.EntityNameNotExt}>, GetListResponse<GetList{_paths.EntityNameNotExt}ListItemDto>>().ReverseMap();",
-                @$"CreateMap<GetById{_paths.EntityNameNotExt}Response, {_paths.EntityNameNotExt}>().ReverseMap();",
-                @$"CreateMap<Update{_paths.EntityNameNotExt}Command, {_paths.EntityNameNotExt}>().ReverseMap();",
-                @$"CreateMap<Updated{_paths.EntityNameNotExt}Response, {_paths.EntityNameNotExt}>().ReverseMap();",
-                @$"CreateMap<Delete{_paths.EntityNameNotExt}Response  ,{_paths.EntityNameNotExt}>().ReverseMap();",
-                @$"CreateMap<Delete{_paths.EntityNameNotExt}Command, {_paths.EntityNameNotExt}>().ReverseMap();"
+                @$"CreateMap<{_paths.EntityName}, Create{_paths.EntityName}Command>().ReverseMap();",
+                @$"CreateMap<{_paths.EntityName}, Create{_paths.EntityName}Response>().ReverseMap();",
+                @$"CreateMap<{_paths.EntityName}, GetList{_paths.EntityName}ListItemDto>().ReverseMap();",
+                @$"CreateMap<Paging<{_paths.EntityName}>, GetListResponse<GetList{_paths.EntityName}ListItemDto>>().ReverseMap();",
+                @$"CreateMap<GetById{_paths.EntityName}Response, {_paths.EntityName}>().ReverseMap();",
+                @$"CreateMap<Update{_paths.EntityName}Command, {_paths.EntityName}>().ReverseMap();",
+                @$"CreateMap<Update{_paths.EntityName}Response, {_paths.EntityName}>().ReverseMap();",
+                @$"CreateMap<Delete{_paths.EntityName}Response  ,{_paths.EntityName}>().ReverseMap();",
+                @$"CreateMap<Delete{_paths.EntityName}Command, {_paths.EntityName}>().ReverseMap();"
             };
 
-            _classService.CreateClass(_classConfig);
+            _classConfigs.Add(_classConfig);
         }
     }
 }

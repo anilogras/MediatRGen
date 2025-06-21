@@ -11,31 +11,11 @@ namespace MediatRGen.Core.Concrete
     internal class ConstructorService : IConstructorService
     {
 
-        private readonly IClassService _classService;
 
-        public ConstructorService(IClassService classService)
+        public ConstructorService()
         {
-            _classService = classService;
         }
 
-        public ServiceResult<bool> AddConstructor(string classPath)
-        {
-            try
-            {
-                SyntaxNode root = _classService.GetClassRoot(classPath).Value;
-
-                var newRoot = AddConstructor(root).Value;
-
-                _classService.ReWriteClass(classPath, newRoot);
-
-                return new ServiceResult<bool>(false, false, "");
-
-            }
-            catch (Exception ex)
-            {
-                return new ServiceResult<bool>(false, false, LangHandler.Definitions().NameSpaceChangeException, new ClassLibraryException(ex.Message));
-            }
-        }
         public ServiceResult<SyntaxNode> AddConstructor(SyntaxNode root)
         {
             var classNode = root.DescendantNodes().OfType<ClassDeclarationSyntax>().FirstOrDefault();
@@ -64,25 +44,35 @@ namespace MediatRGen.Core.Concrete
         public ServiceResult<SyntaxNode> AddConstructorCode(SyntaxNode root, string code)
         {
 
-            var ctor = root.DescendantNodes()
-                    .OfType<ConstructorDeclarationSyntax>()
-                    .FirstOrDefault(c => c.ParameterList.Parameters.Count == 0);
+            try
+            {
+                var ctor = root.DescendantNodes()
+                   .OfType<ConstructorDeclarationSyntax>()
+                   .FirstOrDefault();
 
 
-            var row = SyntaxFactory.ParseStatement(code);
+                var row = SyntaxFactory.ParseStatement(code);
+                
+                bool alreadyExists = false;
 
-            bool alreadyExists = ctor.Body.Statements.ToString().Replace(" ", "").Contains(row.ToFullString().Trim().Replace(" ", ""));
+                if(ctor != null)
+                alreadyExists = ctor.Body.Statements.ToString().Replace(" ", "").Contains(row.ToFullString().Trim().Replace(" ", ""));
 
-            if (alreadyExists)
-                return new ServiceResult<SyntaxNode>(root, true, "");
+                if (alreadyExists)
+                    return new ServiceResult<SyntaxNode>(root, true, "");
 
-            var newCtorBody = ctor.Body.AddStatements(row);
+                var newCtorBody = ctor.Body.AddStatements(row);
 
-            var newCtor = ctor.WithBody(newCtorBody);
+                var newCtor = ctor.WithBody(newCtorBody);
 
-            var newRoot = root.ReplaceNode(ctor, newCtor);
+                var newRoot = root.ReplaceNode(ctor, newCtor);
 
-            return new ServiceResult<SyntaxNode>(newRoot, true, "");
+                return new ServiceResult<SyntaxNode>(newRoot, true, "");
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult<SyntaxNode>(root, false, ex.Message , new ClassLibraryException(ex.Message));
+            }
         }
         public ServiceResult<SyntaxNode> AddConstructorParameters(SyntaxNode root, string parameters, string baseParameter)
         {

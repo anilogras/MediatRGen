@@ -87,10 +87,8 @@ namespace MediatRGen.Core.Concrete
         private void CreateCoreFiles()
         {
             _coreServices.Create();
-            _outputService.Info(LangHandler.Definitions().CoreFilesCreated);
 
             _nugetServices.CreateNugets();
-            _outputService.Info(LangHandler.Definitions().NugetPackagesCreated);
         }
 
         public void Update()

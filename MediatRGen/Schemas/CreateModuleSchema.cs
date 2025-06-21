@@ -11,7 +11,7 @@ namespace MediatRGen.Cli.Schemas
 {
     public class CreateModuleSchema : CommandSettings
     {
-        [CommandArgument(0, "<Name>")]
+        [CommandOption("-n|--name")]
         public string ModuleName { get; set; }
 
 

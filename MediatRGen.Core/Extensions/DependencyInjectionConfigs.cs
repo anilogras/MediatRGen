@@ -1,5 +1,6 @@
 ﻿using MediatRGen.Core.Base;
 using MediatRGen.Core.Concrete;
+using MediatRGen.Core.Concrete.MediatR;
 using MediatRGen.Core.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -34,7 +35,8 @@ namespace MediatRGen.Core.Extensions
             services.AddTransient<ISettings, Settings>();
             services.AddTransient<ICoreServices, CoreServices>();
             services.AddTransient<IModuleService, ModuleService>();
-
+            services.AddTransient<IMediatRService, MediatRService>();
+            services.AddTransient<IMethodService, MethodService>();
 
             return services;
         }
