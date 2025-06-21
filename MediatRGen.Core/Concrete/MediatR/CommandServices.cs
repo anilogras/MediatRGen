@@ -69,9 +69,7 @@ namespace MediatRGen.Cli.Processes.MediatR
             _classConfig.BaseInheritance = $"Base{workType}Command<{workType}{_parameter.EntityName}Response>";
             _classConfig.Constructor = true;
 
-            string _entityNamespace = _nameSpaceService.GetNameSpace(_classService.GetClassRoot(_paths.EntityPath).Value).Value;
-
-            _classConfig.Usings = new List<string> { $"Core.Application.BaseCQRS.Commands.{workType}", _entityNamespace };
+            _classConfig.Usings = new List<string> { $"Core.Application.BaseCQRS.Commands.{workType}", _paths.EntityNamespace };
 
             _classConfigs.Add(_classConfig);
 
@@ -83,8 +81,8 @@ namespace MediatRGen.Cli.Processes.MediatR
             ClassConfiguration _classConfig = new ClassConfiguration();
 
             _classConfig.Directory = _directoryServices.GetPath(_paths.ApplicationDirectory, "Commands", workType).Value; ;
-            _classConfig.Name = $"{workType}{_paths.EntityNameNotExt}CommandValidator";
-            _classConfig.BaseInheritance = $"AbstractValidator<{workType}{_paths.EntityNameNotExt}Command>";
+            _classConfig.Name = $"{workType}{_paths.EntityName}CommandValidator";
+            _classConfig.BaseInheritance = $"AbstractValidator<{workType}{_paths.EntityName}Command>";
             _classConfig.Constructor = true;
             _classConfig.Usings = new List<string>
             {
@@ -108,14 +106,12 @@ namespace MediatRGen.Cli.Processes.MediatR
             _classConfig.ConstructorParameters = $"IRepository<{_parameter.EntityName}> repository, IMapper mapper";
             _classConfig.ConstructorBaseParameters = "repository, mapper";
 
-            string _entityNamespace = _nameSpaceService.GetNameSpace(_classService.GetClassRoot(_paths.EntityPath).Value).Value;
-
             _classConfig.Usings = new List<string>
             {
                 "AutoMapper",
                 "Core.Persistence.Repository",
                 $"Core.Application.BaseCQRS.Commands.{workType}" ,
-                _entityNamespace
+                _paths.EntityNamespace
             };
 
             _classConfigs.Add(_classConfig);

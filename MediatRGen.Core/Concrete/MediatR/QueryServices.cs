@@ -92,14 +92,12 @@ namespace MediatRGen.Cli.Processes.MediatR
             _classConfig.ConstructorParameters = $"IRepository<{_parameter.EntityName}> repository, IMapper mapper";
             _classConfig.ConstructorBaseParameters = "repository, mapper";
 
-            string _entityNamespace = _nameSpaceService.GetNameSpace(_classService.GetClassRoot(_paths.EntityPath).Value).Value;
-
             _classConfig.Usings = new List<string>
             {
                "AutoMapper",
                "Core.Persistence.Repository",
                $"Core.Application.BaseCQRS.Queries.{workType}",
-               _entityNamespace
+               _paths.EntityNamespace
             };
 
             _classConfigs.Add(_classConfig);
