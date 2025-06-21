@@ -53,10 +53,84 @@ namespace MediatRGen.Core.Concrete.MediatR
 
             _classConfig.Usings = new List<string>
             {
-                $"Microsoft.AspNetCore.Mvc"
+                $"Microsoft.AspNetCore.Mvc" ,
+                $"MediatR"
             };
 
+            _classConfig.Constructor = true;
+            _classConfig.ConstructorParameters = $"IRepository<{_parameter.EntityName}> repository, IMapper mapper";
+            _classConfig.ConstructorBaseParameters = "repository, mapper";
+
+            List<string> _methods = new List<string>();
+
+            _methods.Add($@"
+                        [HttpPost]
+                        public async Task<IActionResult> Create([FromBody] Create{_paths.EntityNameNotExt}Command command)
+                        {{
+                            var result = await _mediator.Send(command);
+                            return Ok(result);
+                        }}
+                ");
+
+            _methods.Add($@"
+                        [HttpDelete(""{{id}}"")]
+                        public async Task<IActionResult> Delete(Guid id)
+                        {{
+                            var command = new Delete{_paths.EntityNameNotExt}Command {{ Id = id }};
+                            var result = await _mediator.Send(command);
+                            return Ok(result);
+                        }}
+                ");
+
+            _methods.Add($@"
+                            [HttpPut]
+                            public async Task<IActionResult> Update([FromBody] Update{_paths.EntityNameNotExt}Command command)
+                            {{
+                                var result = await _mediator.Send(command);
+                                return Ok(result);
+                            }}
+                ");
+
+            _methods.Add($@"
+                                [HttpGet(""{{id}}"")]
+                                public async Task<IActionResult> GetById(Guid id)
+                                {{
+                                    var result = await _mediator.Send(new GetById{_paths.EntityNameNotExt}Query {{ Id = id }});
+                                    return Ok(result);
+                                }}
+                ");
+
+            _methods.Add($@"
+                                [HttpGet(""List"")]
+                                public async Task<IActionResult> GetList()
+                                {{
+                                    var result = await _mediator.Send(new GetList{_paths.EntityNameNotExt}Query());
+                                    return Ok(result);
+                                }}
+                ");
+
+            _methods.Add($@"
+                                    [HttpPost(""List/Dynamic"")]
+                                    public async Task<IActionResult> GetListDynamic([FromBody] GetListDynamic{_paths.EntityNameNotExt}Query query)
+                                    {{
+                                        var result = await _mediator.Send(query);
+                                        return Ok(result);
+                                    }}
+                ");
+
+            _methods.Add($@"
+                                    [HttpGet(""List/Paged"")]
+                                    public async Task<IActionResult> GetListPaged([FromQuery] GetListPaged{_paths.EntityNameNotExt}Query query)
+                                    {{
+                                        var result = await _mediator.Send(query);
+                                        return Ok(result);
+                                    }}
+                ");
+            _classConfig.Methods = _methods;
             _classConfigs.Add(_classConfig);
+
+
+
         }
     }
 }

@@ -18,6 +18,7 @@ namespace MediatRGen.Core.Concrete
         private readonly IInheritanceService _inheritanceService;
         private readonly IUsingService _usingService;
         private readonly IConstructorService _constructorService;
+        private readonly IMethodService _methodService;
 
         public ClassService(
             IFileService fileService,
@@ -26,7 +27,9 @@ namespace MediatRGen.Core.Concrete
             ISystemProcessService systemProcessService,
             IInheritanceService inheritanceService,
             IUsingService usingService,
-            IConstructorService constructorService)
+            IConstructorService constructorService,
+            IMethodService methodService
+            )
         {
             _fileService = fileService;
             _nameSpaceService = nameSpaceService;
@@ -35,6 +38,7 @@ namespace MediatRGen.Core.Concrete
             _inheritanceService = inheritanceService;
             _usingService = usingService;
             _constructorService = constructorService;
+            _methodService = methodService;
         }
 
         public ServiceResult<bool> ReWriteClass(string classPath, SyntaxNode newRoot)
@@ -107,6 +111,11 @@ namespace MediatRGen.Core.Concrete
             foreach (var code in classSettings.ConstructorCodes)
             {
                 _activeNode = _constructorService.AddConstructorCode(_activeNode, code).Value;
+            }
+
+            foreach (var method in classSettings.Methods)
+            {
+                _activeNode = _methodService.AddMethod(_activeNode, method).Value;
             }
 
             ReWriteClass(classSettings.Directory + "\\" + classSettings.Name, _activeNode);

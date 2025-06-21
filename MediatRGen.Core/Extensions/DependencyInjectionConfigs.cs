@@ -36,6 +36,7 @@ namespace MediatRGen.Core.Extensions
             services.AddTransient<ICoreServices, CoreServices>();
             services.AddTransient<IModuleService, ModuleService>();
             services.AddTransient<IMediatRService, MediatRService>();
+            services.AddTransient<IMethodService, MethodService>();
 
             return services;
         }

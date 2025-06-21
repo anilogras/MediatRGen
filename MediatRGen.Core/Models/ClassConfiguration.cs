@@ -13,6 +13,7 @@ namespace MediatRGen.Core.Models
         {
             Usings = new List<string>();
             ConstructorCodes = new List<string>();
+            Methods = new List<string>();
         }
 
         public string Directory { get; set; }
@@ -23,6 +24,8 @@ namespace MediatRGen.Core.Models
         public string ConstructorParameters { get; set; }
         public string ConstructorBaseParameters { get; set; }
         public List<string> ConstructorCodes { get; set; }
+        public List<string> Methods { get; set; }
+
 
     }
 }
